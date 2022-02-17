@@ -7,6 +7,7 @@ namespace Platformer
 {
     class Enemy : Actor
     {
+        
         public Rect Area
         {
             get { return area; }
@@ -16,6 +17,7 @@ namespace Platformer
 
         public Enemy(double x, double y) : base(x, y)
         {
+            health = 100;
             Dx = 2;
             Dy = 2;
         }

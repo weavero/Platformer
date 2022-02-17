@@ -5,7 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Platformer"
         mc:Ignorable="d"
-        Title="Platformer" Height="450" Width="910">
+        Title="Platformer"
+        SizeToContent="WidthAndHeight"
+        ResizeMode="NoResize">
 
-    <local:Control/>
+    <local:Control Width="{x:Static local:Config.windowWidth}"
+                   Height="{x:Static local:Config.windowHeight}"/>
 </Window>

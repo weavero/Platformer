@@ -34,11 +34,11 @@ namespace Platformer
                     switch (map[i,j])
                     {
                         case 'P':
-                            player = new Player(j * 20 + 20, i * 10 + 300);
+                            player = new Player(j * 20, i * 10);
                             break;
 
                         case 'E':
-                            enemies.Add(new Enemy(j * 20 + 20, i * 10 + 300));
+                            enemies.Add(new Enemy(j * 20, i * 10));
                             break;
 
                         default:

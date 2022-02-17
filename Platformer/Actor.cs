@@ -7,6 +7,7 @@ namespace Platformer
 {
     abstract class Actor
     {
+        protected int health;
         protected double vel;
         protected Rect area;
 
