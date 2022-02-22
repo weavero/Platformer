@@ -5,17 +5,21 @@ using System.Windows;
 using System.Windows.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace Platformer
 {
     class Logic
     {
         Model model;
+        public EventHandler RefreshScreen;
         public enum Direction { Left, Right }
-        public event EventHandler RefreshScreen;
 
         public bool GoLeft { get; set; }
         public bool GoRight { get; set; }
+
+        public bool IsJumping { get; set; }
+        double jumpHeight;
 
         static Random r = new Random();
 
@@ -64,10 +68,15 @@ namespace Platformer
 
         public void Jump()
         {
-            double jumpHeight = model.player.Area.Top - 50;
-            while (model.player.Area.Top > jumpHeight)
+            if (IsJumping)
             {
-                model.player.SetY(-1);
+                jumpHeight += 0.1;
+                model.player.SetY(jumpHeight);
+            }
+            else
+            {
+                //model.player.SetXY(model.player.Area.X, renderer.Ground.Bounds.Y - model.player.Area.Height - 1); -1 hogy megint tudjon ugrani
+                IsJumping = false;
             }
         }
 
@@ -76,9 +85,15 @@ namespace Platformer
 
         }
 
-        public void CollisionCheck()
+        public void CollisionCheck(Actor actor, DrawingGroup dg)
         {
-            
+            foreach (GeometryDrawing item in dg.Children)
+            {
+                if (actor.Area.IntersectsWith(item.Bounds))
+                {
+
+                }
+            }
         }
     }
 }

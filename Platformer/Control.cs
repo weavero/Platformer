@@ -18,8 +18,6 @@ namespace Platformer
         Renderer renderer;
         DispatcherTimer timer;
 
-        bool goLeft;
-        bool goRight;
         bool jump;
         double maxJump = -5;
         double jumpHeight;
@@ -56,68 +54,34 @@ namespace Platformer
             InvalidateVisual();
         }
 
-        
-
         void Timer_Tick(object sender, EventArgs e)
         {
-            logic.MoveAI();
+            //logic.MoveAI();
             InvalidateVisual();
 
-            if (jump)
-            {
-                if (!model.player.Area.IntersectsWith(renderer.Ground.Bounds))
-                {
-                    jumpHeight += 0.1;
-                    model.player.SetY(jumpHeight);
-                }
-                else
-                {
-                    model.player.SetXY(model.player.Area.X, renderer.Ground.Bounds.Y - model.player.Area.Height - 1); //-1 hogy megint tudjon ugrani
-                    jump = false;
-                }
-            }
-
+            
             logic.Move();
         }
 
         void Win_KeyDown(object sender, KeyEventArgs e)
         {
-            switch (e.Key)
+            if (e.Key == Key.A || e.Key == Key.Left) { logic.GoLeft = true; }
+            else if (e.Key == Key.D || e.Key == Key.Right) { logic.GoRight = true; }
+            else if (e.Key == Key.Space || e.Key == Key.Up)
             {
-                case Key.A:
-                    logic.GoLeft = true;
-                    break;
-
-                case Key.D:
-                    logic.GoRight = true;
-                    break;
-
-                case Key.Space:
-                    if (!jump)
-                    {
-                        jump = true;
-                        jumpHeight = maxJump;
-                    }
-                    break;
-
-                case Key.Escape:
-                    TimerStartStop();
-                    break;
+                if (!logic.IsJumping)
+                {
+                    logic.IsJumping = true;
+                    jumpHeight = maxJump;
+                }
             }
+            else if (e.Key == Key.Escape) { TimerStartStop(); }
         }
 
         private void Win_KeyUp(object sender, KeyEventArgs e)
         {
-            switch (e.Key)
-            {
-                case Key.A:
-                    logic.GoLeft = false;
-                    break;
-
-                case Key.D:
-                    logic.GoRight = false;
-                    break;
-            }
+            if (e.Key == Key.A || e.Key == Key.Left) { logic.GoLeft = false; }
+            else if (e.Key == Key.D || e.Key == Key.Right) { logic.GoRight = false; }
         }
 
         private void TimerStartStop()

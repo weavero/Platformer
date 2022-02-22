@@ -11,12 +11,7 @@ namespace Platformer
     class Renderer
     {
         Model model;
-        char[,] map;
         GeometryDrawing background;
-        GeometryDrawing player;
-        GeometryDrawing enemy;
-        GeometryDrawing text;
-        GeometryDrawing text2;
         GeometryDrawing ground;
         DrawingGroup dg;
 
@@ -28,14 +23,14 @@ namespace Platformer
         public Renderer(Model model)
         {
             this.model = model;
-            background = new GeometryDrawing(Brushes.Red, Config.penBrush, new RectangleGeometry(new Rect(0, 0, 1000, 1000)));
+            background = new GeometryDrawing(Brushes.Cyan, Config.penBrush, new RectangleGeometry(new Rect(0, 0, 1000, 1000)));
             ground = new GeometryDrawing(null, Config.penBrush, new LineGeometry(new Point(0, 350), new Point(3000, 350)));
         }
 
         public void Draw(DrawingContext ctx)
         {
             dg = new DrawingGroup();
-
+            dg.Children.Add(background);
             for (int i = 0; i < model.Map.GetLength(0); i++)
             {
                 for (int j = 0; j < model.Map.GetLength(1); j++)
@@ -43,11 +38,11 @@ namespace Platformer
                     switch (model.Map[i, j])
                     {
                         case 'g':
-                            dg.Children.Add(new GeometryDrawing(Config.groundBrush, Config.penBrush, new RectangleGeometry(new Rect(j * 40, i * 20, 40, 20))));
+                            dg.Children.Add(new GeometryDrawing(Config.groundBrush, Config.penBrush, new RectangleGeometry(new Rect(j * Config.unitHeight, i * Config.unitWidth, Config.unitHeight, Config.unitWidth))));
                             break;
 
                         case 'w':
-                            dg.Children.Add(new GeometryDrawing(Config.wallBrush, Config.penBrush, new RectangleGeometry(new Rect(j * 40, i * 20, 40, 20))));
+                            dg.Children.Add(new GeometryDrawing(Config.wallBrush, Config.penBrush, new RectangleGeometry(new Rect(j * Config.unitHeight, i * Config.unitWidth, Config.unitHeight, Config.unitWidth))));
                             break;
 
                         case 'P':
@@ -55,7 +50,7 @@ namespace Platformer
                             break;
 
                         case 'F':
-                            dg.Children.Add(new GeometryDrawing(Brushes.Orange, Config.penBrush, new RectangleGeometry(new Rect(j * 40, i * 20, 40, 20))));
+                            dg.Children.Add(new GeometryDrawing(Brushes.Orange, Config.penBrush, new RectangleGeometry(new Rect(j * Config.unitHeight, i * Config.unitWidth, Config.unitHeight, Config.unitWidth))));
                             break;
 
                         case 'E':
@@ -63,10 +58,6 @@ namespace Platformer
                             {
                                 dg.Children.Add(new GeometryDrawing(Config.enemyBrush, Config.penBrush, new RectangleGeometry(enemy.Area)));
                             }
-                            
-                            break;
-
-                        default:
                             break;
                     }
                 }
@@ -74,17 +65,10 @@ namespace Platformer
 
 
 
-            /*
-            dg.Children.Add(background);
-            
-            dg.Children.Add(enemy);
-            
-            dg.Children.Add(ground);
-            */
-            ctx.DrawDrawing(dg);
-            
-        }
 
-        
+            
+            
+            ctx.DrawDrawing(dg);
+        }
     }
 }

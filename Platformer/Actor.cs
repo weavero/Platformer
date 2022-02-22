@@ -11,6 +11,8 @@ namespace Platformer
         protected double vel;
         protected Rect area;
 
+        public Rect Area { get { return area; } }
+
         public Actor(double x, double y)
         {
             area = new Rect(x, y, 20, 20);

@@ -17,7 +17,12 @@ namespace Platformer
         public static Brush playerBrush = Brushes.Blue;
         public static Brush coinBrush = Brushes.Gold;
 
-        public static double windowWidth = 1280;
-        public static double windowHeight = 720;
+        //public static ImageBrush CoinImage;
+        //public static ImageBrush BackgroundImage;
+
+        public static double windowWidth = 640;
+        public static double windowHeight = 480;
+        public static int unitWidth = 20;
+        public static int unitHeight = 40;
     }
 }

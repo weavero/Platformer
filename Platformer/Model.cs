@@ -8,7 +8,6 @@ namespace Platformer
     class Model
     {
         public Player player;
-        public Enemy enemy;
         List<Enemy> enemies = new List<Enemy>();
 
         public List<Enemy> Enemies
@@ -25,7 +24,6 @@ namespace Platformer
 
         public Model(string levelPath)
         {
-            //@"../../../Levels/1.level"
             PalyaBetolt(levelPath);
             for (int i = 0; i < map.GetLength(0); i++)
             {
@@ -34,14 +32,11 @@ namespace Platformer
                     switch (map[i,j])
                     {
                         case 'P':
-                            player = new Player(j * 20, i * 10);
+                            player = new Player(j * Config.unitHeight, i * Config.unitWidth);
                             break;
 
                         case 'E':
-                            enemies.Add(new Enemy(j * 20, i * 10));
-                            break;
-
-                        default:
+                            enemies.Add(new Enemy(j * Config.unitHeight, i * Config.unitWidth));
                             break;
                     }
                 }
