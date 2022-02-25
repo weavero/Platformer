@@ -7,12 +7,6 @@ namespace Platformer
 {
     class Enemy : Actor
     {
-        
-        public Rect Area
-        {
-            get { return area; }
-        }
-
         public double Dx, Dy;
 
         public Enemy(double x, double y) : base(x, y)

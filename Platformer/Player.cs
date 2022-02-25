@@ -7,11 +7,6 @@ namespace Platformer
 {
     class Player : Actor
     {
-        public Rect Area
-        {
-            get { return area; }
-        }
-
         public Player(double x, double y) : base(x, y)
         {
             ;

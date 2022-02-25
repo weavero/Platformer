@@ -18,10 +18,6 @@ namespace Platformer
         Renderer renderer;
         DispatcherTimer timer;
 
-        bool jump;
-        double maxJump = -5;
-        double jumpHeight;
-
         public Control()
         {
             Loaded += Control_Loaded;
@@ -33,21 +29,21 @@ namespace Platformer
             logic = new Logic(model);
             renderer = new Renderer(model);
 
-            Window win = Window.GetWindow(this);
+            Window window = Window.GetWindow(this);
             
 
-            if (win != null)
+            if (window != null)
             {
-                win.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                 Uri iconUri = new Uri("../../../hitman.jpg", UriKind.RelativeOrAbsolute);
-                win.Icon = BitmapFrame.Create(iconUri);
+                window.Icon = BitmapFrame.Create(iconUri);
                 timer = new DispatcherTimer();
                 timer.Interval = TimeSpan.FromMilliseconds(15);
                 timer.Tick += Timer_Tick;
                 timer.Start();
 
-                win.KeyDown += Win_KeyDown;
-                win.KeyUp += Win_KeyUp;
+                window.KeyDown += Win_KeyDown;
+                window.KeyUp += Win_KeyUp;
             }
 
             logic.RefreshScreen += (obj, args) => InvalidateVisual();
@@ -56,11 +52,17 @@ namespace Platformer
 
         void Timer_Tick(object sender, EventArgs e)
         {
+            if (model.player.Area.IntersectsWith(renderer.Ground.Bounds))
+            {
+                model.player.SetXY(model.player.Area.X, renderer.Ground.Bounds.Y - model.player.Area.Height - 1); //-1 hogy megint tudjon ugrani
+
+            }
             //logic.MoveAI();
             InvalidateVisual();
-
+            logic.GameTick();
             
             logic.Move();
+            //logic.CollisionCheck(model.player, renderer.DrawingGroup);
         }
 
         void Win_KeyDown(object sender, KeyEventArgs e)
@@ -72,7 +74,6 @@ namespace Platformer
                 if (!logic.IsJumping)
                 {
                     logic.IsJumping = true;
-                    jumpHeight = maxJump;
                 }
             }
             else if (e.Key == Key.Escape) { TimerStartStop(); }

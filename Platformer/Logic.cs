@@ -17,11 +17,13 @@ namespace Platformer
 
         public bool GoLeft { get; set; }
         public bool GoRight { get; set; }
-
         public bool IsJumping { get; set; }
-        double jumpHeight;
 
-        static Random r = new Random();
+        double maxJump = 5;
+        double jumpHeight;
+        int i = 0;
+
+        bool alive = true;
 
         public Logic(Model model)
         {
@@ -41,7 +43,7 @@ namespace Platformer
                     model.player.SetX(-3);
                 }
             }
-            else if(GoRight)
+            else if (GoRight)
             {
                 if (model.player.Area.Right > 500)
                 {
@@ -68,21 +70,27 @@ namespace Platformer
 
         public void Jump()
         {
+            if(i == 0)
+            {
+                jumpHeight = -maxJump;
+                i++;
+            }
+
             if (IsJumping)
             {
-                jumpHeight += 0.1;
-                model.player.SetY(jumpHeight);
+                model.player.SetY(jumpHeight += 0.1);
             }
             else
             {
-                //model.player.SetXY(model.player.Area.X, renderer.Ground.Bounds.Y - model.player.Area.Height - 1); -1 hogy megint tudjon ugrani
+                //model.player.SetXY(model.player.Area.X, renderer.Ground.Bounds.Y - model.player.Area.Height - 1); //-1 hogy megint tudjon ugrani
                 IsJumping = false;
+                i--;
             }
         }
 
         public void GameTick()
         {
-
+            Jump();
         }
 
         public void CollisionCheck(Actor actor, DrawingGroup dg)
@@ -91,8 +99,38 @@ namespace Platformer
             {
                 if (actor.Area.IntersectsWith(item.Bounds))
                 {
-
+                    if (item.Brush == Config.finishBrush)
+                    {
+                        GameOver();
+                    }
+                    else
+                    {
+                        if (GoLeft)
+                        {
+                            GoLeft = false;
+                        }
+                        if (GoRight)
+                        {
+                            GoRight = false;
+                        }
+                        if (IsJumping)
+                        {
+                            IsJumping = false;
+                        }
+                    }
                 }
+            }
+        }
+
+        private void GameOver()
+        {
+            if (alive)
+            {
+
+            }
+            else
+            {
+
             }
         }
     }
