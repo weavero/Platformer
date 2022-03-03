@@ -20,10 +20,5 @@ namespace Platformer
         {
             return area.X;
         }
-
-        public override void Jump()
-        {
-
-        }
     }
 }

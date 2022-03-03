@@ -43,15 +43,17 @@ namespace Platformer
             }
         }
 
-        public void PalyaBetolt(string path)
+        public void PalyaBetolt(string levelPath)
         {
-            StreamReader sr = new StreamReader(path);
+            StreamReader sr = new StreamReader(levelPath);
             List<string> sorok = new List<string>();
             while (!sr.EndOfStream)
             {
-                sorok.Add(sr.ReadLine());
+                string sor = sr.ReadLine().Replace("\t", "    ");
+                sorok.Add(sor);
             }
 
+            //leghosszabb sor megkeresése
             int max = 0;
             for (int i = 1; i < sorok.Count; i++)
             {
@@ -60,7 +62,6 @@ namespace Platformer
                     max = i;
                 }
             }
-
             map = new char[sorok.Count, sorok[max].Length];
 
             for (int i = 0; i < map.GetLength(0); i++)

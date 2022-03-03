@@ -6,8 +6,7 @@
         xmlns:local="clr-namespace:Platformer"
         mc:Ignorable="d"
         Title="Platformer"
-        SizeToContent="WidthAndHeight"
-        ResizeMode="NoResize">
+        SizeToContent="WidthAndHeight">
 
     <local:Control Width="{x:Static local:Config.windowWidth}"
                    Height="{x:Static local:Config.windowHeight}"/>

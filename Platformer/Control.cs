@@ -30,6 +30,7 @@ namespace Platformer
             renderer = new Renderer(model);
 
             Window window = Window.GetWindow(this);
+            //window.Background = new ImageBrush(new BitmapImage(new Uri(@"../../../hitman.jpg", UriKind.RelativeOrAbsolute)));
             
 
             if (window != null)
@@ -41,7 +42,6 @@ namespace Platformer
                 timer.Interval = TimeSpan.FromMilliseconds(15);
                 timer.Tick += Timer_Tick;
                 timer.Start();
-
                 window.KeyDown += Win_KeyDown;
                 window.KeyUp += Win_KeyUp;
             }
@@ -52,17 +52,13 @@ namespace Platformer
 
         void Timer_Tick(object sender, EventArgs e)
         {
-            if (model.player.Area.IntersectsWith(renderer.Ground.Bounds))
-            {
-                model.player.SetXY(model.player.Area.X, renderer.Ground.Bounds.Y - model.player.Area.Height - 1); //-1 hogy megint tudjon ugrani
-
-            }
             //logic.MoveAI();
-            InvalidateVisual();
-            logic.GameTick();
             
+            logic.Jump();
             logic.Move();
-            //logic.CollisionCheck(model.player, renderer.DrawingGroup);
+            logic.CollisionCheck(model.player, renderer.DrawingGroup);
+            InvalidateVisual();
+
         }
 
         void Win_KeyDown(object sender, KeyEventArgs e)
@@ -74,6 +70,7 @@ namespace Platformer
                 if (!logic.IsJumping)
                 {
                     logic.IsJumping = true;
+                    logic.Jump();
                 }
             }
             else if (e.Key == Key.Escape) { TimerStartStop(); }

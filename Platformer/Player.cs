@@ -11,10 +11,5 @@ namespace Platformer
         {
             ;
         }
-
-        public override void Jump()
-        {
-            
-        }
     }
 }

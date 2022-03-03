@@ -15,11 +15,9 @@ namespace Platformer
 
         public Actor(double x, double y)
         {
-            area = new Rect(x, y, 20, 20);
+            area = new Rect(x, y, Config.playerWidth, Config.playerHeight);
             vel = 0;
         }
-
-        abstract public void Jump();
 
         public void SetX(double x)
         {

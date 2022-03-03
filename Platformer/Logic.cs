@@ -19,7 +19,7 @@ namespace Platformer
         public bool GoRight { get; set; }
         public bool IsJumping { get; set; }
 
-        double maxJump = 5;
+        double maxJump = 3;
         double jumpHeight;
         int i = 0;
 
@@ -34,25 +34,11 @@ namespace Platformer
         {
             if (GoLeft)
             {
-                if (model.player.Area.Left - model.player.Area.Width < 0)
-                {
-                    model.player.SetX(200);
-                }
-                else
-                {
-                    model.player.SetX(-3);
-                }
+                model.player.SetX(-3);
             }
             else if (GoRight)
             {
-                if (model.player.Area.Right > 500)
-                {
-                    model.player.SetX(-model.player.Area.X);
-                }
-                else
-                {
-                    model.player.SetX(3);
-                }
+                model.player.SetX(3);
             }
         }
         
@@ -70,7 +56,7 @@ namespace Platformer
 
         public void Jump()
         {
-            if(i == 0)
+            if(i < 1)
             {
                 jumpHeight = -maxJump;
                 i++;
@@ -90,14 +76,14 @@ namespace Platformer
 
         public void GameTick()
         {
-            Jump();
+
         }
 
         public void CollisionCheck(Actor actor, DrawingGroup dg)
         {
             foreach (GeometryDrawing item in dg.Children)
             {
-                if (actor.Area.IntersectsWith(item.Bounds))
+                if (actor.Area.IntersectsWith(item.Bounds) && item.Brush != Config.playerBrush && item.Brush != Config.backgroundBrush)
                 {
                     if (item.Brush == Config.finishBrush)
                     {
@@ -108,14 +94,17 @@ namespace Platformer
                         if (GoLeft)
                         {
                             GoLeft = false;
+                            
                         }
-                        if (GoRight)
+                        else if (GoRight)
                         {
                             GoRight = false;
+                            
                         }
                         if (IsJumping)
                         {
                             IsJumping = false;
+                            model.player.SetXY(model.player.Area.X, item.Bounds.Y - model.player.Area.Height - 1);
                         }
                     }
                 }
@@ -126,11 +115,11 @@ namespace Platformer
         {
             if (alive)
             {
-
+                model.PalyaBetolt(@"../../../Levels/2.level");
             }
             else
             {
-
+                model.PalyaBetolt(@"../../../Levels/1.level");
             }
         }
     }
