@@ -33,7 +33,7 @@ namespace Platformer
         public void Draw(DrawingContext ctx)
         {
             dg = new DrawingGroup();
-            dg.Children.Add(background);
+            //dg.Children.Add(background);
             dg.Children.Add(ground);
             for (int i = 0; i < model.Map.GetLength(0); i++)
             {
@@ -54,7 +54,7 @@ namespace Platformer
                             break;
 
                         case 'P':
-                            dg.Children.Add(new GeometryDrawing(Config.playerBrush, Config.penBrush, new RectangleGeometry(model.player.Area)));
+                            dg.Children.Add(new GeometryDrawing(Config.playerBrush, null, new RectangleGeometry(model.player.Area)));
                             break;
 
                         case 'E':
@@ -67,13 +67,7 @@ namespace Platformer
                 }
             }
 
-            ImageBrush g = new ImageBrush(new BitmapImage(new Uri(@"../../../img/ground.png", UriKind.RelativeOrAbsolute)));
-            GeometryDrawing gr = new GeometryDrawing(g, null, new RectangleGeometry(new Rect(200, 200, 500, 50)));
-            dg.Children.Add(gr);
-
             GeometryDrawing ground2 = new GeometryDrawing(Brushes.Blue, Config.penBrush, new LineGeometry(new Point(0, 350), new Point(3000, 250)));
-
-
 
             FormattedText formattedText = new FormattedText(model.player.Area.X.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
             GeometryDrawing text = new GeometryDrawing(null, new Pen(Brushes.Black, 1), formattedText.BuildGeometry(new Point(400, 550)));

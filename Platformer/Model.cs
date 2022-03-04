@@ -8,15 +8,14 @@ namespace Platformer
     class Model
     {
         public Player player;
-        List<Enemy> enemies = new List<Enemy>();
+        private List<Enemy> enemies = new List<Enemy>();
 
         public List<Enemy> Enemies
         {
-            get { return enemies; }
+            get { return new List<Enemy>(enemies); }
         }
 
-        char[,] map;
-
+        private char[,] map;
         public char[,] Map
         {
             get { return map; }

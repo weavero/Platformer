@@ -19,7 +19,8 @@ namespace Platformer
         public bool GoRight { get; set; }
         public bool IsJumping { get; set; }
 
-        double maxJump = 3;
+
+        double maxJump = 5;
         double jumpHeight;
         int i = 0;
 
@@ -56,7 +57,7 @@ namespace Platformer
 
         public void Jump()
         {
-            if(i < 1)
+            if (i < 1)
             {
                 jumpHeight = -maxJump;
                 i++;
@@ -69,7 +70,10 @@ namespace Platformer
             else
             {
                 //model.player.SetXY(model.player.Area.X, renderer.Ground.Bounds.Y - model.player.Area.Height - 1); //-1 hogy megint tudjon ugrani
-                IsJumping = false;
+                while (true)
+                {
+                    break;
+                }
                 i--;
             }
         }
@@ -83,7 +87,7 @@ namespace Platformer
         {
             foreach (GeometryDrawing item in dg.Children)
             {
-                if (actor.Area.IntersectsWith(item.Bounds) && item.Brush != Config.playerBrush && item.Brush != Config.backgroundBrush)
+                if (actor.Area.IntersectsWith(item.Bounds) && item.Brush != Config.playerBrush) //&& item.Brush != Config.backgroundBrush)
                 {
                     if (item.Brush == Config.finishBrush)
                     {
@@ -93,18 +97,22 @@ namespace Platformer
                     {
                         if (GoLeft)
                         {
-                            GoLeft = false;
-                            
+                            if (model.player.Area.Left - 1 < item.Bounds.Right && model.player.Area.Bottom > item.Bounds.Top)
+                            {
+                                GoLeft = false;
+                            }
                         }
                         else if (GoRight)
                         {
-                            GoRight = false;
-                            
+                            if (model.player.Area.Right + 1 > item.Bounds.Left && model.player.Area.Bottom > item.Bounds.Top)
+                            {
+                                GoRight = false;
+                            }
                         }
                         if (IsJumping)
                         {
                             IsJumping = false;
-                            model.player.SetXY(model.player.Area.X, item.Bounds.Y - model.player.Area.Height - 1);
+                            model.player.SetXY(model.player.Area.X, item.Bounds.Y - model.player.Area.Height);
                         }
                     }
                 }

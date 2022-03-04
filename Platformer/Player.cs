@@ -7,6 +7,7 @@ namespace Platformer
 {
     class Player : Actor
     {
+        
         public Player(double x, double y) : base(x, y)
         {
             ;
