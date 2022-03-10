@@ -8,7 +8,7 @@ namespace Platformer
     class Model
     {
         public Player player;
-        private List<Enemy> enemies = new List<Enemy>();
+        private List<Enemy> enemies;
 
         public List<Enemy> Enemies
         {
@@ -21,28 +21,14 @@ namespace Platformer
             get { return map; }
         }
 
+        private int coin = 0;
+        public int Coin { get { return coin; } }
+
         public Model(string levelPath)
         {
-            PalyaBetolt(levelPath);
-            for (int i = 0; i < map.GetLength(0); i++)
-            {
-                for (int j = 0; j < map.GetLength(1); j++)
-                {
-                    switch (map[i,j])
-                    {
-                        case 'P':
-                            player = new Player(j * Config.unitHeight, i * Config.unitWidth);
-                            break;
-
-                        case 'E':
-                            enemies.Add(new Enemy(j * Config.unitHeight, i * Config.unitWidth));
-                            break;
-                    }
-                }
-            }
+            LoadLevel(levelPath);
         }
-
-        public void PalyaBetolt(string levelPath)
+        public void LoadLevel(string levelPath)
         {
             StreamReader sr = new StreamReader(levelPath);
             List<string> sorok = new List<string>();
@@ -51,8 +37,8 @@ namespace Platformer
                 string sor = sr.ReadLine().Replace("\t", "    ");
                 sorok.Add(sor);
             }
+            sr.Dispose();
 
-            //leghosszabb sor megkeresése
             int max = 0;
             for (int i = 1; i < sorok.Count; i++)
             {
@@ -70,6 +56,37 @@ namespace Platformer
                     map[i, j] = Convert.ToChar(sorok[i].Substring(j, 1));
                 }
             }
+            LoadActors();
+        }
+
+        public void LoadActors()
+        {
+            enemies = new List<Enemy>();
+            for (int i = 0; i < map.GetLength(0); i++)
+            {
+                for (int j = 0; j < map.GetLength(1); j++)
+                {
+                    switch (map[i, j])
+                    {
+                        case 'P':
+                            player = new Player(j * Config.unitWidth, i * Config.unitHeight + (Config.unitHeight - Config.playerHeight));
+                            break;
+
+                        case 'e':
+                            enemies.Add(new SmallEnemy(j * Config.unitWidth, i * Config.unitHeight + (Config.unitHeight - Config.smallEnemyHeight)));
+                            break;
+
+                        case 'E':
+                            enemies.Add(new BigEnemy(j * Config.unitWidth, i * Config.unitHeight + (Config.unitHeight - Config.bigEnemyHeight)));
+                            break;
+                    }
+                }
+            }
+        }
+
+        public void CoinPickedup()
+        {
+            coin++;
         }
     }
 }

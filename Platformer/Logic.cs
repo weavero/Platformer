@@ -11,20 +11,16 @@ namespace Platformer
 {
     class Logic
     {
-        Model model;
-        public EventHandler RefreshScreen;
+       
         public enum Direction { Left, Right }
 
         public bool GoLeft { get; set; }
         public bool GoRight { get; set; }
         public bool IsJumping { get; set; }
+        public bool IsFalling { get; set; }
 
 
-        double maxJump = 5;
-        double jumpHeight;
-        int i = 0;
-
-        bool alive = true;
+        Model model;
 
         public Logic(Model model)
         {
@@ -48,13 +44,13 @@ namespace Platformer
             foreach (Enemy enemy in model.Enemies)
             {
                 enemy.SetX(enemy.Dx);
-                if (enemy.getX() < 0 || enemy.Area.Right > 400)
-                {
-                    enemy.Dx = -enemy.Dx;
-                }
             }
+            
         }
 
+        int i = 0;
+        double jumpHeight;
+        double maxJump = 5;
         public void Jump()
         {
             if (i < 1)
@@ -69,66 +65,125 @@ namespace Platformer
             }
             else
             {
-                //model.player.SetXY(model.player.Area.X, renderer.Ground.Bounds.Y - model.player.Area.Height - 1); //-1 hogy megint tudjon ugrani
-                while (true)
-                {
-                    break;
-                }
                 i--;
+            }
+        }
+
+        int j = 0;
+        double fallSpeed;
+        public void Falling()
+        {
+            if (j < 1)
+            {
+                fallSpeed = 0.1;
+                j++;
+            }
+
+            if (IsFalling)
+            {
+                if (fallSpeed < 10)
+                {
+                    fallSpeed += 0.1;
+                }
+                model.player.SetY(fallSpeed);
+
+            }
+            else
+            {
+                j--;
             }
         }
 
         public void GameTick()
         {
-
+            Move();
+            Jump();
+            MoveAI();
+            Falling();
         }
 
         public void CollisionCheck(Actor actor, DrawingGroup dg)
         {
+            List<int> coinIndexes = new List<int>();
+            bool collision = false;
             foreach (GeometryDrawing item in dg.Children)
             {
-                if (actor.Area.IntersectsWith(item.Bounds) && item.Brush != Config.playerBrush) //&& item.Brush != Config.backgroundBrush)
+                if (actor.Area.IntersectsWith(item.Bounds) && item.Bounds.Height != actor.Area.Height)
                 {
-                    if (item.Brush == Config.finishBrush)
+                    if (actor is Player)
                     {
-                        GameOver();
+                        collision = true;
+                        if (item.Brush == Config.finishBrush)
+                        {
+                            isGameOver = true;
+                        }
+                        else if (item.Brush == Config.coinBrush)
+                        {
+                            model.CoinPickedup();
+                            coinIndexes.Add(dg.Children.IndexOf(item));
+                        }
+                        else
+                        {
+                            if (GoLeft)
+                            {
+                                if (actor.Area.Left < item.Bounds.Right && actor.Area.Bottom > item.Bounds.Top)
+                                {
+                                    GoLeft = false;
+                                }
+                            }
+                            else if (GoRight)
+                            {
+                                if (actor.Area.Right > item.Bounds.Left && actor.Area.Bottom > item.Bounds.Top)
+                                {
+                                    GoRight = false;
+                                }
+                            }
+                            if (IsJumping)
+                            {
+                                IsJumping = false;
+                            }
+                            if (IsFalling && collision && item.Bounds.Bottom > actor.Area.Bottom)
+                            {
+                                IsFalling = false;
+                            }
+                        }
                     }
-                    else
+                    else if (actor is Enemy)
                     {
-                        if (GoLeft)
+                        if (actor.Area.Left < item.Bounds.Right && actor.Area.Bottom > item.Bounds.Top)
                         {
-                            if (model.player.Area.Left - 1 < item.Bounds.Right && model.player.Area.Bottom > item.Bounds.Top)
-                            {
-                                GoLeft = false;
-                            }
+                            (actor as Enemy).TurnAround();
                         }
-                        else if (GoRight)
+                        else if (actor.Area.Right> item.Bounds.Left && actor.Area.Bottom > item.Bounds.Top)
                         {
-                            if (model.player.Area.Right + 1 > item.Bounds.Left && model.player.Area.Bottom > item.Bounds.Top)
-                            {
-                                GoRight = false;
-                            }
-                        }
-                        if (IsJumping)
-                        {
-                            IsJumping = false;
-                            model.player.SetXY(model.player.Area.X, item.Bounds.Y - model.player.Area.Height);
+                            (actor as Enemy).TurnAround();
                         }
                     }
                 }
             }
+            if (!collision && !IsJumping && actor is Player)
+            {
+                IsFalling = true;
+            }
         }
 
-        private void GameOver()
+        bool alive = true;
+        bool isGameOver = false;
+        public bool GameOver()
         {
-            if (alive)
+            if (alive && isGameOver)
             {
-                model.PalyaBetolt(@"../../../Levels/2.level");
+                model.LoadLevel(@"../../../Levels/2.level");
+                isGameOver = false;
+                return true;
             }
-            else
+            else if (!alive)
             {
-                model.PalyaBetolt(@"../../../Levels/1.level");
+                model.LoadLevel(@"../../../Levels/1.level");
+                return false;
             }
+
+            return false;
         }
     }
 }

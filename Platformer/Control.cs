@@ -30,7 +30,7 @@ namespace Platformer
             renderer = new Renderer(model);
 
             Window window = Window.GetWindow(this);
-            window.Background = new ImageBrush(new BitmapImage(new Uri(@"../../../img/szily.jpg", UriKind.RelativeOrAbsolute)));
+            window.Background = Config.BackgroundImage;
             ContentElement c = new ContentElement();
             
 
@@ -46,33 +46,32 @@ namespace Platformer
                 window.KeyDown += Win_KeyDown;
                 window.KeyUp += Win_KeyUp;
             }
-
-            logic.RefreshScreen += (obj, args) => InvalidateVisual();
-            InvalidateVisual();
         }
 
         void Timer_Tick(object sender, EventArgs e)
         {
-            //logic.MoveAI();
-            logic.Jump();
-            logic.Move();
+            logic.GameTick();
             logic.CollisionCheck(model.player, renderer.DrawingGroup);
-            InvalidateVisual();
+            foreach (Enemy enemy in model.Enemies)
+            {
+                logic.CollisionCheck(enemy, renderer.DrawingGroup);
+            }
 
+            if (logic.GameOver())
+            {
+                renderer = new Renderer(model);
+            }
+
+            InvalidateVisual();
         }
 
         void Win_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.A || e.Key == Key.Left) 
-            {
-                
-                logic.GoLeft = true;
-                
-            }
+            if (e.Key == Key.A || e.Key == Key.Left) { logic.GoLeft = true; }
             else if (e.Key == Key.D || e.Key == Key.Right) { logic.GoRight = true; }
             else if (e.Key == Key.Space || e.Key == Key.Up)
             {
-                if (!logic.IsJumping)
+                if (!logic.IsJumping && !logic.IsFalling)
                 {
                     logic.IsJumping = true;
                 }
@@ -95,7 +94,6 @@ namespace Platformer
             else
             {
                 timer.Start();
-                
             }
         }
 

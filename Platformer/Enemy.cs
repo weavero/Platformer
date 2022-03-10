@@ -7,18 +7,35 @@ namespace Platformer
 {
     class Enemy : Actor
     {
-        public double Dx, Dy;
+        protected double dx;
+        public double Dx { get { return dx; } }
 
-        public Enemy(double x, double y) : base(x, y)
+        protected Enemy(double x, double y, int EnemyWidth, int EnemyHeight) : base(x, y, EnemyWidth, EnemyHeight)
         {
-            health = 100;
-            Dx = 2;
-            Dy = 2;
+            ;
         }
 
-        public double getX()
+        public void TurnAround()
         {
-            return area.X;
+            dx = -dx;
+        }
+    }
+
+    class SmallEnemy : Enemy
+    {
+        public SmallEnemy(double x, double y) : base(x, y, Config.smallEnemyWidth, Config.smallEnemyHeight)
+        {
+            health = 80;
+            dx = 5;
+        }
+    }
+
+    class BigEnemy : Enemy
+    {
+        public BigEnemy(double x, double y) : base(x, y, Config.bigEnemyWidth, Config.bigEnemyHeight)
+        {
+            health = 250;
+            dx = 2;
         }
     }
 }

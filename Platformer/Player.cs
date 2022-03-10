@@ -8,9 +8,9 @@ namespace Platformer
     class Player : Actor
     {
         
-        public Player(double x, double y) : base(x, y)
+        public Player(double x, double y) : base(x, y, Config.playerWidth, Config.playerHeight)
         {
-            ;
+            health = 100;
         }
     }
 }

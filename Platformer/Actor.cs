@@ -13,9 +13,9 @@ namespace Platformer
 
         public Rect Area { get { return area; } }
 
-        public Actor(double x, double y)
+        protected Actor(double x, double y, int ActorWidth, int ActorHeight)
         {
-            area = new Rect(x, y, Config.playerWidth, Config.playerHeight);
+            area = new Rect(x, y, ActorWidth, ActorHeight);
             vel = 0;
         }
 
