@@ -18,9 +18,6 @@ namespace Platformer
 
         public DrawingGroup DrawingGroup { get { return PlayAreaDrawing; } }
 
-        int playerIndex = -1;
-        Point coinCounterLocation = new Point(Config.windowWidth - 50, Config.windowHeight - 25);
-
         public Renderer(Model model)
         {
             this.model = model;
@@ -29,6 +26,7 @@ namespace Platformer
             DrawHUD();
         }
 
+        int playerIndex = -1;
         public void Draw(DrawingContext ctx)
         {
             if (playerIndex == -1)
@@ -52,15 +50,10 @@ namespace Platformer
             }
             UpdateHUD();
 
-
-
             ctx.DrawDrawing(PlayAreaDrawing);
             ctx.DrawDrawing(HUDDrawing);
         }
 
-        
-
-        
         private void DrawLevel()
         {
             PlayAreaDrawing = new DrawingGroup();
@@ -106,6 +99,7 @@ namespace Platformer
             }
         }
 
+        Point coinCounterLocation = new Point(Config.windowWidth - 50, Config.windowHeight - 25);
         private void DrawHUD()
         {
             HUDDrawing = new DrawingGroup();
@@ -117,13 +111,8 @@ namespace Platformer
             FormattedText formattedText = new FormattedText(model.player.Area.X.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
             GeometryDrawing text = new GeometryDrawing(null, new Pen(Brushes.Black, 1), formattedText.BuildGeometry(new Point(400, 550)));
 
-            FormattedText formattedText2;
-            formattedText2 = new FormattedText(model.player.Area.Y.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
+            FormattedText formattedText2 = new FormattedText(model.player.Area.Y.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
             GeometryDrawing text2 = new GeometryDrawing(null, new Pen(Brushes.Black, 1), formattedText2.BuildGeometry(new Point(450, 550)));
-
-            formattedText2.PixelsPerDip = 16;
-
-            
 
             HUDDrawing.Children.Add(HUDBackground);
             HUDDrawing.Children.Add(coinCounter);

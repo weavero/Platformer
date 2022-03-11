@@ -121,6 +121,7 @@ namespace Platformer
                         {
                             model.CoinPickedup();
                             coinIndexes.Add(dg.Children.IndexOf(item));
+                            collision = false;
                         }
                         else
                         {
@@ -140,15 +141,26 @@ namespace Platformer
                             }
                             if (IsJumping)
                             {
-                                IsJumping = false;
+                                if (actor.Area.Top > item.Bounds.Top)
+                                {
+                                    actor.SetXY(actor.Area.X, item.Bounds.Bottom);
+                                    IsFalling = true;
+                                    IsJumping = false;
+                                }
+                                else
+                                {
+                                    actor.SetXY(actor.Area.X, item.Bounds.Top - actor.Area.Height);
+                                    IsJumping = false;
+                                }
                             }
-                            if (IsFalling && collision && item.Bounds.Bottom > actor.Area.Bottom)
+                            else if (IsFalling && actor.Area.Right > item.Bounds.Left && actor.Area.Left < item.Bounds.Right && actor.Area.Bottom > item.Bounds.Bottom)
                             {
                                 IsFalling = false;
+                                actor.SetXY(actor.Area.X, item.Bounds.Top - actor.Area.Height);
                             }
                         }
                     }
-                    else if (actor is Enemy)
+                    else if (actor is Enemy) 
                     {
                         if (actor.Area.Left < item.Bounds.Right && actor.Area.Bottom > item.Bounds.Top)
                         {
