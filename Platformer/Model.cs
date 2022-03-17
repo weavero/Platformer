@@ -8,60 +8,82 @@ namespace Platformer
     class Model
     {
         public Player player;
-        private List<Enemy> enemies;
 
-        public List<Enemy> Enemies
-        {
-            get { return new List<Enemy>(enemies); }
-        }
+        private List<Enemy> enemies;
+        public List<Enemy> Enemies { get { return new List<Enemy>(enemies); } }
 
         private char[,] map;
-        public char[,] Map
-        {
-            get { return map; }
-        }
+        public char[,] Map{ get { return map; } }
+
+        private Dictionary<int, string> levels;
+
+        private int currentLevel = 1;
 
         private int coin = 0;
         public int Coin { get { return coin; } }
 
-        public Model(string levelPath)
+        private int pickupableIndex;
+        public int PickupableIndex { get { return pickupableIndex; } }
+
+        public Model()
         {
-            LoadLevel(levelPath);
+            RegisterLevels();
+            LoadLevel(levels[currentLevel]);
         }
+
+        private void RegisterLevels()
+        {
+            levels = new Dictionary<int, string>();
+            levels.Add(1, "Levels/1.level");
+            levels.Add(2, "Levels/2.level");
+            levels.Add(3, "Levels/3.level");
+            levels.Add(4, "Levels/4.level");
+            levels.Add(5, "Levels/5.level");
+        }
+
         public void LoadLevel(string levelPath)
         {
-            StreamReader sr = new StreamReader(levelPath);
-            List<string> sorok = new List<string>();
-            while (!sr.EndOfStream)
+            try
             {
-                string sor = sr.ReadLine().Replace("\t", "    ");
-                sorok.Add(sor);
-            }
-            sr.Dispose();
-
-            int max = 0;
-            for (int i = 1; i < sorok.Count; i++)
-            {
-                if (sorok[max].Length < sorok[i].Length)
+                StreamReader sr = new StreamReader(levelPath);
+                List<string> sorok = new List<string>();
+                while (!sr.EndOfStream)
                 {
-                    max = i;
+                    string sor = sr.ReadLine().Replace("\t", "    ");
+                    sorok.Add(sor);
+                }
+                sr.Dispose();
+
+                int max = 0;
+                for (int i = 1; i < sorok.Count; i++)
+                {
+                    if (sorok[max].Length < sorok[i].Length)
+                    {
+                        max = i;
+                    }
+                }
+                map = new char[sorok.Count, sorok[max].Length];
+
+                for (int i = 0; i < map.GetLength(0); i++)
+                {
+                    for (int j = 0; j < sorok[i].Length; j++)
+                    {
+                        map[i, j] = Convert.ToChar(sorok[i].Substring(j, 1));
+                    }
                 }
             }
-            map = new char[sorok.Count, sorok[max].Length];
-
-            for (int i = 0; i < map.GetLength(0); i++)
+            catch(FileNotFoundException e)
             {
-                for (int j = 0; j < sorok[i].Length; j++)
-                {
-                    map[i, j] = Convert.ToChar(sorok[i].Substring(j, 1));
-                }
+                throw new MapNotFoundException(e.Message);
             }
+            coin = 0;
+            pickupableIndex = -1;
+            enemies = new List<Enemy>();
             LoadActors();
         }
 
-        public void LoadActors()
+        private void LoadActors()
         {
-            enemies = new List<Enemy>();
             for (int i = 0; i < map.GetLength(0); i++)
             {
                 for (int j = 0; j < map.GetLength(1); j++)
@@ -87,6 +109,33 @@ namespace Platformer
         public void CoinPickedup()
         {
             coin++;
+        }
+
+        public void SetPickupIndex(int Index)
+        {
+            pickupableIndex = Index;
+        }
+
+        public void NextLevel()
+        {
+            currentLevel++;
+            LoadLevel(levels[currentLevel]);
+        }
+
+        public void ReloadLevel()
+        {
+            LoadLevel(levels[currentLevel]);
+        }
+    }
+
+    class MapNotFoundException : Exception
+    {
+        public MapNotFoundException() : base()
+        {
+        }
+
+        public MapNotFoundException(string message) : base(message)
+        {
         }
     }
 }

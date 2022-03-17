@@ -8,6 +8,8 @@ namespace Platformer
     abstract class Actor
     {
         protected int health;
+        public int Health { get { return health; } }
+
         protected double vel;
         protected Rect area;
 
@@ -33,6 +35,11 @@ namespace Platformer
         {
             area.X = x;
             area.Y = y;
+        }
+
+        public void TakenDamage()
+        {
+            health -= 10;
         }
     }
 }

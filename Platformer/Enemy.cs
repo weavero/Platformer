@@ -26,7 +26,7 @@ namespace Platformer
         public SmallEnemy(double x, double y) : base(x, y, Config.smallEnemyWidth, Config.smallEnemyHeight)
         {
             health = 80;
-            dx = 5;
+            dx = 1;
         }
     }
 
@@ -35,7 +35,7 @@ namespace Platformer
         public BigEnemy(double x, double y) : base(x, y, Config.bigEnemyWidth, Config.bigEnemyHeight)
         {
             health = 250;
-            dx = 2;
+            dx = 1;
         }
     }
 }

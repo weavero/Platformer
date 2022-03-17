@@ -45,7 +45,6 @@ namespace Platformer
             {
                 enemy.SetX(enemy.Dx);
             }
-            
         }
 
         int i = 0;
@@ -86,7 +85,6 @@ namespace Platformer
                     fallSpeed += 0.1;
                 }
                 model.player.SetY(fallSpeed);
-
             }
             else
             {
@@ -98,13 +96,12 @@ namespace Platformer
         {
             Move();
             Jump();
-            MoveAI();
             Falling();
+            MoveAI();
         }
 
         public void CollisionCheck(Actor actor, DrawingGroup dg)
         {
-            List<int> coinIndexes = new List<int>();
             bool collision = false;
             foreach (GeometryDrawing item in dg.Children)
             {
@@ -113,6 +110,17 @@ namespace Platformer
                     if (actor is Player)
                     {
                         collision = true;
+                        if (item.Brush == Config.bigEnemyBrush || item.Brush == Config.smallEnemyBrush)
+                        {
+                            if ((IsJumping || IsFalling) && actor.Area.Top < item.Bounds.Top)
+                            {
+                                
+                            }
+                            else
+                            {
+                                actor.TakenDamage();
+                            }
+                        }
                         if (item.Brush == Config.finishBrush)
                         {
                             isGameOver = true;
@@ -120,7 +128,7 @@ namespace Platformer
                         else if (item.Brush == Config.coinBrush)
                         {
                             model.CoinPickedup();
-                            coinIndexes.Add(dg.Children.IndexOf(item));
+                            model.SetPickupIndex(dg.Children.IndexOf(item));
                             collision = false;
                         }
                         else
@@ -129,18 +137,36 @@ namespace Platformer
                             {
                                 if (actor.Area.Left < item.Bounds.Right && actor.Area.Bottom > item.Bounds.Top)
                                 {
-                                    GoLeft = false;
+                                    if (IsJumping || IsFalling && actor.Area.Bottom > item.Bounds.Top)
+                                    {
+                                        
+                                    }
+                                    else
+                                    {
+                                        GoLeft = false;
+                                        actor.SetXY(item.Bounds.Right, actor.Area.Y);
+                                    }
                                 }
                             }
                             else if (GoRight)
                             {
                                 if (actor.Area.Right > item.Bounds.Left && actor.Area.Bottom > item.Bounds.Top)
                                 {
-                                    GoRight = false;
+                                    if (IsJumping || IsFalling)
+                                    {
+                                        
+                                    }
+                                    else
+                                    {
+                                        GoRight = false;
+                                        actor.SetXY(item.Bounds.Left - actor.Area.Width, actor.Area.Y);
+                                    }
                                 }
                             }
                             if (IsJumping)
                             {
+                                // ha az actor az item alatt van
+                                // > item.bounds.bottom-mal bele tud menni az itembe valamiért?
                                 if (actor.Area.Top > item.Bounds.Top)
                                 {
                                     actor.SetXY(actor.Area.X, item.Bounds.Bottom);
@@ -149,26 +175,33 @@ namespace Platformer
                                 }
                                 else
                                 {
-                                    actor.SetXY(actor.Area.X, item.Bounds.Top - actor.Area.Height);
+                                    //actor.SetXY(actor.Area.X, item.Bounds.Top - actor.Area.Height);
+                                    IsFalling = true;
                                     IsJumping = false;
                                 }
                             }
-                            else if (IsFalling && actor.Area.Right > item.Bounds.Left && actor.Area.Left < item.Bounds.Right && actor.Area.Bottom > item.Bounds.Bottom)
+                            else if (IsFalling && actor.Area.Right > item.Bounds.Left && actor.Area.Left < item.Bounds.Right)
                             {
-                                IsFalling = false;
-                                actor.SetXY(actor.Area.X, item.Bounds.Top - actor.Area.Height);
+                                if (actor.Area.Top < item.Bounds.Top)
+                                {
+                                    IsFalling = false;
+                                    actor.SetXY(actor.Area.X, item.Bounds.Top - actor.Area.Height);
+                                }
+                                else { IsFalling = false; }
                             }
                         }
                     }
-                    else if (actor is Enemy) 
+                    else if (actor is Enemy)
                     {
                         if (actor.Area.Left < item.Bounds.Right && actor.Area.Bottom > item.Bounds.Top)
                         {
                             (actor as Enemy).TurnAround();
+                            actor.SetX(-1);
                         }
-                        else if (actor.Area.Right> item.Bounds.Left && actor.Area.Bottom > item.Bounds.Top)
+                        else if (actor.Area.Right > item.Bounds.Left && actor.Area.Bottom > item.Bounds.Top)
                         {
                             (actor as Enemy).TurnAround();
+                            actor.SetX(1);
                         }
                     }
                 }
@@ -179,20 +212,19 @@ namespace Platformer
             }
         }
 
-        bool alive = true;
         bool isGameOver = false;
-        public bool GameOver()
+        public bool IsGameOver()
         {
-            if (alive && isGameOver)
+            if (model.player.Health > 0 && isGameOver)
             {
-                model.LoadLevel(@"../../../Levels/2.level");
+                model.NextLevel();
                 isGameOver = false;
                 return true;
             }
-            else if (!alive)
+            else if (model.player.Health < 0 || model.player.Area.Y > 1000)
             {
-                model.LoadLevel(@"../../../Levels/1.level");
-                return false;
+                model.ReloadLevel();
+                return true;
             }
 
             return false;

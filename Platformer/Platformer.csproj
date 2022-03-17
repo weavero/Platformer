@@ -7,7 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Views\" />
+    <None Remove="img\coin.png" />
+    <None Remove="img\corp2.png" />
+    <None Remove="img\enemy1.jpg" />
+    <None Remove="img\enemy2.jpg" />
+    <None Remove="img\ground.png" />
+    <None Remove="img\hitman.jpg" />
+    <None Remove="img\szily.jpg" />
+    <None Remove="Levels\1.level" />
+    <None Remove="Levels\2.level" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,6 +24,22 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.13" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="img\coin.png" />
+    <Resource Include="img\corp2.png" />
+    <Resource Include="img\enemy1.jpg" />
+    <Resource Include="img\enemy2.jpg" />
+    <Resource Include="img\ground.png" />
+    <Resource Include="img\hitman.jpg" />
+    <Resource Include="img\szily.jpg" />
+    <Content Include="Levels\1.level">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Levels\2.level">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

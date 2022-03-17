@@ -4,10 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Platformer"
+        xmlns:views="clr-namespace:Platformer.Views"
         mc:Ignorable="d"
         Title="Platformer"
         SizeToContent="WidthAndHeight">
+    <Window.Resources>
+        <views:GameOver x:Key="GameOver"></views:GameOver>
 
-    <local:Control Width="{x:Static local:Config.windowWidth}"
-                   Height="{x:Static local:Config.windowHeight}"/>
+    </Window.Resources>
+    <Frame x:Name="Main" Width="{x:Static local:Config.windowWidth}" Height="{x:Static local:Config.windowHeight}"/>
+
 </Window>

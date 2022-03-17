@@ -8,32 +8,33 @@ using System.Windows.Media;
 using System.Threading;
 using System.IO;
 using System.Windows.Media.Imaging;
+using Platformer.Views;
+using System.Windows.Controls;
 
 namespace Platformer
 {
-    class Control : FrameworkElement
+    class pControl : FrameworkElement
     {
         Model model;
         Logic logic;
         Renderer renderer;
         DispatcherTimer timer;
+        MainWindow window;
 
-        public Control()
+        public pControl()
         {
             Loaded += Control_Loaded;
         }
 
         void Control_Loaded(object sender, RoutedEventArgs e)
         {
-            model = new Model(@"../../../Levels/1.level");
+            model = new Model();
             logic = new Logic(model);
             renderer = new Renderer(model);
-
-            Window window = Window.GetWindow(this);
-            window.Background = Config.BackgroundImage;
-            ContentElement c = new ContentElement();
             
-
+            window = (MainWindow)Window.GetWindow(this);
+            window.Background = Config.BackgroundImage;
+            //window.Content = new UserControl1();
             if (window != null)
             {
                 window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
@@ -46,6 +47,8 @@ namespace Platformer
                 window.KeyDown += Win_KeyDown;
                 window.KeyUp += Win_KeyUp;
             }
+
+            InvalidateVisual();
         }
 
         void Timer_Tick(object sender, EventArgs e)
@@ -57,7 +60,7 @@ namespace Platformer
                 logic.CollisionCheck(enemy, renderer.DrawingGroup);
             }
 
-            if (logic.GameOver())
+            if (logic.IsGameOver())
             {
                 renderer = new Renderer(model);
             }
@@ -71,7 +74,7 @@ namespace Platformer
             else if (e.Key == Key.D || e.Key == Key.Right) { logic.GoRight = true; }
             else if (e.Key == Key.Space || e.Key == Key.Up)
             {
-                if (!logic.IsJumping && !logic.IsFalling)
+                if (!logic.IsJumping && !logic.IsFalling && timer.IsEnabled)
                 {
                     logic.IsJumping = true;
                 }
@@ -90,9 +93,11 @@ namespace Platformer
             if(timer.IsEnabled)
             {
                 timer.Stop();
+                window.ShowGameOver();
             }
             else
             {
+                window.ShowGame();
                 timer.Start();
             }
         }

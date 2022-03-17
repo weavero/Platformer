@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Platformer.Views;
 
 namespace Platformer
 {
@@ -20,9 +21,26 @@ namespace Platformer
     /// </summary>
     public partial class MainWindow : Window
     {
+        
         public MainWindow()
         {
             InitializeComponent();
+            Main.Content = new pControl();
+            //Main.Content = new UserControl1();
+        }
+
+        pControl pausedGame;
+        public void ShowGameOver()
+        {
+            if (!(Main.Content is UserControl1)) { pausedGame = (pControl)Main.Content; }
+            Main.Content = new ContentControl();
+            Main.Content = new UserControl1();
+        }
+
+        public void ShowGame()
+        {
+            Main.Content = new ContentControl();
+            Main.Content = pausedGame;
         }
     }
 }

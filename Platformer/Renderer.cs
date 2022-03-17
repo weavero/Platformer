@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Threading;
 using System.IO;
 using System.Windows.Media.Imaging;
+using Platformer.Views;
 
 namespace Platformer
 {
@@ -21,16 +22,18 @@ namespace Platformer
         public Renderer(Model model)
         {
             this.model = model;
-            enemyIndexes = new List<int>();
             DrawLevel();
             DrawHUD();
         }
 
         int playerIndex = -1;
+        bool levelUpdated = true;
         public void Draw(DrawingContext ctx)
         {
-            if (playerIndex == -1)
+            if (levelUpdated)
             {
+                levelUpdated = false;
+                enemyIndexes = new List<int>();
                 foreach (GeometryDrawing item in PlayAreaDrawing.Children)
                 {
                     if (item.Brush == Config.playerBrush)
@@ -48,10 +51,14 @@ namespace Platformer
             {
                 UpdateActors();
             }
+            UpdateLevel();
             UpdateHUD();
 
             ctx.DrawDrawing(PlayAreaDrawing);
             ctx.DrawDrawing(HUDDrawing);
+
+
+
         }
 
         private void DrawLevel()
@@ -114,16 +121,26 @@ namespace Platformer
             FormattedText formattedText2 = new FormattedText(model.player.Area.Y.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
             GeometryDrawing text2 = new GeometryDrawing(null, new Pen(Brushes.Black, 1), formattedText2.BuildGeometry(new Point(450, 550)));
 
+            FormattedText formattedText3 = new FormattedText(model.player.Health.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
+            GeometryDrawing text3 = new GeometryDrawing(null, new Pen(Brushes.White, 1), formattedText3.BuildGeometry(new Point(50, Config.windowHeight - 25)));
+
             HUDDrawing.Children.Add(HUDBackground);
             HUDDrawing.Children.Add(coinCounter);
 
             HUDDrawing.Children.Add(text);
             HUDDrawing.Children.Add(text2);
+
+            HUDDrawing.Children.Add(text3);
         }
 
         private void UpdateLevel()
         {
-            
+            if (model.PickupableIndex != -1)
+            {
+                PlayAreaDrawing.Children.RemoveAt(model.PickupableIndex);
+                model.SetPickupIndex(-1);
+                levelUpdated = true;
+            }
         }
 
         private void UpdateActors()
@@ -154,6 +171,9 @@ namespace Platformer
 
             FormattedText formattedText2 = new FormattedText(model.player.Area.Y.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
             HUDDrawing.Children[3] = new GeometryDrawing(null, new Pen(Brushes.Black, 1), formattedText2.BuildGeometry(new Point(450, 550)));
+
+            FormattedText formattedText3 = new FormattedText(model.player.Health.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
+            HUDDrawing.Children[4] = new GeometryDrawing(null, new Pen(Brushes.White, 1), formattedText3.BuildGeometry(new Point(50, Config.windowHeight - 25)));
         }
     }
 }

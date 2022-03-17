@@ -15,22 +15,21 @@ namespace Platformer
         public static Brush groundBrush = Brushes.Green;
         public static Brush wallBrush = Brushes.Orange;
         public static Brush enemyBrush = Brushes.Red;
-        public static Brush coinBrush = Brushes.Gold;
         public static Brush finishBrush = Brushes.Purple;
         public static Brush backgroundBrush = Brushes.Cyan;
 
-        //public static ImageBrush CoinImage;
         public static ImageBrush BackgroundImage = new ImageBrush(new BitmapImage(new Uri(@"../../../img/szily.jpg", UriKind.RelativeOrAbsolute)));
         public static ImageBrush playerBrush = new ImageBrush(new BitmapImage(new Uri(@"../../../img/corp2.png", UriKind.RelativeOrAbsolute)));
         public static ImageBrush smallEnemyBrush = new ImageBrush(new BitmapImage(new Uri(@"../../../img/enemy1.jpg", UriKind.RelativeOrAbsolute)));
         public static ImageBrush bigEnemyBrush = new ImageBrush(new BitmapImage(new Uri(@"../../../img/enemy2.jpg", UriKind.RelativeOrAbsolute)));
+        public static ImageBrush coinBrush = new ImageBrush(new BitmapImage(new Uri(@"../../../img/coin.png", UriKind.RelativeOrAbsolute)));
 
         public static double windowWidth = 1280;
         public static double windowHeight = 720;
         public static int unitWidth = 70;
         public static int unitHeight = 30;
-        public static int playerWidth = 50;
-        public static int playerHeight = 100;
+        public static int playerWidth = 30;
+        public static int playerHeight = 50;
         public static int smallEnemyWidth = 30;
         public static int smallEnemyHeight = 40;
         public static int bigEnemyWidth = 60;
