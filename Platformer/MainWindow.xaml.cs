@@ -21,26 +21,61 @@ namespace Platformer
     /// </summary>
     public partial class MainWindow : Window
     {
-        
+        //.Content NE!
         public MainWindow()
         {
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            Uri iconUri = new Uri("../../../img/hitman.jpg", UriKind.RelativeOrAbsolute);
+            Icon = BitmapFrame.Create(iconUri);
             InitializeComponent();
-            Main.Content = new pControl();
-            //Main.Content = new UserControl1();
         }
 
-        pControl pausedGame;
+        public void ShowPause()
+        {
+            PauseGrid.Visibility = Visibility.Visible;
+        }
+
+        public void NewGame()
+        {
+            MainMenuGrid.Visibility = Visibility.Hidden;
+            GameGrid.Visibility = Visibility.Visible;
+            Game.Visibility = Visibility.Visible;
+            Game.TimerStart();
+        }
+
+        internal void ExitToMenu()
+        {
+            PauseGrid.Visibility = Visibility.Hidden;
+            GameOverGrid.Visibility = Visibility.Hidden;
+            MainMenuGrid.Visibility = Visibility.Visible;
+        }
+
+        public void ResumeGame()
+        {
+            PauseGrid.Visibility = Visibility.Hidden;
+            Game.TimerStart();
+        }
+
+        public void ShowMenu()
+        {
+            LeaderboardGrid.Visibility = Visibility.Hidden;
+            MainMenuGrid.Visibility = Visibility.Visible;
+        }
+
         public void ShowGameOver()
         {
-            if (!(Main.Content is UserControl1)) { pausedGame = (pControl)Main.Content; }
-            Main.Content = new ContentControl();
-            Main.Content = new UserControl1();
+            GameOverGrid.Visibility = Visibility.Visible;
         }
 
-        public void ShowGame()
+        public void ShowLeaderboard()
         {
-            Main.Content = new ContentControl();
-            Main.Content = pausedGame;
+            MainMenuGrid.Visibility = Visibility.Hidden;
+            LeaderboardGrid.Visibility = Visibility.Visible;
+        }
+
+        public void Exit()
+        {
+            this.Close();
         }
     }
 }

@@ -8,10 +8,25 @@
         mc:Ignorable="d"
         Title="Platformer"
         SizeToContent="WidthAndHeight">
-    <Window.Resources>
-        <views:GameOver x:Key="GameOver"></views:GameOver>
-
-    </Window.Resources>
-    <Frame x:Name="Main" Width="{x:Static local:Config.windowWidth}" Height="{x:Static local:Config.windowHeight}"/>
-
+    <Grid x:Name="grid" Width="{x:Static local:Config.windowWidth}" Height="{x:Static local:Config.windowHeight}">
+        
+        <Grid x:Name="GameGrid" Visibility="Hidden">
+            <Canvas x:Name="canvas">
+                <local:pControl x:Name="Game" Visibility="Hidden"/>
+            </Canvas>
+        </Grid>
+        <Grid x:Name="PauseGrid" Visibility="Hidden">
+            <views:PauseMenu/>
+        </Grid>
+        <Grid x:Name="GameOverGrid" Visibility="Hidden">
+            <views:GameOver/>
+        </Grid>
+        <Grid x:Name="LeaderboardGrid" Visibility="Hidden">
+            <views:Leaderboard/>
+        </Grid>
+        <Grid x:Name="MainMenuGrid" Visibility="Visible">
+            <views:MainMenu/>
+        </Grid>
+    </Grid>
+    
 </Window>

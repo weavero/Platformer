@@ -10,27 +10,30 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Platformer;
 
 namespace Platformer.Views
 {
     /// <summary>
-    /// Interaction logic for UserControl1.xaml
+    /// Interaction logic for Leaderboard.xaml
     /// </summary>
-    public partial class UserControl1 : UserControl
+    public partial class Leaderboard : UserControl
     {
-        public UserControl1()
+        MainWindow window;
+        public Leaderboard()
         {
             InitializeComponent();
+            Loaded += Leaderboard_Loaded;
         }
 
-        public void BeVisible()
+        private void Leaderboard_Loaded(object sender, RoutedEventArgs e)
         {
-            Visibility = Visibility.Visible;
+            window = (MainWindow)Window.GetWindow(this);
         }
 
-        public void BeInvisible()
+        private void ShowMainMenu(object sender, RoutedEventArgs e)
         {
-            Visibility = Visibility.Hidden;
+            window.ShowMenu();
         }
     }
 }

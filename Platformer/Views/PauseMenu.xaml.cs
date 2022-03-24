@@ -10,32 +10,33 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Platformer;
 
 namespace Platformer.Views
 {
     /// <summary>
-    /// Interaction logic for GameOver.xaml
+    /// Interaction logic for PauseMenu.xaml
     /// </summary>
-    public partial class GameOver : UserControl
+    public partial class PauseMenu : UserControl
     {
         MainWindow window;
-        public GameOver()
+        public PauseMenu()
         {
             InitializeComponent();
-            Loaded += GameOver_Loaded;
+            Loaded += PauseMenu_Loaded;
         }
 
-        private void GameOver_Loaded(object sender, RoutedEventArgs e)
+        private void PauseMenu_Loaded(object sender, RoutedEventArgs e)
         {
             window = (MainWindow)Window.GetWindow(this);
         }
 
-        private void RestartGame(object sender, RoutedEventArgs e)
+        private void ResumeGame(object sender, RoutedEventArgs e)
         {
-            window.NewGame();
+            window.ResumeGame();
         }
 
-        private void ToMainMenu(object sender, RoutedEventArgs e)
+        private void ExitToMenu(object sender, RoutedEventArgs e)
         {
             window.ExitToMenu();
         }

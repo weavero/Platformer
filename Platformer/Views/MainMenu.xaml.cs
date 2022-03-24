@@ -10,34 +10,42 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Platformer;
 
 namespace Platformer.Views
 {
     /// <summary>
-    /// Interaction logic for GameOver.xaml
+    /// Interaction logic for MainMenu.xaml
     /// </summary>
-    public partial class GameOver : UserControl
+    public partial class MainMenu : UserControl
     {
         MainWindow window;
-        public GameOver()
+        public MainMenu()
         {
             InitializeComponent();
-            Loaded += GameOver_Loaded;
+            Loaded += MainMenu_Loaded;
+            
         }
 
-        private void GameOver_Loaded(object sender, RoutedEventArgs e)
+        private void MainMenu_Loaded(object sender, RoutedEventArgs e)
         {
             window = (MainWindow)Window.GetWindow(this);
+            
         }
 
-        private void RestartGame(object sender, RoutedEventArgs e)
+        private void NewGame(object sender, RoutedEventArgs e)
         {
             window.NewGame();
         }
 
-        private void ToMainMenu(object sender, RoutedEventArgs e)
+        private void Leaderboard(object sender, RoutedEventArgs e)
         {
-            window.ExitToMenu();
+            window.ShowLeaderboard();
+        }
+
+        private void Exit(object sender, RoutedEventArgs e)
+        {
+            window.Exit();
         }
     }
 }
