@@ -7,6 +7,7 @@ using System.Windows.Threading;
 using System.IO;
 using System.Windows.Media.Imaging;
 using Platformer.Views;
+using System.Windows.Controls;
 
 namespace Platformer
 {
@@ -30,19 +31,23 @@ namespace Platformer
         bool levelUpdated = true;
         public void Draw(DrawingContext ctx)
         {
+            UpdateLevel();
             if (levelUpdated)
             {
                 levelUpdated = false;
                 enemyIndexes = new List<int>();
                 foreach (GeometryDrawing item in PlayAreaDrawing.Children)
                 {
-                    if (item.Brush == Config.playerBrush)
+                    if (item.Brush is ImageBrush)
                     {
-                        playerIndex = PlayAreaDrawing.Children.IndexOf(item);
-                    }
-                    else if (item.Brush == Config.smallEnemyBrush || item.Brush == Config.bigEnemyBrush)
-                    {
-                        enemyIndexes.Add(PlayAreaDrawing.Children.IndexOf(item));
+                        if (item.Bounds.Height == Config.playerHeight)
+                        {
+                            playerIndex = PlayAreaDrawing.Children.IndexOf(item);
+                        }
+                        else if (item.Brush == Config.smallEnemyBrush || item.Brush == Config.bigEnemyBrush)
+                        {
+                            enemyIndexes.Add(PlayAreaDrawing.Children.IndexOf(item));
+                        }
                     }
                 }
                 UpdateActors();
@@ -51,14 +56,14 @@ namespace Platformer
             {
                 UpdateActors();
             }
-            UpdateLevel();
+            
             UpdateHUD();
 
+
+            
+            
             ctx.DrawDrawing(PlayAreaDrawing);
             ctx.DrawDrawing(HUDDrawing);
-
-
-
         }
 
         private void DrawLevel()
@@ -122,7 +127,10 @@ namespace Platformer
             GeometryDrawing text2 = new GeometryDrawing(null, new Pen(Brushes.Black, 1), formattedText2.BuildGeometry(new Point(450, 550)));
 
             FormattedText formattedText3 = new FormattedText(model.player.Health.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
-            GeometryDrawing text3 = new GeometryDrawing(null, new Pen(Brushes.White, 1), formattedText3.BuildGeometry(new Point(50, Config.windowHeight - 25)));
+            GeometryDrawing Health = new GeometryDrawing(null, new Pen(Brushes.White, 1), formattedText3.BuildGeometry(new Point(50, Config.windowHeight - 25)));
+
+            FormattedText formattedText4 = new FormattedText(model.GetElapsedTime().TotalSeconds.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
+            GeometryDrawing TimeElapsed = new GeometryDrawing(null, new Pen(Brushes.White, 1), formattedText4.BuildGeometry(new Point(150, Config.windowHeight - 25)));
 
             HUDDrawing.Children.Add(HUDBackground);
             HUDDrawing.Children.Add(coinCounter);
@@ -130,7 +138,9 @@ namespace Platformer
             HUDDrawing.Children.Add(text);
             HUDDrawing.Children.Add(text2);
 
-            HUDDrawing.Children.Add(text3);
+            HUDDrawing.Children.Add(Health);
+
+            HUDDrawing.Children.Add(TimeElapsed);
         }
 
         private void UpdateLevel()
@@ -140,6 +150,17 @@ namespace Platformer
                 PlayAreaDrawing.Children.RemoveAt(model.PickupableIndex);
                 model.SetPickupIndex(-1);
                 levelUpdated = true;
+            }
+
+            int i = 0;
+            while (i < PlayAreaDrawing.Children.Count && PlayAreaDrawing.Children[i].Bounds.Y < 2000)
+            {
+                i++;
+            }
+
+            if (i < PlayAreaDrawing.Children.Count)
+            {
+                PlayAreaDrawing.Children.RemoveAt(i);
             }
         }
 
@@ -174,6 +195,9 @@ namespace Platformer
 
             FormattedText formattedText3 = new FormattedText(model.player.Health.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
             HUDDrawing.Children[4] = new GeometryDrawing(null, new Pen(Brushes.White, 1), formattedText3.BuildGeometry(new Point(50, Config.windowHeight - 25)));
+
+            FormattedText formattedText4 = new FormattedText(model.GetElapsedTime().TotalSeconds.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
+            HUDDrawing.Children[5] = new GeometryDrawing(null, new Pen(Brushes.White, 1), formattedText4.BuildGeometry(new Point(150, Config.windowHeight - 25)));
         }
     }
 }
