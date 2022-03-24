@@ -1,0 +1,7 @@
+c - Érme
+E - Nagy ellenség
+e - Kis ellenség
+F - Cél
+g - Talaj
+P - Játékos
+w - Fal
