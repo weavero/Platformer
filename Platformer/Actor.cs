@@ -37,9 +37,14 @@ namespace Platformer
             area.Y = y;
         }
 
-        public void TakenDamage()
+        public void MinusHealth()
         {
-            health -= 10;
+            health--;
+        }
+
+        public void PlusHealth()
+        {
+            health++;
         }
     }
 }
