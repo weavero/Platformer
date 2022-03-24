@@ -6,19 +6,16 @@ using System.Windows.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Platformer
 {
     class Logic
     {
-       
-        public enum Direction { Left, Right }
-
         public bool GoLeft { get; set; }
         public bool GoRight { get; set; }
         public bool IsJumping { get; set; }
         public bool IsFalling { get; set; }
-
 
         Model model;
 
@@ -98,27 +95,37 @@ namespace Platformer
             Jump();
             Falling();
             MoveAI();
+            Animation();
         }
 
+        Point oldPlayerBottomLeft, oldPlayerTopRight;
+        Rect oldPlayerPos;
+        List<Enemy> oldEnemies;
         public void CollisionCheck(Actor actor, DrawingGroup dg)
         {
             bool collision = false;
             foreach (GeometryDrawing item in dg.Children)
             {
-                if (actor.Area.IntersectsWith(item.Bounds) && item.Bounds.Height != actor.Area.Height)
+                if (actor.Area.IntersectsWith(item.Bounds) && actor.Area.Height != item.Bounds.Height)
                 {
                     if (actor is Player)
                     {
                         collision = true;
                         if (item.Brush == Config.bigEnemyBrush || item.Brush == Config.smallEnemyBrush)
                         {
-                            if ((IsJumping || IsFalling) && actor.Area.Top < item.Bounds.Top)
+                            if (oldPlayerBottomLeft.Y < item.Bounds.Top)
                             {
-                                
+                                foreach (Enemy enemy in model.Enemies)
+                                {
+                                    if (enemy.Area.X - enemy.Dx == item.Bounds.X && enemy.Area.Y == item.Bounds.Y)
+                                    {
+                                        enemy.SetXY(-1000, -1000);
+                                    }
+                                }
                             }
                             else
                             {
-                                actor.TakenDamage();
+                                actor.MinusHealth();
                             }
                         }
                         if (item.Brush == Config.finishBrush)
@@ -137,57 +144,36 @@ namespace Platformer
                             {
                                 if (actor.Area.Left < item.Bounds.Right && actor.Area.Bottom > item.Bounds.Top)
                                 {
-                                    if (IsJumping || IsFalling && actor.Area.Bottom > item.Bounds.Top)
-                                    {
-                                        
-                                    }
-                                    else
-                                    {
-                                        GoLeft = false;
-                                        actor.SetXY(item.Bounds.Right, actor.Area.Y);
-                                    }
+                                    GoLeft = false;
+                                    actor.SetXY(item.Bounds.Right, actor.Area.Y);
                                 }
                             }
                             else if (GoRight)
                             {
                                 if (actor.Area.Right > item.Bounds.Left && actor.Area.Bottom > item.Bounds.Top)
                                 {
-                                    if (IsJumping || IsFalling)
-                                    {
-                                        
-                                    }
-                                    else
-                                    {
-                                        GoRight = false;
-                                        actor.SetXY(item.Bounds.Left - actor.Area.Width, actor.Area.Y);
-                                    }
+                                    GoRight = false;
+                                    actor.SetXY(item.Bounds.Left - actor.Area.Width, actor.Area.Y);
                                 }
                             }
                             if (IsJumping)
                             {
-                                // ha az actor az item alatt van
-                                // > item.bounds.bottom-mal bele tud menni az itembe valamiért?
                                 if (actor.Area.Top > item.Bounds.Top)
                                 {
                                     actor.SetXY(actor.Area.X, item.Bounds.Bottom);
                                     IsFalling = true;
                                     IsJumping = false;
                                 }
-                                else
+                                else if (oldPlayerBottomLeft.Y > item.Bounds.Y)
                                 {
-                                    //actor.SetXY(actor.Area.X, item.Bounds.Top - actor.Area.Height);
-                                    IsFalling = true;
+                                    actor.SetXY(actor.Area.X, item.Bounds.Top - actor.Area.Height);
                                     IsJumping = false;
                                 }
                             }
-                            else if (IsFalling && actor.Area.Right > item.Bounds.Left && actor.Area.Left < item.Bounds.Right)
+                            else if (IsFalling && actor.Area.Right > item.Bounds.Left && actor.Area.Left < item.Bounds.Right && oldPlayerBottomLeft.Y < item.Bounds.Top)
                             {
-                                if (actor.Area.Top < item.Bounds.Top)
-                                {
-                                    IsFalling = false;
-                                    actor.SetXY(actor.Area.X, item.Bounds.Top - actor.Area.Height);
-                                }
-                                else { IsFalling = false; }
+                                IsFalling = false;
+                                actor.SetXY(actor.Area.X, item.Bounds.Top - actor.Area.Height);
                             }
                         }
                     }
@@ -206,13 +192,25 @@ namespace Platformer
                     }
                 }
             }
-            if (!collision && !IsJumping && actor is Player)
+            if(actor is Player)
             {
-                IsFalling = true;
+                oldPlayerBottomLeft = new Point(actor.Area.Left, actor.Area.Bottom);
+                oldPlayerTopRight = new Point(actor.Area.Right, actor.Area.Top);
+
+                if (!collision && !IsJumping)
+                {
+                    IsFalling = true;
+                }
+            }
+            else if (actor is Enemy)
+            {
+                
             }
         }
 
         bool isGameOver = false;
+        int playerLives = 3;
+        public int PlayerLives { get { return playerLives; } }
         public bool IsGameOver()
         {
             if (model.player.Health > 0 && isGameOver)
@@ -223,11 +221,60 @@ namespace Platformer
             }
             else if (model.player.Health < 0 || model.player.Area.Y > 1000)
             {
+                oldPlayerBottomLeft = new Point();
+                oldPlayerTopRight = new Point();
+                playerLives--;
                 model.ReloadLevel();
                 return true;
             }
 
             return false;
+        }
+
+        private void Animation()
+        {
+            PlayerAnimation();
+            EnemyAnimation();
+        }
+
+        int playerAnimationTick = 1;
+        private void PlayerAnimation()
+        {
+            if (GoRight)
+            {
+                if (playerAnimationTick % 8 == 0)
+                {
+                    Config.playerBrush = new ImageBrush(new BitmapImage(new Uri(@"../../../img/player1.png", UriKind.RelativeOrAbsolute)));
+                }
+                else if(playerAnimationTick % 8 == 4)
+                {
+                    Config.playerBrush = new ImageBrush(new BitmapImage(new Uri(@"../../../img/player2.png", UriKind.RelativeOrAbsolute)));
+                }
+                playerAnimationTick++;
+            }
+            else if (GoLeft)
+            {
+                if (playerAnimationTick % 8 == 0)
+                {
+                    Config.playerBrush = new ImageBrush(new BitmapImage(new Uri(@"../../../img/rev_player1.png", UriKind.RelativeOrAbsolute)));
+                }
+                else if(playerAnimationTick % 8 == 4)
+                {
+                    Config.playerBrush = new ImageBrush(new BitmapImage(new Uri(@"../../../img/rev_player2.png", UriKind.RelativeOrAbsolute)));
+                }
+                playerAnimationTick++;
+            }
+            else
+            {
+                playerAnimationTick = 1;
+                Config.playerBrush = new ImageBrush(new BitmapImage(new Uri(@"../../../img/corp2.png", UriKind.RelativeOrAbsolute)));
+            }
+        }
+
+        int enemyAnimationTick = 1;
+        private void EnemyAnimation()
+        {
+
         }
     }
 }
