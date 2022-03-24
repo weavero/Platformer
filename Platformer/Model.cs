@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Diagnostics;
 
 namespace Platformer
 {
     class Model
     {
+        Stopwatch timer;
+
         public Player player;
 
         private List<Enemy> enemies;
@@ -27,6 +30,8 @@ namespace Platformer
 
         public Model()
         {
+            coin = 0;
+            timer = new Stopwatch();
             RegisterLevels();
             LoadLevel(levels[currentLevel]);
         }
@@ -76,7 +81,7 @@ namespace Platformer
             {
                 throw new MapNotFoundException(e.Message);
             }
-            coin = 0;
+            
             pickupableIndex = -1;
             enemies = new List<Enemy>();
             LoadActors();
@@ -125,6 +130,27 @@ namespace Platformer
         public void ReloadLevel()
         {
             LoadLevel(levels[currentLevel]);
+        }
+
+        public TimeSpan GetElapsedTime()
+        {
+            return timer.Elapsed;
+        }
+
+        public void StartTimer()
+        {
+            if (!timer.IsRunning)
+            {
+                timer.Start();
+            }
+        }
+
+        public void StopTimer()
+        {
+            if (timer.IsRunning)
+            {
+                timer.Stop();
+            }
         }
     }
 
