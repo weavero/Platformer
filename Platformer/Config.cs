@@ -24,6 +24,13 @@ namespace Platformer
         public static ImageBrush bigEnemyBrush = new ImageBrush(new BitmapImage(new Uri(@"../../../img/enemy2.jpg", UriKind.RelativeOrAbsolute)));
         public static ImageBrush coinBrush = new ImageBrush(new BitmapImage(new Uri(@"../../../img/coin.png", UriKind.RelativeOrAbsolute)));
 
+        public static ImageBrush playerAnimation1 = new ImageBrush(new BitmapImage(new Uri(@"../../../img/player1.png", UriKind.RelativeOrAbsolute)));
+        public static ImageBrush playerAnimation2 = new ImageBrush(new BitmapImage(new Uri(@"../../../img/player2.png", UriKind.RelativeOrAbsolute)));
+        public static ImageBrush playerAnimationRev1 = new ImageBrush(new BitmapImage(new Uri(@"../../../img/rev_player1.png", UriKind.RelativeOrAbsolute)));
+        public static ImageBrush playerAnimationRev2 = new ImageBrush(new BitmapImage(new Uri(@"../../../img/rev_player2.png", UriKind.RelativeOrAbsolute)));
+
+        public static List<ImageBrush> playerBrushes = new List<ImageBrush> {playerBrush, playerAnimation1, playerAnimation2, playerAnimationRev1, playerAnimationRev2 };
+
         public static double windowWidth = 1280;
         public static double windowHeight = 720;
         public static int unitWidth = 70;
