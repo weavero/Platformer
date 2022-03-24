@@ -13,7 +13,7 @@ using System.Windows.Controls;
 
 namespace Platformer
 {
-    class pControl : FrameworkElement
+    class pControl : Control
     {
         Model model;
         Logic logic;
@@ -24,9 +24,20 @@ namespace Platformer
         public pControl()
         {
             Loaded += Control_Loaded;
+            IsVisibleChanged += PControl_IsVisibleChanged;
         }
 
-        void Control_Loaded(object sender, RoutedEventArgs e)
+        private void PControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (IsVisible)
+            {
+                //model = new Model();
+                //logic = new Logic(model);
+                //renderer = new Renderer(model);
+            }
+        }
+
+        public void Control_Loaded(object sender, RoutedEventArgs e)
         {
             model = new Model();
             logic = new Logic(model);
@@ -34,25 +45,26 @@ namespace Platformer
             
             window = (MainWindow)Window.GetWindow(this);
             window.Background = Config.BackgroundImage;
-            //window.Content = new UserControl1();
+            
             if (window != null)
             {
-                window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                Uri iconUri = new Uri("../../../img/hitman.jpg", UriKind.RelativeOrAbsolute);
-                window.Icon = BitmapFrame.Create(iconUri);
-                timer = new DispatcherTimer();
-                timer.Interval = TimeSpan.FromMilliseconds(15);
-                timer.Tick += Timer_Tick;
-                timer.Start();
-                window.KeyDown += Win_KeyDown;
-                window.KeyUp += Win_KeyUp;
+                if (timer == null)
+                {
+                    timer = new DispatcherTimer();
+                    timer.Interval = TimeSpan.FromMilliseconds(15);
+                    timer.Tick += Timer_Tick;
+                }
+                if (IsLoaded)
+                {
+                    window.KeyDown += Win_KeyDown;
+                    window.KeyUp += Win_KeyUp;
+                }
             }
-
-            InvalidateVisual();
         }
 
-        void Timer_Tick(object sender, EventArgs e)
+        private void Timer_Tick(object sender, EventArgs e)
         {
+            
             logic.GameTick();
             logic.CollisionCheck(model.player, renderer.DrawingGroup);
             foreach (Enemy enemy in model.Enemies)
@@ -64,22 +76,33 @@ namespace Platformer
             {
                 renderer = new Renderer(model);
             }
+            else if (logic.PlayerLives < 1)
+            {
+                timer.Stop();
+                window.ShowGameOver();
+            }
+
+            Canvas.SetLeft(this, -model.player.Area.Left + 150);
+            Canvas.SetTop(this, -model.player.Area.Top + 150);
 
             InvalidateVisual();
         }
 
-        void Win_KeyDown(object sender, KeyEventArgs e)
+        private void Win_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.A || e.Key == Key.Left) { logic.GoLeft = true; }
-            else if (e.Key == Key.D || e.Key == Key.Right) { logic.GoRight = true; }
-            else if (e.Key == Key.Space || e.Key == Key.Up)
+            if (IsVisible)
             {
-                if (!logic.IsJumping && !logic.IsFalling && timer.IsEnabled)
+                if (e.Key == Key.A || e.Key == Key.Left) { logic.GoLeft = true; }
+                else if (e.Key == Key.D || e.Key == Key.Right) { logic.GoRight = true; }
+                else if (e.Key == Key.Space || e.Key == Key.Up)
                 {
-                    logic.IsJumping = true;
+                    if (!logic.IsJumping && !logic.IsFalling)
+                    {
+                        logic.IsJumping = true;
+                    }
                 }
+                else if (e.Key == Key.Escape) { TimerStartStop(); }
             }
-            else if (e.Key == Key.Escape) { TimerStartStop(); }
         }
 
         private void Win_KeyUp(object sender, KeyEventArgs e)
@@ -90,15 +113,26 @@ namespace Platformer
 
         private void TimerStartStop()
         {
-            if(timer.IsEnabled)
+            if (timer.IsEnabled)
             {
                 timer.Stop();
-                window.ShowGameOver();
+                model.StopTimer();
+                window.ShowPause();
             }
             else
             {
-                window.ShowGame();
+                window.ResumeGame();
                 timer.Start();
+                model.StartTimer();
+            }
+        }
+
+        public void TimerStart()
+        {
+            if (!timer.IsEnabled)
+            {
+                timer.Start();
+                model.StartTimer();
             }
         }
 
