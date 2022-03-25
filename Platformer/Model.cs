@@ -8,7 +8,7 @@ namespace Platformer
 {
     class Model
     {
-        Stopwatch timer;
+        private Stopwatch timer;
 
         public Player player;
 
@@ -123,8 +123,15 @@ namespace Platformer
 
         public void NextLevel()
         {
-            currentLevel++;
-            LoadLevel(levels[currentLevel]);
+            if (currentLevel < levels.Count)
+            {
+                currentLevel++;
+                LoadLevel(levels[currentLevel]);
+            }
+            else
+            {
+                GameFinished(); //todo
+            }
         }
 
         public void ReloadLevel()
@@ -151,6 +158,11 @@ namespace Platformer
             {
                 timer.Stop();
             }
+        }
+
+        private void GameFinished()
+        {
+
         }
     }
 

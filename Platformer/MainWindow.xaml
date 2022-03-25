@@ -9,11 +9,9 @@
         Title="Platformer"
         SizeToContent="WidthAndHeight">
     <Grid x:Name="grid" Width="{x:Static local:Config.windowWidth}" Height="{x:Static local:Config.windowHeight}">
-        
+
         <Grid x:Name="GameGrid" Visibility="Hidden">
-            <Canvas x:Name="canvas">
-                <local:pControl x:Name="Game" Visibility="Hidden"/>
-            </Canvas>
+            <local:GameControl x:Name="Game" Visibility="Hidden"/>
         </Grid>
         <Grid x:Name="PauseGrid" Visibility="Hidden">
             <views:PauseMenu/>

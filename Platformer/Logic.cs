@@ -142,7 +142,7 @@ namespace Platformer
                         {
                             if (GoLeft)
                             {
-                                if (actor.Area.Left < item.Bounds.Right && actor.Area.Bottom > item.Bounds.Top)
+                                if (actor.Area.Left < item.Bounds.Right && oldPlayerBottomLeft.Y > item.Bounds.Top)
                                 {
                                     GoLeft = false;
                                     actor.SetXY(item.Bounds.Right, actor.Area.Y);
@@ -179,15 +179,18 @@ namespace Platformer
                     }
                     else if (actor is Enemy)
                     {
-                        if (actor.Area.Left < item.Bounds.Right && actor.Area.Bottom > item.Bounds.Top)
+                        if (item.Bounds.Height != Config.playerHeight)
                         {
-                            (actor as Enemy).TurnAround();
-                            actor.SetX(-1);
-                        }
-                        else if (actor.Area.Right > item.Bounds.Left && actor.Area.Bottom > item.Bounds.Top)
-                        {
-                            (actor as Enemy).TurnAround();
-                            actor.SetX(1);
+                            if (actor.Area.Left < item.Bounds.Right && actor.Area.Bottom > item.Bounds.Top)
+                            {
+                                (actor as Enemy).TurnAround();
+                                actor.SetX(-1);
+                            }
+                            else if (actor.Area.Right > item.Bounds.Left && actor.Area.Bottom > item.Bounds.Top)
+                            {
+                                (actor as Enemy).TurnAround();
+                                actor.SetX(1);
+                            }
                         }
                     }
                 }
@@ -221,10 +224,12 @@ namespace Platformer
             }
             else if (model.player.Health < 0 || model.player.Area.Y > 1000)
             {
+                // Respawn után folyamatosan esne
                 oldPlayerBottomLeft = new Point();
                 oldPlayerTopRight = new Point();
-                playerLives--;
+
                 model.ReloadLevel();
+                playerLives--;
                 return true;
             }
 

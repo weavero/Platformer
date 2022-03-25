@@ -13,7 +13,7 @@ using System.Windows.Controls;
 
 namespace Platformer
 {
-    class pControl : Control
+    class GameControl : Control
     {
         Model model;
         Logic logic;
@@ -21,7 +21,7 @@ namespace Platformer
         DispatcherTimer timer;
         MainWindow window;
 
-        public pControl()
+        public GameControl()
         {
             Loaded += Control_Loaded;
             IsVisibleChanged += PControl_IsVisibleChanged;
@@ -64,7 +64,6 @@ namespace Platformer
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            
             logic.GameTick();
             logic.CollisionCheck(model.player, renderer.DrawingGroup);
             foreach (Enemy enemy in model.Enemies)
