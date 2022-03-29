@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.IO;
 
 namespace Platformer
 {
@@ -18,6 +19,8 @@ namespace Platformer
         public bool IsFalling { get; set; }
 
         Model model;
+
+        public EventHandler OnGameComplete;
 
         public Logic(Model model)
         {
@@ -98,11 +101,14 @@ namespace Platformer
             Animation();
         }
 
-        Point oldPlayerBottomLeft, oldPlayerTopRight;
         Rect oldPlayerPos;
         List<Enemy> oldEnemies;
+        DrawingGroup drawing;
         public void CollisionCheck(Actor actor, DrawingGroup dg)
         {
+            drawing = dg;
+            int dgRemovableIndex = -1;
+            int enemyRemovableIndex = -1;
             bool collision = false;
             foreach (GeometryDrawing item in dg.Children)
             {
@@ -113,24 +119,34 @@ namespace Platformer
                         collision = true;
                         if (item.Brush == Config.bigEnemyBrush || item.Brush == Config.smallEnemyBrush)
                         {
-                            if (oldPlayerBottomLeft.Y < item.Bounds.Top)
+                            if (oldPlayerPos.Bottom < item.Bounds.Top)
                             {
                                 foreach (Enemy enemy in model.Enemies)
                                 {
                                     if (enemy.Area.X - enemy.Dx == item.Bounds.X && enemy.Area.Y == item.Bounds.Y)
                                     {
                                         enemy.SetXY(-1000, -1000);
+                                        dgRemovableIndex = dg.Children.IndexOf(item);
+                                        enemyRemovableIndex = model.Enemies.IndexOf(enemy);
                                     }
                                 }
                             }
                             else
                             {
-                                actor.MinusHealth();
+                                if (actor.Lives > 0)
+                                {
+                                    actor.MinusHealth();
+                                }
+                                else
+                                {
+                                    LevelFail();
+                                }
                             }
                         }
                         if (item.Brush == Config.finishBrush)
                         {
-                            isGameOver = true;
+                            isLevelComplete = true;
+                            LevelComplete();
                         }
                         else if (item.Brush == Config.coinBrush)
                         {
@@ -138,11 +154,15 @@ namespace Platformer
                             model.SetPickupIndex(dg.Children.IndexOf(item));
                             collision = false;
                         }
+                        else if (item.Brush == Config.lifePickup)
+                        {
+                            retries++;
+                        }
                         else
                         {
-                            if (GoLeft)
+                            if (GoLeft && !IsJumping && !IsFalling)
                             {
-                                if (actor.Area.Left < item.Bounds.Right && oldPlayerBottomLeft.Y > item.Bounds.Top)
+                                if (actor.Area.Left < item.Bounds.Right && actor.Area.Bottom > item.Bounds.Top)
                                 {
                                     GoLeft = false;
                                     actor.SetXY(item.Bounds.Right, actor.Area.Y);
@@ -164,13 +184,13 @@ namespace Platformer
                                     IsFalling = true;
                                     IsJumping = false;
                                 }
-                                else if (oldPlayerBottomLeft.Y > item.Bounds.Y)
+                                else if (oldPlayerPos.Bottom > item.Bounds.Y)
                                 {
                                     actor.SetXY(actor.Area.X, item.Bounds.Top - actor.Area.Height);
                                     IsJumping = false;
                                 }
                             }
-                            else if (IsFalling && actor.Area.Right > item.Bounds.Left && actor.Area.Left < item.Bounds.Right && oldPlayerBottomLeft.Y < item.Bounds.Top)
+                            else if (IsFalling && actor.Area.Right > item.Bounds.Left && actor.Area.Left < item.Bounds.Right && oldPlayerPos.Bottom < item.Bounds.Top)
                             {
                                 IsFalling = false;
                                 actor.SetXY(actor.Area.X, item.Bounds.Top - actor.Area.Height);
@@ -197,8 +217,7 @@ namespace Platformer
             }
             if(actor is Player)
             {
-                oldPlayerBottomLeft = new Point(actor.Area.Left, actor.Area.Bottom);
-                oldPlayerTopRight = new Point(actor.Area.Right, actor.Area.Top);
+                oldPlayerPos = actor.Area;
 
                 if (!collision && !IsJumping)
                 {
@@ -211,29 +230,56 @@ namespace Platformer
             }
         }
 
-        bool isGameOver = false;
-        int playerLives = 3;
-        public int PlayerLives { get { return playerLives; } }
-        public bool IsGameOver()
+        bool isLevelComplete = false;
+        int retries = 3;
+        public int Retries { get { return retries; } }
+        public bool GameOver()
         {
-            if (model.player.Health > 0 && isGameOver)
+            if (model.player.Lives > 0 && isLevelComplete)
             {
                 model.NextLevel();
-                isGameOver = false;
+                isLevelComplete = false;
                 return true;
             }
-            else if (model.player.Health < 0 || model.player.Area.Y > 1000)
+            else if (model.player.Lives < 0 || model.player.Area.Y > 1000)
             {
                 // Respawn után folyamatosan esne
-                oldPlayerBottomLeft = new Point();
-                oldPlayerTopRight = new Point();
+                oldPlayerPos = new Rect();
 
                 model.ReloadLevel();
-                playerLives--;
+                retries--;
                 return true;
             }
 
             return false;
+        }
+
+        public bool IsGameOver()
+        {
+            if (retries < 1)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public void LevelComplete()
+        {
+            if (model.currentLevel < model.Levels.Count)
+            {
+                model.NextLevel();
+            }
+            else
+            {
+                OnGameComplete?.Invoke(this, null);
+            }
+        }
+
+        public void LevelFail()
+        {
+            model.ReloadLevel();
+            oldPlayerPos = new Rect();
+            retries--;
         }
 
         private void Animation()
@@ -280,6 +326,18 @@ namespace Platformer
         private void EnemyAnimation()
         {
 
+        }
+
+        public void RegisterLevels()
+        {
+            string[] files = Directory.GetFiles("Levels/", "*.level");
+
+            int i = 0;
+            foreach (string file in files)
+            {
+                model.Levels.Add(i, file);
+                i++;
+            }
         }
     }
 }

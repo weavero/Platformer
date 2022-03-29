@@ -31,34 +31,22 @@ namespace Platformer
         {
             if (IsVisible)
             {
-                //model = new Model();
-                //logic = new Logic(model);
-                //renderer = new Renderer(model);
+                
             }
         }
 
         public void Control_Loaded(object sender, RoutedEventArgs e)
         {
-            model = new Model();
-            logic = new Logic(model);
-            renderer = new Renderer(model);
             
             window = (MainWindow)Window.GetWindow(this);
-            window.Background = Config.BackgroundImage;
-            
+
             if (window != null)
             {
-                if (timer == null)
-                {
-                    timer = new DispatcherTimer();
-                    timer.Interval = TimeSpan.FromMilliseconds(15);
-                    timer.Tick += Timer_Tick;
-                }
-                if (IsLoaded)
-                {
-                    window.KeyDown += Win_KeyDown;
-                    window.KeyUp += Win_KeyUp;
-                }
+                timer = new DispatcherTimer();
+                timer.Interval = TimeSpan.FromMilliseconds(15);
+                timer.Tick += Timer_Tick;
+                window.KeyDown += Win_KeyDown;
+                window.KeyUp += Win_KeyUp;
             }
         }
 
@@ -66,20 +54,20 @@ namespace Platformer
         {
             logic.GameTick();
             logic.CollisionCheck(model.player, renderer.DrawingGroup);
-            foreach (Enemy enemy in model.Enemies)
-            {
-                logic.CollisionCheck(enemy, renderer.DrawingGroup);
-            }
+            EnemyCollisionCheck();
+
 
             if (logic.IsGameOver())
             {
-                renderer = new Renderer(model);
-            }
-            else if (logic.PlayerLives < 1)
-            {
-                timer.Stop();
                 window.ShowGameOver();
+                timer.Stop();
             }
+            else
+            {
+
+            }
+
+            logic.OnGameComplete += (obj, args) => window.ShowGameComplete();
 
             Canvas.SetLeft(this, -model.player.Area.Left + 150);
             Canvas.SetTop(this, -model.player.Area.Top + 150);
@@ -133,6 +121,24 @@ namespace Platformer
                 timer.Start();
                 model.StartTimer();
             }
+        }
+
+        private void EnemyCollisionCheck()
+        {
+            foreach (Enemy enemy in model.Enemies)
+            {
+                logic.CollisionCheck(enemy, renderer.DrawingGroup);
+            }
+        }
+
+        public void NewGame()
+        {
+            model = new Model();
+            logic = new Logic(model);
+            renderer = new Renderer(model);
+            model.mainWindow = window;
+            timer.Start();
+
         }
 
         protected override void OnRender(DrawingContext drawingContext)
