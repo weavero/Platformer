@@ -11,13 +11,18 @@
     <Grid x:Name="grid" Width="{x:Static local:Config.windowWidth}" Height="{x:Static local:Config.windowHeight}">
 
         <Grid x:Name="GameGrid" Visibility="Hidden">
-            <local:GameControl x:Name="Game" Visibility="Hidden"/>
+            <Canvas>
+                <local:GameControl x:Name="Game" Visibility="Hidden"/>
+            </Canvas>
         </Grid>
         <Grid x:Name="PauseGrid" Visibility="Hidden">
             <views:PauseMenu/>
         </Grid>
         <Grid x:Name="GameOverGrid" Visibility="Hidden">
             <views:GameOver/>
+        </Grid>
+        <Grid x:Name="GameCompleteGrid" Visibility="Hidden">
+            <views:GameFinish/>
         </Grid>
         <Grid x:Name="LeaderboardGrid" Visibility="Hidden">
             <views:Leaderboard/>
