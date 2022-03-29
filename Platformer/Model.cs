@@ -18,32 +18,34 @@ namespace Platformer
         private char[,] map;
         public char[,] Map{ get { return map; } }
 
-        private Dictionary<int, string> levels;
+        public Dictionary<int, string> Levels;
 
-        private int currentLevel = 1;
+        public int currentLevel = 1;
 
-        private int coin = 0;
+        public int coin = 0;
         public int Coin { get { return coin; } }
 
         private int pickupableIndex;
         public int PickupableIndex { get { return pickupableIndex; } }
+
+        public MainWindow mainWindow { get; set; }
 
         public Model()
         {
             coin = 0;
             timer = new Stopwatch();
             RegisterLevels();
-            LoadLevel(levels[currentLevel]);
+            LoadLevel(Levels[currentLevel]);
         }
 
         private void RegisterLevels()
         {
-            levels = new Dictionary<int, string>();
-            levels.Add(1, "Levels/1.level");
-            levels.Add(2, "Levels/2.level");
-            levels.Add(3, "Levels/3.level");
-            levels.Add(4, "Levels/4.level");
-            levels.Add(5, "Levels/5.level");
+            Levels = new Dictionary<int, string>();
+            Levels.Add(1, "Levels/1.level");
+            Levels.Add(2, "Levels/2.level");
+            Levels.Add(3, "Levels/3.level");
+            Levels.Add(4, "Levels/4.level");
+            Levels.Add(5, "Levels/5.level");
         }
 
         public void LoadLevel(string levelPath)
@@ -123,10 +125,10 @@ namespace Platformer
 
         public void NextLevel()
         {
-            if (currentLevel < levels.Count)
+            if (currentLevel < Levels.Count)
             {
                 currentLevel++;
-                LoadLevel(levels[currentLevel]);
+                LoadLevel(Levels[currentLevel]);
             }
             else
             {
@@ -136,7 +138,7 @@ namespace Platformer
 
         public void ReloadLevel()
         {
-            LoadLevel(levels[currentLevel]);
+            LoadLevel(Levels[currentLevel]);
         }
 
         public TimeSpan GetElapsedTime()

@@ -7,8 +7,9 @@ namespace Platformer
 {
     abstract class Actor
     {
-        protected int health;
-        public int Health { get { return health; } }
+        //Life = Number of hits to kill
+        protected int lives;
+        public int Lives { get { return lives; } }
 
         protected double vel;
         protected Rect area;
@@ -39,12 +40,12 @@ namespace Platformer
 
         public void MinusHealth()
         {
-            health--;
+            lives--;
         }
 
         public void PlusHealth()
         {
-            health++;
+            lives++;
         }
     }
 }

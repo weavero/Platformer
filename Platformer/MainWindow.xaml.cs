@@ -21,12 +21,12 @@ namespace Platformer
     /// </summary>
     public partial class MainWindow : Window
     {
-        //.Content NE!
         public MainWindow()
         {
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             Uri iconUri = new Uri("../../../img/hitman.jpg", UriKind.RelativeOrAbsolute);
             Icon = BitmapFrame.Create(iconUri);
+            Background = Config.BackgroundImage;
             InitializeComponent();
         }
 
@@ -40,13 +40,17 @@ namespace Platformer
             MainMenuGrid.Visibility = Visibility.Hidden;
             GameGrid.Visibility = Visibility.Visible;
             Game.Visibility = Visibility.Visible;
+            Game.NewGame();
             Game.TimerStart();
         }
 
         internal void ExitToMenu()
         {
+            Game.Visibility = Visibility.Hidden;
+            GameGrid.Visibility = Visibility.Hidden;
             PauseGrid.Visibility = Visibility.Hidden;
             GameOverGrid.Visibility = Visibility.Hidden;
+            GameCompleteGrid.Visibility = Visibility.Hidden;
             MainMenuGrid.Visibility = Visibility.Visible;
         }
 
@@ -71,6 +75,11 @@ namespace Platformer
         {
             MainMenuGrid.Visibility = Visibility.Hidden;
             LeaderboardGrid.Visibility = Visibility.Visible;
+        }
+
+        public void ShowGameComplete()
+        {
+            GameCompleteGrid.Visibility = Visibility.Visible;
         }
 
         public void Exit()

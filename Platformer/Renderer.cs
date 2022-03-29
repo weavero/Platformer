@@ -31,7 +31,6 @@ namespace Platformer
         bool levelUpdated = true;
         public void Draw(DrawingContext ctx)
         {
-
             UpdateLevel();
             if (levelUpdated)
             {
@@ -89,6 +88,10 @@ namespace Platformer
 
                         case 'F':
                             PlayAreaDrawing.Children.Add(new GeometryDrawing(Config.finishBrush, Config.penBrush, new RectangleGeometry(new Rect(j * Config.unitWidth, i * Config.unitHeight, Config.unitWidth, Config.unitHeight))));
+                            break;
+
+                        case 'l':
+                            PlayAreaDrawing.Children.Add(new GeometryDrawing(Config.lifePickup, null, new RectangleGeometry(new Rect(j * Config.unitWidth, i * Config.unitHeight, 32, 32))));
                             break;
 
                         case 'P':
@@ -166,7 +169,7 @@ namespace Platformer
             FormattedText formattedText2 = new FormattedText(model.player.Area.Y.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
             GeometryDrawing text2 = new GeometryDrawing(null, new Pen(Brushes.Black, 1), formattedText2.BuildGeometry(new Point(450, 550)));
 
-            FormattedText formattedText3 = new FormattedText(model.player.Health.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
+            FormattedText formattedText3 = new FormattedText(model.player.Lives.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
             lives = new GeometryDrawing(null, new Pen(Brushes.White, 1), formattedText3.BuildGeometry(new Point(50, Config.windowHeight - 25)));
 
             FormattedText formattedText4 = new FormattedText(model.GetElapsedTime().TotalSeconds.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
@@ -199,7 +202,7 @@ namespace Platformer
             //FormattedText playerY = new FormattedText(model.player.Area.Y.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
             //HUDDrawing.Children[3] = new GeometryDrawing(null, new Pen(Brushes.Black, 1), playerY.BuildGeometry(new Point(450, 550)));
 
-            FormattedText playerLives = new FormattedText(model.player.Health.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
+            FormattedText playerLives = new FormattedText(model.player.Lives.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
             lives.Geometry = playerLives.BuildGeometry(new Point(model.player.Area.Left - 50, model.player.Area.Top + 550));
             HUDDrawing.Children[2] = lives;
 

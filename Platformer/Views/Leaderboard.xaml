@@ -7,9 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Background="MidnightBlue">
-        <DataGrid Width="300" Height="400" DataContext="">
-            
-        </DataGrid>
+        <DataGrid Width="300" Height="400" x:Name="dataGrid"/>
         <Button Width="60" Height="20" Margin="10,405,670,25" Click="ShowMainMenu">Főmenü</Button>
     </Grid>
 </UserControl>

@@ -10,7 +10,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Linq;
 using Platformer;
+using Platformer.Models;
 
 namespace Platformer.Views
 {
@@ -24,6 +26,16 @@ namespace Platformer.Views
         {
             InitializeComponent();
             Loaded += Leaderboard_Loaded;
+            IsVisibleChanged += Leaderboard_IsVisibleChanged;
+        }
+
+        private void Leaderboard_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (IsVisible)
+            {
+                PlatformerContext db = new PlatformerContext();
+                dataGrid.ItemsSource = db.LeaderboardEntries.ToList();
+            }
         }
 
         private void Leaderboard_Loaded(object sender, RoutedEventArgs e)
