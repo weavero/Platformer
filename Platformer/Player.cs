@@ -10,7 +10,7 @@ namespace Platformer
         
         public Player(double x, double y) : base(x, y, Config.playerWidth, Config.playerHeight)
         {
-            health = 100;
+            lives = 2;
         }
     }
 }
