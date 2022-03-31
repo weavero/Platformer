@@ -39,14 +39,13 @@ namespace Platformer
         {
             MainMenuGrid.Visibility = Visibility.Hidden;
             GameGrid.Visibility = Visibility.Visible;
-            Game.Visibility = Visibility.Visible;
+            GameOverGrid.Visibility = Visibility.Hidden;
             Game.NewGame();
             Game.TimerStart();
         }
 
         internal void ExitToMenu()
         {
-            Game.Visibility = Visibility.Hidden;
             GameGrid.Visibility = Visibility.Hidden;
             PauseGrid.Visibility = Visibility.Hidden;
             GameOverGrid.Visibility = Visibility.Hidden;
@@ -77,9 +76,13 @@ namespace Platformer
             LeaderboardGrid.Visibility = Visibility.Visible;
         }
 
-        public void ShowGameComplete()
+        public void ShowGameComplete(GameCompleteArgs e)
         {
+            GameGrid.Visibility = Visibility.Hidden;
             GameCompleteGrid.Visibility = Visibility.Visible;
+            GameFinish end = (GameFinish)GameCompleteGrid.Children[0];
+            end.Points = e.Points;
+            end.Time = e.Time;
         }
 
         public void Exit()
