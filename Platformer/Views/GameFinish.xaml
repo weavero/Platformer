@@ -10,7 +10,7 @@
     <Grid Background="MidnightBlue">
         <TextBox Margin="640,99,40,331" x:Name="NameInput" Width="120" Height="20"></TextBox>
         <TextBlock Margin="555,141,10,288" Foreground="White" x:Name="Alert" TextWrapping="WrapWithOverflow" Width="230" Height="30" Visibility="Hidden">Írj be egy legalább 3 karakter hosszú nevet!</TextBlock>
-        <DataGrid x:Name="dataGrid" Margin="250,25,250,25" Width="300" Height="400"/>
+        <DataGrid x:Name="dataGrid" Margin="250,25,250,25" Width="300" Height="400" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False"/>
         <Button Width="60" Height="20" Margin="700,390,40,40" Click="ShowMainMenu">Tovább</Button>
     </Grid>
 </UserControl>

@@ -34,7 +34,36 @@ namespace Platformer.Views
             if (IsVisible)
             {
                 PlatformerContext db = new PlatformerContext();
-                dataGrid.ItemsSource = db.LeaderboardEntries.ToList();
+                LeaderboardEntry player = new LeaderboardEntry
+                {
+                    Name = "wwwWwWwwWwW",
+                    Points = 1000,
+                    Time = "12:52"
+                };
+                LeaderboardEntry a2 = new LeaderboardEntry
+                {
+                    Name = "eeee",
+                    Points = 100,
+                    Time = "10:25"
+                };
+                LeaderboardEntry a1 = new LeaderboardEntry
+                {
+                    Name = "gg4ew",
+                    Points = 1,
+                    Time = "55:25"
+                };
+
+                LeaderboardEntry a = new LeaderboardEntry {
+                    Name = "asda",
+                    Points = 340,
+                    Time = "03:25"
+                };
+                db.LeaderboardEntries.Add(player);
+                db.LeaderboardEntries.Add(a);
+                db.LeaderboardEntries.Add(a1);
+                db.LeaderboardEntries.Add(a2);
+                db.SaveChanges();
+                dataGrid.ItemsSource = db.LeaderboardEntries.ToList().OrderByDescending(x => x.Points);
             }
         }
 
