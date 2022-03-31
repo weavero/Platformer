@@ -7,7 +7,8 @@ namespace Platformer
 {
     class Player : Actor
     {
-        
+        public bool WasDamaged { get; set; }
+
         public Player(double x, double y) : base(x, y, Config.playerWidth, Config.playerHeight)
         {
             lives = 2;
