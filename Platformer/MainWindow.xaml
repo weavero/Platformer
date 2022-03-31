@@ -12,7 +12,7 @@
 
         <Grid x:Name="GameGrid" Visibility="Hidden">
             <Canvas>
-                <local:GameControl x:Name="Game" Visibility="Hidden"/>
+                <local:GameControl x:Name="Game"/>
             </Canvas>
         </Grid>
         <Grid x:Name="PauseGrid" Visibility="Hidden">

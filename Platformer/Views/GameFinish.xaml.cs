@@ -22,6 +22,8 @@ namespace Platformer.Views
     {    
         //Scaffold-DbContext "Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename = |DataDirectory|\PlatformerDatabase.mdf; Integrated Security = True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
         PlatformerContext db;
+        public int Points;
+        public TimeSpan Time;
         public GameFinish()
         {
             InitializeComponent();
@@ -46,20 +48,18 @@ namespace Platformer.Views
             }
             else
             {
-                int points = 1;
-                string time = "ss";
-                InsertIntoDatabase(points, time);
+                InsertIntoDatabase(Points, Time);
                 window.ExitToMenu();
                 Alert.Visibility = Visibility.Hidden;
             }
         }
 
-        private void InsertIntoDatabase(int Points, string Time)
+        private void InsertIntoDatabase(int Points, TimeSpan Time)
         {
             LeaderboardEntry player = new LeaderboardEntry();
             player.Name = NameInput.Text.Trim();
             player.Points = Points;
-            player.Time = Time;
+            player.Time = Time.ToString(@"mm\:ss");
             db.LeaderboardEntries.Add(player);
             db.SaveChanges();
         }

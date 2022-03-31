@@ -24,15 +24,6 @@ namespace Platformer
         public GameControl()
         {
             Loaded += Control_Loaded;
-            IsVisibleChanged += PControl_IsVisibleChanged;
-        }
-
-        private void PControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (IsVisible)
-            {
-                
-            }
         }
 
         public void Control_Loaded(object sender, RoutedEventArgs e)
@@ -66,8 +57,6 @@ namespace Platformer
             {
 
             }
-
-            logic.OnGameComplete += (obj, args) => window.ShowGameComplete();
 
             Canvas.SetLeft(this, -model.player.Area.Left + 150);
             Canvas.SetTop(this, -model.player.Area.Top + 150);
@@ -103,14 +92,14 @@ namespace Platformer
             if (timer.IsEnabled)
             {
                 timer.Stop();
-                model.StopTimer();
+                model.Timer.Stop();
                 window.ShowPause();
             }
             else
             {
                 window.ResumeGame();
                 timer.Start();
-                model.StartTimer();
+                model.Timer.Start();
             }
         }
 
@@ -119,7 +108,7 @@ namespace Platformer
             if (!timer.IsEnabled)
             {
                 timer.Start();
-                model.StartTimer();
+                model.Timer.Start();
             }
         }
 
@@ -137,6 +126,10 @@ namespace Platformer
             logic = new Logic(model);
             renderer = new Renderer(model);
             model.mainWindow = window;
+
+            logic.OnGameComplete += (obj, args) => window.ShowGameComplete(args);
+            logic.OnLevelChange += (obj, args) => renderer = new Renderer(model);
+
             timer.Start();
 
         }
