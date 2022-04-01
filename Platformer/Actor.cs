@@ -7,14 +7,20 @@ namespace Platformer
 {
     abstract class Actor
     {
+        protected Rect area;
+
+        public Rect Area { get { return area; } }
+
         //Life = Number of hits to kill
         protected int lives;
         public int Lives { get { return lives; } }
 
         protected double vel;
-        protected Rect area;
 
-        public Rect Area { get { return area; } }
+        public bool GoLeft { get; set; }
+        public bool GoRight { get; set; }
+        public bool IsJumping { get; set; }
+        public bool IsFalling { get; set; }
 
         protected Actor(double x, double y, int ActorWidth, int ActorHeight)
         {
