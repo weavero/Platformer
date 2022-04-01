@@ -35,7 +35,7 @@ namespace Platformer.Views
             if (IsVisible)
             {
                 db = new PlatformerContext();
-                dataGrid.ItemsSource = db.LeaderboardEntries.ToList();
+                dataGrid.ItemsSource = db.LeaderboardEntries.ToList().OrderByDescending(x => x.Points);
             }
         }
 
