@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
+using System.Windows.Media;
 
 namespace Platformer
 {
@@ -15,17 +16,16 @@ namespace Platformer
         protected int lives;
         public int Lives { get { return lives; } }
 
-        protected double vel;
-
         public bool GoLeft { get; set; }
         public bool GoRight { get; set; }
         public bool IsJumping { get; set; }
         public bool IsFalling { get; set; }
 
+        public ImageBrush Brush { get; set; }
+
         protected Actor(double x, double y, int ActorWidth, int ActorHeight)
         {
             area = new Rect(x, y, ActorWidth, ActorHeight);
-            vel = 0;
         }
 
         public void SetX(double x)
