@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Platformer.Views;
+using Platformer.Models;
 
 namespace Platformer
 {
@@ -23,11 +24,46 @@ namespace Platformer
     {
         public MainWindow()
         {
-            WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            Loaded += MainWindow_Loaded;
+            InitializeComponent();
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
             Uri iconUri = new Uri("../../../img/hitman.jpg", UriKind.RelativeOrAbsolute);
             Icon = BitmapFrame.Create(iconUri);
             Background = Config.BackgroundImage;
-            InitializeComponent();
+            PlatformerContext db = new PlatformerContext();
+            LeaderboardEntry player = new LeaderboardEntry
+            {
+                Name = "wwwWwWwwWwW",
+                Points = 1000,
+                Time = "12:52"
+            };
+            LeaderboardEntry a2 = new LeaderboardEntry
+            {
+                Name = "eeee",
+                Points = 100,
+                Time = "10:25"
+            };
+            LeaderboardEntry a1 = new LeaderboardEntry
+            {
+                Name = "gg4ew",
+                Points = 1,
+                Time = "55:25"
+            };
+
+            LeaderboardEntry a = new LeaderboardEntry
+            {
+                Name = "asda",
+                Points = 340,
+                Time = "03:25"
+            };
+            db.LeaderboardEntries.Add(player);
+            db.LeaderboardEntries.Add(a);
+            db.LeaderboardEntries.Add(a1);
+            db.LeaderboardEntries.Add(a2);
+            db.SaveChanges();
         }
 
         public void ShowPause()

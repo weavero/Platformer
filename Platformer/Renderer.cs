@@ -123,11 +123,6 @@ namespace Platformer
                 levelUpdated = true;
             }
 
-            for (int j = 0; j < 4; j++)
-            {
-                
-            }
-
             int i = 0;
             while (i < PlayAreaDrawing.Children.Count && PlayAreaDrawing.Children[i].Bounds.Y < 2000)
             {
@@ -168,8 +163,6 @@ namespace Platformer
             HUDDrawing = new DrawingGroup();
             HUDBackground = new GeometryDrawing(Brushes.Black, null, new RectangleGeometry(new Rect(0, Config.windowHeight - 50, Config.windowWidth, 50)));
 
-            
-
             //FormattedText formattedText = new FormattedText(model.player.Area.X.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
             //GeometryDrawing text = new GeometryDrawing(null, new Pen(Brushes.Black, 1), formattedText.BuildGeometry(new Point(400, 550)));
 
@@ -185,13 +178,12 @@ namespace Platformer
             FormattedText pointText = new FormattedText(model.Points.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
             points = new GeometryDrawing(null, new Pen(Brushes.White, 1), pointText.BuildGeometry(new Point(150, Config.windowHeight - 25)));
 
-            GeometryDrawing coinPic = new GeometryDrawing(null, null, new RectangleGeometry(new Rect(0, 0, 0, 0)));
+            GeometryDrawing coinPic = new GeometryDrawing(Config.coinBrush, null, new RectangleGeometry(new Rect(0, 0, 0, 0)));
 
             FormattedText cointext = new FormattedText(model.Coin.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
             coinCounter = new GeometryDrawing(null, new Pen(Brushes.White, 1), cointext.BuildGeometry(new Point(0, 0)));
 
             HUDDrawing.Children.Add(HUDBackground);
-            
 
             //HUDDrawing.Children.Add(text);
             //HUDDrawing.Children.Add(text2);
@@ -207,10 +199,8 @@ namespace Platformer
         private void UpdateHUD()
         {
             //HUD background
-            HUDBackground.Geometry = new RectangleGeometry(new Rect(model.player.Area.Left - 150, model.player.Area.Bottom + 450, Config.windowWidth, 100));
+            HUDBackground.Geometry = new RectangleGeometry(new Rect(model.player.Area.Left - 150, model.player.Area.Bottom + 450, model.mainWindow.Width, 100));
             HUDDrawing.Children[0] = HUDBackground;
-
-            
 
             //FormattedText playerX = new FormattedText(model.player.Area.X.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
             //HUDDrawing.Children[2] = new GeometryDrawing(null, new Pen(Brushes.Black, 1), playerX.BuildGeometry(new Point(400, 550)));
@@ -227,15 +217,14 @@ namespace Platformer
             HUDDrawing.Children[2] = timeElapsed;
 
             FormattedText pointText = new FormattedText("Pontok: " + model.Points.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
-            points.Geometry = pointText.BuildGeometry(new Point(model.player.Area.Left + 100, model.player.Area.Top + 540));
+            points.Geometry = pointText.BuildGeometry(new Point(model.player.Area.Left + 50, model.player.Area.Top + 540));
             HUDDrawing.Children[3] = points;
 
             HUDDrawing.Children[4] = new GeometryDrawing(Config.coinBrush, null, new RectangleGeometry(new Rect(model.player.Area.Left + 180, model.player.Area.Top + 545, 10, 10)));
-
+            
             FormattedText coinText = new FormattedText(model.Coin.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
             coinCounter.Geometry = coinText.BuildGeometry(new Point(model.player.Area.Left + 200, model.player.Area.Top + 540));
-            HUDDrawing.Children[4] = coinCounter;
-
+            HUDDrawing.Children[5] = coinCounter;
         }
     }
 }

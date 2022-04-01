@@ -28,7 +28,6 @@ namespace Platformer
 
         public void Control_Loaded(object sender, RoutedEventArgs e)
         {
-            
             window = (MainWindow)Window.GetWindow(this);
 
             if (window != null)
@@ -47,15 +46,10 @@ namespace Platformer
             logic.CollisionCheck(model.player, renderer.DrawingGroup);
             EnemyCollisionCheck();
 
-
             if (logic.IsGameOver())
             {
                 window.ShowGameOver();
                 timer.Stop();
-            }
-            else
-            {
-
             }
 
             Canvas.SetLeft(this, -model.player.Area.Left + 150);
@@ -68,13 +62,13 @@ namespace Platformer
         {
             if (IsVisible)
             {
-                if (e.Key == Key.A || e.Key == Key.Left) { logic.GoLeft = true; }
-                else if (e.Key == Key.D || e.Key == Key.Right) { logic.GoRight = true; }
-                else if (e.Key == Key.Space || e.Key == Key.Up)
+                if (e.Key == Key.A || e.Key == Key.Left) { model.player.GoLeft = true; }
+                else if (e.Key == Key.D || e.Key == Key.Right) { model.player.GoRight = true; }
+                if (e.Key == Key.Space || e.Key == Key.Up)
                 {
-                    if (!logic.IsJumping && !logic.IsFalling)
+                    if (!model.player.IsJumping && !model.player.IsFalling)
                     {
-                        logic.IsJumping = true;
+                        model.player.IsJumping = true;
                     }
                 }
                 else if (e.Key == Key.Escape) { TimerStartStop(); }
@@ -83,8 +77,8 @@ namespace Platformer
 
         private void Win_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.A || e.Key == Key.Left) { logic.GoLeft = false; }
-            else if (e.Key == Key.D || e.Key == Key.Right) { logic.GoRight = false; }
+            if (e.Key == Key.A || e.Key == Key.Left) { model.player.GoLeft = false; }
+            else if (e.Key == Key.D || e.Key == Key.Right) { model.player.GoRight = false; }
         }
 
         private void TimerStartStop()
@@ -131,7 +125,6 @@ namespace Platformer
             logic.OnLevelChange += (obj, args) => renderer = new Renderer(model);
 
             timer.Start();
-
         }
 
         protected override void OnRender(DrawingContext drawingContext)

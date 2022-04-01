@@ -28,19 +28,19 @@ namespace Platformer
             this.model = model;
             RegisterLevels();
             LoadLevel();
-            model.Retries = 3;
+            model.Retries = 1000;
             model.Timer.Start();
         }
 
         public void Move()
         {
-            if (GoLeft)
+            if (model.player.GoLeft)
             {
-                model.player.SetX(-5);
+                model.player.SetX(-6);
             }
-            else if (GoRight)
+            else if (model.player.GoRight)
             {
-                model.player.SetX(5);
+                model.player.SetX(6);
             }
         }
         
@@ -63,7 +63,7 @@ namespace Platformer
                 i++;
             }
 
-            if (IsJumping)
+            if (model.player.IsJumping)
             {
                 model.player.SetY(jumpHeight += 0.1);
             }
@@ -83,7 +83,7 @@ namespace Platformer
                 j++;
             }
 
-            if (IsFalling)
+            if (model.player.IsFalling)
             {
                 if (fallSpeed < 10)
                 {
@@ -162,6 +162,8 @@ namespace Platformer
                         if (item.Brush == Config.finishBrush)
                         {
                             LevelComplete();
+                            model.player.IsFalling = false;
+                            model.player.IsJumping = false;
                         }
                         else if (item.Brush == Config.coinBrush)
                         {
@@ -189,40 +191,40 @@ namespace Platformer
                             //    GoRight = false;
                             //}
 
-                            if (GoLeft)
+                            if (model.player.GoLeft)
                             {
                                 if (actor.Area.Left < item.Bounds.Right && actor.Area.Bottom > item.Bounds.Top)
                                 {
-                                    GoLeft = false;
+                                    model.player.GoLeft = false;
                                     actor.SetXY(item.Bounds.Right, actor.Area.Y);
                                 }
                             }
-                            else if (GoRight)
+                            else if (model.player.GoRight)
                             {
                                 if (actor.Area.Right > item.Bounds.Left && actor.Area.Bottom > item.Bounds.Top)
                                 {
-                                    GoRight = false;
+                                    model.player.GoRight = false;
                                     actor.SetXY(item.Bounds.Left - actor.Area.Width, actor.Area.Y);
                                 }
                             }
-                            if (IsJumping)
+                            if (model.player.IsJumping)
                             {
                                 if (oldPlayerPos.Bottom < item.Bounds.Top)
                                 {
                                     actor.SetXY(actor.Area.Left, item.Bounds.Top - actor.Area.Height);
-                                    IsJumping = false;
+                                    model.player.IsJumping = false;
                                 }
                                 else if (actor.Area.Top > item.Bounds.Top)
                                 {
                                     actor.SetXY(actor.Area.Left, item.Bounds.Bottom);
-                                    IsFalling = true;
-                                    IsJumping = false;
+                                    model.player.IsFalling = true;
+                                    model.player.IsJumping = false;
                                 }
 
                             }
-                            if (IsFalling && actor.Area.Right > item.Bounds.Left && actor.Area.Left < item.Bounds.Right && oldPlayerPos.Bottom < item.Bounds.Top)
+                            else if (model.player.IsFalling && actor.Area.Right > item.Bounds.Left && actor.Area.Left < item.Bounds.Right && oldPlayerPos.Bottom < item.Bounds.Top)
                             {
-                                IsFalling = false;
+                                model.player.IsFalling = false;
                                 actor.SetXY(actor.Area.Left, item.Bounds.Top - actor.Area.Height);
                             }
                         }
@@ -253,9 +255,9 @@ namespace Platformer
                     LevelRestart();
                     oldPlayerPos = new Rect(0, 0, 0, 0);
                 }
-                else if (!collision && !IsJumping)
+                else if (!collision && !model.player.IsJumping)
                 {
-                    IsFalling = true;
+                    model.player.IsFalling = true;
                 }
             }
             else if (actor is Enemy)
@@ -266,11 +268,7 @@ namespace Platformer
 
         public bool IsGameOver()
         {
-            if (model.Retries < 1)
-            {
-                return true;
-            }
-            return false;
+            return (model.Retries < 1) ? true : false;
         }
 
         public void LevelComplete()

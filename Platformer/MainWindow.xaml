@@ -7,9 +7,9 @@
         xmlns:views="clr-namespace:Platformer.Views"
         mc:Ignorable="d"
         Title="Platformer"
-        SizeToContent="WidthAndHeight">
-    <Grid x:Name="grid" Width="{x:Static local:Config.windowWidth}" Height="{x:Static local:Config.windowHeight}">
-
+        WindowState="Maximized"
+        WindowStyle="None">
+    <Grid x:Name="grid">
         <Grid x:Name="GameGrid" Visibility="Hidden">
             <Canvas>
                 <local:GameControl x:Name="Game"/>

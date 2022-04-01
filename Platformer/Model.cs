@@ -8,8 +8,7 @@ namespace Platformer
 {
     class Model
     {
-        private Stopwatch timer;
-        public Stopwatch Timer { get { return timer; } }
+        public Stopwatch Timer;
 
         public Player player;
 
@@ -38,7 +37,7 @@ namespace Platformer
         public Model()
         {
             coin = 0;
-            timer = new Stopwatch();
+            Timer = new Stopwatch();
         }
 
         public void SetPickupIndex(int Index)

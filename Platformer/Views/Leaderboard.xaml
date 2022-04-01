@@ -7,7 +7,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Background="MidnightBlue">
-        <DataGrid Width="300" Height="400" x:Name="dataGrid" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" AutoGenerateColumns="False">
+        <DataGrid Width="300" Height="400" x:Name="dataGrid" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False"
+                  CanUserResizeRows="False" CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" 
+                  AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Név" Binding="{Binding Name}"/>
                 <DataGridTextColumn Header="Pontok" Binding="{Binding Points}"/>
