@@ -62,9 +62,12 @@ namespace Platformer
         {
             if (IsVisible)
             {
-                if (e.Key == Key.A || e.Key == Key.Left) { model.player.GoLeft = true; }
-                else if (e.Key == Key.D || e.Key == Key.Right) { model.player.GoRight = true; }
-                if (e.Key == Key.Space || e.Key == Key.Up)
+                if (model.player.IsJumping || model.player.IsFalling)
+                {
+                    if (e.Key == Key.A || e.Key == Key.Left) { model.player.GoLeft = true; }
+                    else if (e.Key == Key.D || e.Key == Key.Right) { model.player.GoRight = true; }
+                }
+                else if (e.Key == Key.Space || e.Key == Key.Up)
                 {
                     if (!model.player.IsJumping && !model.player.IsFalling)
                     {
@@ -114,6 +117,7 @@ namespace Platformer
             }
         }
 
+        bool eventSet = false;
         public void NewGame()
         {
             model = new Model();
@@ -121,8 +125,12 @@ namespace Platformer
             renderer = new Renderer(model);
             model.mainWindow = window;
 
-            logic.OnGameComplete += (obj, args) => window.ShowGameComplete(args);
-            logic.OnLevelChange += (obj, args) => renderer = new Renderer(model);
+            if (!eventSet)
+            {
+                logic.OnGameComplete += (obj, args) => window.ShowGameComplete(args);
+                logic.OnLevelChange += (obj, args) => renderer = new Renderer(model);
+                eventSet = true;
+            }
 
             timer.Start();
         }

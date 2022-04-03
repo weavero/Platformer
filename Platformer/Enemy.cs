@@ -24,6 +24,7 @@ namespace Platformer
         {
             lives = 1;
             Velocity = 3;
+            Brush = Config.smallEnemyBrush;
         }
     }
 
@@ -33,6 +34,7 @@ namespace Platformer
         {
             lives = 2;
             Velocity = 1;
+            Brush = Config.bigEnemyBrush;
         }
     }
 }

@@ -21,14 +21,13 @@ namespace Platformer
         public bool IsJumping { get; set; }
         public bool IsFalling { get; set; }
 
-        public double Velocity { get; set; }
+        public double Velocity;
       
-        public ImageBrush Brush { get; set; }
+        public Brush Brush { get; set; }
 
         protected Actor(double x, double y, int ActorWidth, int ActorHeight)
         {
             area = new Rect(x, y, ActorWidth, ActorHeight);
-            Velocity = 0;
         }
 
         public void SetX(double x)

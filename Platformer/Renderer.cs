@@ -40,7 +40,7 @@ namespace Platformer
                 {
                     if (item.Brush is ImageBrush)
                     {
-                        if (item.Bounds.Height == Config.playerHeight)
+                        if (Config.playerBrushes.Contains((ImageBrush)item.Brush))
                         {
                             playerIndex = PlayAreaDrawing.Children.IndexOf(item);
                         }
@@ -199,7 +199,7 @@ namespace Platformer
         private void UpdateHUD()
         {
             //HUD background
-            HUDBackground.Geometry = new RectangleGeometry(new Rect(model.player.Area.Left - model.mainWindow.Width, model.player.Area.Top + 300, model.mainWindow.Width * 2, 100));
+            HUDBackground.Geometry = new RectangleGeometry(new Rect(model.player.Area.Left - model.mainWindow.Width, model.mainWindow.Height - model.player.Area.Top, model.mainWindow.Width * 2, 100));
             HUDDrawing.Children[0] = HUDBackground;
 
             //FormattedText playerX = new FormattedText(model.player.Area.X.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);

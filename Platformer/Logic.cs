@@ -18,8 +18,6 @@ namespace Platformer
         public EventHandler<GameCompleteArgs> OnGameComplete;
         public EventHandler OnLevelChange;
 
-        MediaPlayer sound;
-
         public Logic(Model model)
         {
             this.model = model;
@@ -39,13 +37,6 @@ namespace Platformer
             Animation();
         }
 
-        public void Move()
-        {
-            model.player.Move();
-            MoveAI();
-            Animation();
-        }
-
         public void MoveAI()
         {
             foreach (Enemy enemy in model.Enemies)
@@ -61,9 +52,9 @@ namespace Platformer
         int enemyRemovableIndex;
         public void CollisionCheck(Actor actor, DrawingGroup dg)
         {
-            drawing = dg;
-            dgRemovableIndex = -1;
-            enemyRemovableIndex = -1;
+            //drawing = dg;
+            //dgRemovableIndex = -1;
+            //enemyRemovableIndex = -1;
             bool collision = false;
             foreach (GeometryDrawing item in dg.Children)
             {
@@ -71,7 +62,6 @@ namespace Platformer
                 {
                     if (actor is Player)
                     {
-                        
                         if (item.Brush == Config.bigEnemyBrush || item.Brush == Config.smallEnemyBrush)
                         {
                             if (oldPlayerPos.Bottom < item.Bounds.Top)
@@ -81,8 +71,8 @@ namespace Platformer
                                     if (enemy.Area.X - enemy.Velocity == item.Bounds.X && enemy.Area.Y == item.Bounds.Y)
                                     {
                                         enemy.SetXY(-1000, -1000);
-                                        dgRemovableIndex = dg.Children.IndexOf(item);
-                                        enemyRemovableIndex = model.Enemies.IndexOf(enemy);
+                                        //dgRemovableIndex = dg.Children.IndexOf(item);
+                                        //enemyRemovableIndex = model.Enemies.IndexOf(enemy);
                                         model.player.Bounce();
                                         if (enemy is SmallEnemy)
                                         {
@@ -143,7 +133,7 @@ namespace Platformer
                             // go left
                             if (model.player.Velocity < 0)
                             {
-                                if (IsJumping || IsFalling)
+                                if (model.player.IsJumping || model.player.IsFalling)
                                 {
                                     if (oldPlayerPos.Bottom < item.Bounds.Top)
                                     {
@@ -153,13 +143,14 @@ namespace Platformer
                                 else if (actor.Area.Left < item.Bounds.Right && actor.Area.Bottom > item.Bounds.Top)
                                 {
                                     model.player.Velocity = 0;
+                                    model.player.GoLeft = false;
                                     actor.SetXY(item.Bounds.Right, actor.Area.Y);
                                 }
                             }
                             // go right
                             else if (model.player.Velocity > 0)
                             {
-                                if (IsJumping || IsFalling)
+                                if (model.player.IsJumping || model.player.IsFalling)
                                 {
                                     if (oldPlayerPos.Bottom < item.Bounds.Top)
                                     {
@@ -168,6 +159,7 @@ namespace Platformer
                                 }
                                 else if (actor.Area.Right > item.Bounds.Left && actor.Area.Bottom > item.Bounds.Top)
                                 {
+                                    model.player.Velocity = 0;
                                     model.player.GoRight = false;
                                     actor.SetXY(item.Bounds.Left - actor.Area.Width, actor.Area.Y);
                                 }
@@ -187,7 +179,7 @@ namespace Platformer
                                 }
                             }
                             // && actor.Area.Right > item.Bounds.Left && actor.Area.Left < item.Bounds.Right
-                            else if (model.player.IsFalling  && oldPlayerPos.Bottom < item.Bounds.Top)
+                            else if (model.player.IsFalling && oldPlayerPos.Bottom < item.Bounds.Top)
                             {
                                 model.player.IsFalling = false;
                                 actor.SetXY(actor.Area.Left, item.Bounds.Top - actor.Area.Height);
@@ -234,7 +226,7 @@ namespace Platformer
 
         public bool IsGameOver()
         {
-            return (model.Retries < 1) ? true : false;
+            return model.Retries < 1 ? true : false;
         }
 
         public void LevelComplete()
@@ -376,11 +368,11 @@ namespace Platformer
                     switch (model.map[i, j])
                     {
                         case 'P':
-                            model.player = new Player(j * Config.unitWidth, i * Config.unitHeight + (Config.unitHeight - Config.playerHeight));
+                            model.player = new Player(j * Config.unitWidth, i * Config.unitHeight);
                             break;
 
                         case 'e':
-                            model.enemies.Add(new SmallEnemy(j * Config.unitWidth, i * Config.unitHeight + (Config.unitHeight - Config.smallEnemyHeight)));
+                            model.enemies.Add(new SmallEnemy(j * Config.unitWidth, i * Config.unitHeight));
                             break;
 
                         case 'E':

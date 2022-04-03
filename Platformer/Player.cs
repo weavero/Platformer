@@ -10,123 +10,43 @@ namespace Platformer
     {
         public bool WasDamaged { get; set; }
 
-        public double Velocity;
-
-        MediaPlayer sound = new MediaPlayer();
-
         public Player(double x, double y) : base(x, y, Config.playerWidth, Config.playerHeight)
         {
             lives = 2;
             Velocity = 0;
             Brush = Config.playerBrush;
-            sound.Volume = 0.1;
         }
 
+        double maxVelocity = 5;
         public void Move()
         {
-            if (GoLeft)
+            if (GoLeft && Velocity > -maxVelocity)
             {
-                SetX(Velocity -= 0.1);
-            }
-            else if (GoRight)
-            {
-                SetX(Velocity += 0.1);
+                Velocity -= 0.10;
             }
             else if (!GoLeft && Velocity < 0)
             {
-                Velocity += 0.1;
-            }
-            else if (!GoRight && Velocity > 0)
-            {
-                Velocity -= 0.1;
+                Velocity += 0.10;
             }
 
-            if (IsJumping)
+            if (GoRight && Velocity < maxVelocity)
             {
-                Jump();
+                Velocity += 0.10;
             }
-            else if (IsFalling)
+            else if (!GoRight && Velocity > 0 && Velocity != 0)
             {
-                Falling();
-            }
-        }
-
-        bool StartJumping = false;
-        double jumpHeight;
-        double maxJump = 7;
-        public void Jump()
-        {
-            if (!StartJumping)
-            {
-                jumpHeight = -maxJump;
-                StartJumping = true;
-                sound.Open(Config.JumpSound);
-                sound.Play();
+                Velocity -= 0.10;
             }
 
-            if (IsJumping)
-            {
-                SetY(jumpHeight += 0.1);
-            }
-            else
-            {
-                StartJumping = false;
-            }
-        }
+            SetX(Math.Round(Velocity));
 
-        bool StartFalling = false;
-        double fallSpeed;
-        public void Falling()
-        {
-            if (!StartFalling)
-            {
-                fallSpeed = 0.1;
-                StartFalling = true;
-            }
-
-            if (IsFalling)
-            {
-                if (fallSpeed < 10)
-                {
-                    fallSpeed += 0.1;
-                }
-                SetY(fallSpeed);
-            }
-            else
-            {
-                StartFalling = false;
-            }
+            Jump();
+            Falling();
         }
 
         public void Bounce()
         {
-            StartJumping = false;
-        }
-
-        public void Move()
-        {
-            if (GoLeft)
-            {
-                Velocity -= 0.1;
-            }
-            else if (!GoLeft && Velocity < 0)
-            {
-                Velocity += 0.1;
-            }
-
-            if (GoRight)
-            {
-                Velocity += 0.1;
-            }
-            else if (!GoRight && Velocity > 0)
-            {
-                Velocity -= 0.1;
-            }
-
-            SetX(Velocity);
-
-            Jump();
-            Falling();
+            i = 0;
         }
 
         int i = 0;
@@ -134,19 +54,18 @@ namespace Platformer
         double maxJump = 7;
         public void Jump()
         {
-            if (i < 1)
-            {
-                jumpHeight = -maxJump;
-                i++;
-            }
-
             if (IsJumping)
             {
+                if (i < 1)
+                {
+                    jumpHeight = -maxJump;
+                    i++;
+                }
                 SetY(jumpHeight += 0.1);
             }
             else
             {
-                i--;
+                i = 0;
             }
         }
 
@@ -156,7 +75,7 @@ namespace Platformer
         {
             if (j < 1)
             {
-                fallSpeed = 0.1;
+                fallSpeed = 0.10;
                 j++;
             }
 
@@ -164,7 +83,7 @@ namespace Platformer
             {
                 if (fallSpeed < 10)
                 {
-                    fallSpeed += 0.1;
+                    fallSpeed += 0.10;
                 }
                 SetY(fallSpeed);
             }
