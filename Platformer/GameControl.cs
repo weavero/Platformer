@@ -52,8 +52,8 @@ namespace Platformer
                 timer.Stop();
             }
 
-            Canvas.SetLeft(this, -model.player.Area.Left + 150);
-            Canvas.SetTop(this, -model.player.Area.Top + 150);
+            Canvas.SetLeft(this, -model.player.Area.Left + model.mainWindow.Width / 2);
+            Canvas.SetTop(this, -model.player.Area.Top + model.mainWindow.Height / 2);
 
             InvalidateVisual();
         }

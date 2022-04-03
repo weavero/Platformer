@@ -13,15 +13,12 @@ namespace Platformer
 {
     class Logic
     {
-        public bool GoLeft { get; set; }
-        public bool GoRight { get; set; }
-        public bool IsJumping { get; set; }
-        public bool IsFalling { get; set; }
-
         Model model;
 
         public EventHandler<GameCompleteArgs> OnGameComplete;
         public EventHandler OnLevelChange;
+
+        MediaPlayer sound;
 
         public Logic(Model model)
         {
@@ -44,16 +41,11 @@ namespace Platformer
 
         public void Move()
         {
-            if (model.player.GoLeft)
-            {
-                model.player.SetX(-6);
-            }
-            else if (model.player.GoRight)
-            {
-                model.player.SetX(6);
-            }
+            model.player.Move();
+            MoveAI();
+            Animation();
         }
-        
+
         public void MoveAI()
         {
             foreach (Enemy enemy in model.Enemies)
@@ -75,7 +67,7 @@ namespace Platformer
             bool collision = false;
             foreach (GeometryDrawing item in dg.Children)
             {
-                if (actor.Area.IntersectsWith(item.Bounds) && actor.Area.Height != item.Bounds.Height)
+                if (actor.Area.IntersectsWith(item.Bounds) && actor.Brush != item.Brush)
                 {
                     if (actor is Player)
                     {
@@ -91,7 +83,7 @@ namespace Platformer
                                         enemy.SetXY(-1000, -1000);
                                         dgRemovableIndex = dg.Children.IndexOf(item);
                                         enemyRemovableIndex = model.Enemies.IndexOf(enemy);
-
+                                        model.player.Bounce();
                                         if (enemy is SmallEnemy)
                                         {
                                             model.Points += 20;
@@ -116,7 +108,7 @@ namespace Platformer
                                 }
                             }
                         }
-                        if (item.Brush == Config.finishBrush)
+                        else if (item.Brush == Config.finishBrush)
                         {
                             LevelComplete();
                             model.player.IsFalling = false;
@@ -160,7 +152,7 @@ namespace Platformer
                                 }
                                 else if (actor.Area.Left < item.Bounds.Right && actor.Area.Bottom > item.Bounds.Top)
                                 {
-                                    model.player.GoLeft = false;
+                                    model.player.Velocity = 0;
                                     actor.SetXY(item.Bounds.Right, actor.Area.Y);
                                 }
                             }

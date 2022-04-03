@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
+using System.Windows.Media;
 
 namespace Platformer
 {
@@ -21,6 +22,8 @@ namespace Platformer
         public bool IsFalling { get; set; }
 
         public double Velocity { get; set; }
+      
+        public ImageBrush Brush { get; set; }
 
         protected Actor(double x, double y, int ActorWidth, int ActorHeight)
         {

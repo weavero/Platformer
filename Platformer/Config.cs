@@ -32,16 +32,16 @@ namespace Platformer
 
         public static List<ImageBrush> playerBrushes = new List<ImageBrush> {playerBrush, playerAnimation1, playerAnimation2, playerAnimationRev1, playerAnimationRev2 };
 
-        public static double windowWidth = 1280;
-        public static double windowHeight = 720;
+        public static Uri JumpSound = new Uri("../../../Sounds/Jump.wav", UriKind.RelativeOrAbsolute);
+
         public static int unitWidth = 32;
         public static int unitHeight = 32;
-        public static int playerWidth = 30;
-        public static int playerHeight = 50;
-        public static int smallEnemyWidth = 30;
-        public static int smallEnemyHeight = 40;
-        public static int bigEnemyWidth = 60;
-        public static int bigEnemyHeight = 60;
+        public static int playerWidth = 32;
+        public static int playerHeight = 32;
+        public static int smallEnemyWidth = 32;
+        public static int smallEnemyHeight = 32;
+        public static int bigEnemyWidth = 64;
+        public static int bigEnemyHeight = 64;
         public static int coinSize = 10;
     }
 }

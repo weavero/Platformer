@@ -161,7 +161,7 @@ namespace Platformer
         private void DrawHUD()
         {
             HUDDrawing = new DrawingGroup();
-            HUDBackground = new GeometryDrawing(Brushes.Black, null, new RectangleGeometry(new Rect(0, Config.windowHeight - 50, Config.windowWidth, 50)));
+            HUDBackground = new GeometryDrawing(Brushes.Black, null, new RectangleGeometry(new Rect(0, 0, 0, 50)));
 
             //FormattedText formattedText = new FormattedText(model.player.Area.X.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
             //GeometryDrawing text = new GeometryDrawing(null, new Pen(Brushes.Black, 1), formattedText.BuildGeometry(new Point(400, 550)));
@@ -170,13 +170,13 @@ namespace Platformer
             //GeometryDrawing text2 = new GeometryDrawing(null, new Pen(Brushes.Black, 1), formattedText2.BuildGeometry(new Point(450, 550)));
 
             FormattedText formattedText3 = new FormattedText(model.player.Lives.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
-            lives = new GeometryDrawing(null, new Pen(Brushes.White, 1), formattedText3.BuildGeometry(new Point(50, Config.windowHeight - 25)));
+            lives = new GeometryDrawing(null, new Pen(Brushes.White, 1), formattedText3.BuildGeometry(new Point(50, 0)));
 
             FormattedText formattedText4 = new FormattedText(model.Timer.Elapsed.TotalSeconds.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
-            timeElapsed = new GeometryDrawing(null, new Pen(Brushes.White, 1), formattedText4.BuildGeometry(new Point(150, Config.windowHeight - 25)));
+            timeElapsed = new GeometryDrawing(null, new Pen(Brushes.White, 1), formattedText4.BuildGeometry(new Point(150, 0)));
 
             FormattedText pointText = new FormattedText(model.Points.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
-            points = new GeometryDrawing(null, new Pen(Brushes.White, 1), pointText.BuildGeometry(new Point(150, Config.windowHeight - 25)));
+            points = new GeometryDrawing(null, new Pen(Brushes.White, 1), pointText.BuildGeometry(new Point(150, 0)));
 
             GeometryDrawing coinPic = new GeometryDrawing(Config.coinBrush, null, new RectangleGeometry(new Rect(0, 0, 0, 0)));
 
@@ -199,7 +199,7 @@ namespace Platformer
         private void UpdateHUD()
         {
             //HUD background
-            HUDBackground.Geometry = new RectangleGeometry(new Rect(model.player.Area.Left - 150, model.player.Area.Bottom + 450, model.mainWindow.Width, 100));
+            HUDBackground.Geometry = new RectangleGeometry(new Rect(model.player.Area.Left - model.mainWindow.Width, model.player.Area.Top + 300, model.mainWindow.Width * 2, 100));
             HUDDrawing.Children[0] = HUDBackground;
 
             //FormattedText playerX = new FormattedText(model.player.Area.X.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
@@ -223,7 +223,7 @@ namespace Platformer
             HUDDrawing.Children[4] = new GeometryDrawing(Config.coinBrush, null, new RectangleGeometry(new Rect(model.player.Area.Left + 180, model.player.Area.Top + 545, 10, 10)));
             
             FormattedText coinText = new FormattedText(model.Coin.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
-            coinCounter.Geometry = coinText.BuildGeometry(new Point(model.player.Area.Left + 200, model.player.Area.Top + 540));
+            coinCounter.Geometry = coinText.BuildGeometry(new Point(model.player.Area.Left + 200, model.mainWindow.Height - 100));
             HUDDrawing.Children[5] = coinCounter;
         }
     }

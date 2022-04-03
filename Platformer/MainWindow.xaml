@@ -6,9 +6,10 @@
         xmlns:local="clr-namespace:Platformer"
         xmlns:views="clr-namespace:Platformer.Views"
         mc:Ignorable="d"
-        Title="Platformer"
+        WindowStyle="None"
         WindowState="Maximized"
-        WindowStyle="None">
+        WindowStartupLocation="Manual"
+        Left="0" Top="0">
     <Grid x:Name="grid">
         <Grid x:Name="GameGrid" Visibility="Hidden">
             <Canvas>
