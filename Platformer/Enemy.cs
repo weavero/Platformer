@@ -7,9 +7,6 @@ namespace Platformer
 {
     class Enemy : Actor
     {
-        protected double dx;
-        public double Dx { get { return dx; } }
-
         protected Enemy(double x, double y, int EnemyWidth, int EnemyHeight) : base(x, y, EnemyWidth, EnemyHeight)
         {
             ;
@@ -17,7 +14,7 @@ namespace Platformer
 
         public void TurnAround()
         {
-            dx = -dx;
+            Velocity = -Velocity;
         }
     }
 
@@ -26,7 +23,7 @@ namespace Platformer
         public SmallEnemy(double x, double y) : base(x, y, Config.smallEnemyWidth, Config.smallEnemyHeight)
         {
             lives = 1;
-            dx = 3;
+            Velocity = 3;
         }
     }
 
@@ -35,7 +32,7 @@ namespace Platformer
         public BigEnemy(double x, double y) : base(x, y, Config.bigEnemyWidth, Config.bigEnemyHeight)
         {
             lives = 2;
-            dx = 1;
+            Velocity = 1;
         }
     }
 }
