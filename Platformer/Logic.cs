@@ -32,6 +32,16 @@ namespace Platformer
             model.Timer.Start();
         }
 
+        public void GameTick()
+        {
+            model.player.Move();
+            //Move();
+            //Jump();
+            //Falling();
+            MoveAI();
+            Animation();
+        }
+
         public void Move()
         {
             if (model.player.GoLeft)
@@ -48,62 +58,8 @@ namespace Platformer
         {
             foreach (Enemy enemy in model.Enemies)
             {
-                enemy.SetX(enemy.Dx);
+                enemy.SetX(enemy.Velocity);
             }
-        }
-
-        int i = 0;
-        double jumpHeight;
-        double maxJump = 7;
-        public void Jump()
-        {
-            if (i < 1)
-            {
-                jumpHeight = -maxJump;
-                i++;
-            }
-
-            if (model.player.IsJumping)
-            {
-                model.player.SetY(jumpHeight += 0.1);
-            }
-            else
-            {
-                i--;
-            }
-        }
-
-        int j = 0;
-        double fallSpeed;
-        public void Falling()
-        {
-            if (j < 1)
-            {
-                fallSpeed = 0.1;
-                j++;
-            }
-
-            if (model.player.IsFalling)
-            {
-                if (fallSpeed < 10)
-                {
-                    fallSpeed += 0.1;
-                }
-                model.player.SetY(fallSpeed);
-            }
-            else
-            {
-                j--;
-            }
-        }
-
-        public void GameTick()
-        {
-            Move();
-            Jump();
-            Falling();
-            MoveAI();
-            Animation();
         }
 
         Rect oldPlayerPos;
@@ -123,14 +79,14 @@ namespace Platformer
                 {
                     if (actor is Player)
                     {
-                        collision = true;
+                        
                         if (item.Brush == Config.bigEnemyBrush || item.Brush == Config.smallEnemyBrush)
                         {
                             if (oldPlayerPos.Bottom < item.Bounds.Top)
                             {
                                 foreach (Enemy enemy in model.Enemies)
                                 {
-                                    if (enemy.Area.X - enemy.Dx == item.Bounds.X && enemy.Area.Y == item.Bounds.Y)
+                                    if (enemy.Area.X - enemy.Velocity == item.Bounds.X && enemy.Area.Y == item.Bounds.Y)
                                     {
                                         enemy.SetXY(-1000, -1000);
                                         dgRemovableIndex = dg.Children.IndexOf(item);
@@ -152,6 +108,7 @@ namespace Platformer
                                 if (actor.Lives > 0 && !(actor as Player).WasDamaged)
                                 {
                                     actor.MinusHealth();
+                                    (actor as Player).WasDamaged = true;
                                 }
                                 else
                                 {
@@ -177,7 +134,7 @@ namespace Platformer
                             model.SetPickupIndex(dg.Children.IndexOf(item));
                             collision = false;
                         }
-                        else
+                        else if(!collision)
                         {
                             //// go left
                             //if (actor.Area.Left > item.Bounds.Right && actor.Area.Bottom > item.Bounds.Top)
@@ -191,17 +148,33 @@ namespace Platformer
                             //    GoRight = false;
                             //}
 
-                            if (model.player.GoLeft)
+                            // go left
+                            if (model.player.Velocity < 0)
                             {
-                                if (actor.Area.Left < item.Bounds.Right && actor.Area.Bottom > item.Bounds.Top)
+                                if (IsJumping || IsFalling)
+                                {
+                                    if (oldPlayerPos.Bottom < item.Bounds.Top)
+                                    {
+                                        
+                                    }
+                                }
+                                else if (actor.Area.Left < item.Bounds.Right && actor.Area.Bottom > item.Bounds.Top)
                                 {
                                     model.player.GoLeft = false;
                                     actor.SetXY(item.Bounds.Right, actor.Area.Y);
                                 }
                             }
-                            else if (model.player.GoRight)
+                            // go right
+                            else if (model.player.Velocity > 0)
                             {
-                                if (actor.Area.Right > item.Bounds.Left && actor.Area.Bottom > item.Bounds.Top)
+                                if (IsJumping || IsFalling)
+                                {
+                                    if (oldPlayerPos.Bottom < item.Bounds.Top)
+                                    {
+
+                                    }
+                                }
+                                else if (actor.Area.Right > item.Bounds.Left && actor.Area.Bottom > item.Bounds.Top)
                                 {
                                     model.player.GoRight = false;
                                     actor.SetXY(item.Bounds.Left - actor.Area.Width, actor.Area.Y);
@@ -209,7 +182,7 @@ namespace Platformer
                             }
                             if (model.player.IsJumping)
                             {
-                                if (oldPlayerPos.Bottom < item.Bounds.Top)
+                                if (oldPlayerPos.Bottom < item.Bounds.Top && oldPlayerPos.Top < item.Bounds.Top && actor.Area.Bottom > item.Bounds.Top)
                                 {
                                     actor.SetXY(actor.Area.Left, item.Bounds.Top - actor.Area.Height);
                                     model.player.IsJumping = false;
@@ -220,13 +193,14 @@ namespace Platformer
                                     model.player.IsFalling = true;
                                     model.player.IsJumping = false;
                                 }
-
                             }
-                            else if (model.player.IsFalling && actor.Area.Right > item.Bounds.Left && actor.Area.Left < item.Bounds.Right && oldPlayerPos.Bottom < item.Bounds.Top)
+                            // && actor.Area.Right > item.Bounds.Left && actor.Area.Left < item.Bounds.Right
+                            else if (model.player.IsFalling  && oldPlayerPos.Bottom < item.Bounds.Top)
                             {
                                 model.player.IsFalling = false;
                                 actor.SetXY(actor.Area.Left, item.Bounds.Top - actor.Area.Height);
                             }
+                            collision = true;
                         }
                     }
                     else if (actor is Enemy)
@@ -236,12 +210,12 @@ namespace Platformer
                             if (actor.Area.Left < item.Bounds.Right && actor.Area.Bottom > item.Bounds.Top)
                             {
                                 (actor as Enemy).TurnAround();
-                                actor.SetX((actor as Enemy).Dx);
+                                actor.SetX((actor as Enemy).Velocity);
                             }
                             else if (actor.Area.Right > item.Bounds.Left && actor.Area.Bottom > item.Bounds.Top)
                             {
                                 (actor as Enemy).TurnAround();
-                                actor.SetX((actor as Enemy).Dx);
+                                actor.SetX((actor as Enemy).Velocity);
                             }
                         }
                     }
@@ -310,7 +284,7 @@ namespace Platformer
         int playerAnimationTick = 1;
         private void PlayerAnimation()
         {
-            if (GoRight)
+            if (model.player.GoRight)
             {
                 if (playerAnimationTick % 8 == 0)
                 {
@@ -322,7 +296,7 @@ namespace Platformer
                 }
                 playerAnimationTick++;
             }
-            else if (GoLeft)
+            else if (model.player.GoLeft)
             {
                 if (playerAnimationTick % 8 == 0)
                 {

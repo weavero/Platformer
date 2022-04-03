@@ -15,17 +15,17 @@ namespace Platformer
         protected int lives;
         public int Lives { get { return lives; } }
 
-        protected double vel;
-
         public bool GoLeft { get; set; }
         public bool GoRight { get; set; }
         public bool IsJumping { get; set; }
         public bool IsFalling { get; set; }
 
+        public double Velocity { get; set; }
+
         protected Actor(double x, double y, int ActorWidth, int ActorHeight)
         {
             area = new Rect(x, y, ActorWidth, ActorHeight);
-            vel = 0;
+            Velocity = 0;
         }
 
         public void SetX(double x)
