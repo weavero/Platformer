@@ -6,8 +6,7 @@
         xmlns:local="clr-namespace:Platformer"
         xmlns:views="clr-namespace:Platformer.Views"
         mc:Ignorable="d"
-        WindowStyle="None"
-        WindowState="Maximized"
+        SizeToContent="WidthAndHeight"
         WindowStartupLocation="Manual"
         Left="0" Top="0">
     <Grid x:Name="grid">
@@ -15,6 +14,9 @@
             <Canvas>
                 <local:GameControl x:Name="Game"/>
             </Canvas>
+            <Rectangle>
+                
+            </Rectangle>
         </Grid>
         <Grid x:Name="PauseGrid" Visibility="Hidden">
             <views:PauseMenu/>

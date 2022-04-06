@@ -20,21 +20,31 @@ namespace Platformer
 
     class SmallEnemy : Enemy
     {
-        public SmallEnemy(double x, double y) : base(x, y, Config.smallEnemyWidth, Config.smallEnemyHeight)
+        public SmallEnemy(double x, double y) : base(x, y, Config.SmallEnemyWidth, Config.SmallEnemyHeight)
         {
             lives = 1;
             Velocity = 3;
-            Brush = Config.smallEnemyBrush;
+            Brush = Config.SmallEnemyBrush;
         }
     }
 
     class BigEnemy : Enemy
     {
-        public BigEnemy(double x, double y) : base(x, y, Config.bigEnemyWidth, Config.bigEnemyHeight)
+        public BigEnemy(double x, double y) : base(x, y, Config.BigEnemyWidth, Config.BigEnemyHeight)
         {
             lives = 2;
             Velocity = 1;
-            Brush = Config.bigEnemyBrush;
+            Brush = Config.BigEnemyBrush;
+        }
+    }
+
+    class FlyingEnemy : Enemy
+    {
+        public FlyingEnemy(double x, double y) : base(x, y, Config.UnitWidth, Config.UnitHeight)
+        {
+            lives = 1;
+            Velocity = 2;
+            Brush = Config.FlyingEnemy1;
         }
     }
 }

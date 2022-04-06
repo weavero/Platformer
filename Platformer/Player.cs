@@ -10,11 +10,11 @@ namespace Platformer
     {
         public bool WasDamaged { get; set; }
 
-        public Player(double x, double y) : base(x, y, Config.playerWidth, Config.playerHeight)
+        public Player(double x, double y) : base(x, y, Config.PlayerWidth, Config.PlayerHeight)
         {
             lives = 2;
             Velocity = 0;
-            Brush = Config.playerBrush;
+            Brush = Config.PlayerBrush;
         }
 
         double maxVelocity = 5;
@@ -26,19 +26,35 @@ namespace Platformer
             }
             else if (!GoLeft && Velocity < 0)
             {
-                Velocity += 0.10;
+                // Megelőzi, hogy pontatlan legyen a változó
+                if (Velocity > -0.1)
+                {
+                    Velocity = 0;
+                }
+                else
+                {
+                    Velocity += 0.10;
+                }
             }
 
             if (GoRight && Velocity < maxVelocity)
             {
                 Velocity += 0.10;
             }
-            else if (!GoRight && Velocity > 0 && Velocity != 0)
+            else if (!GoRight && Velocity > 0)
             {
-                Velocity -= 0.10;
+                // Megelőzi, hogy pontatlan legyen a változó
+                if (Velocity < 0.1)
+                {
+                    Velocity = 0;
+                }
+                else
+                {
+                    Velocity -= 0.10;
+                }
             }
 
-            SetX(Math.Round(Velocity));
+            SetX(Velocity);
 
             Jump();
             Falling();
@@ -46,41 +62,40 @@ namespace Platformer
 
         public void Bounce()
         {
-            i = 0;
+            StartJumping = false;
         }
 
-        int i = 0;
+        bool StartJumping = false;
         double jumpHeight;
         double maxJump = 7;
         public void Jump()
         {
             if (IsJumping)
             {
-                if (i < 1)
+                if (!StartJumping)
                 {
                     jumpHeight = -maxJump;
-                    i++;
+                    StartJumping = true;
                 }
                 SetY(jumpHeight += 0.1);
             }
             else
             {
-                i = 0;
+                StartJumping = false;
             }
         }
 
-        int j = 0;
+        int StartFalling = 0;
         double fallSpeed;
         public void Falling()
         {
-            if (j < 1)
-            {
-                fallSpeed = 0.10;
-                j++;
-            }
-
             if (IsFalling)
             {
+                if (StartFalling < 1)
+                {
+                    fallSpeed = 0.10;
+                    StartFalling++;
+                }
                 if (fallSpeed < 10)
                 {
                     fallSpeed += 0.10;
@@ -89,7 +104,7 @@ namespace Platformer
             }
             else
             {
-                j--;
+                StartFalling = 0;
             }
         }
     }

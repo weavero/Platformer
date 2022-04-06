@@ -58,11 +58,11 @@ namespace Platformer
             bool collision = false;
             foreach (GeometryDrawing item in dg.Children)
             {
-                if (actor.Area.IntersectsWith(item.Bounds) && actor.Brush != item.Brush)
+                if (actor.Area.IntersectsWith(item.Bounds) && actor.Brush != (ImageBrush)item.Brush)
                 {
                     if (actor is Player)
                     {
-                        if (item.Brush == Config.bigEnemyBrush || item.Brush == Config.smallEnemyBrush)
+                        if (item.Brush == Config.BigEnemyBrush || item.Brush == Config.SmallEnemyBrush)
                         {
                             if (oldPlayerPos.Bottom < item.Bounds.Top)
                             {
@@ -78,9 +78,13 @@ namespace Platformer
                                         {
                                             model.Points += 20;
                                         }
-                                        else
+                                        else if(enemy is BigEnemy)
                                         {
                                             model.Points += 50;
+                                        }
+                                        else if (enemy is FlyingEnemy)
+                                        {
+                                            model.Points += 20;
                                         }
                                     }
                                 }
@@ -104,13 +108,13 @@ namespace Platformer
                             model.player.IsFalling = false;
                             model.player.IsJumping = false;
                         }
-                        else if (item.Brush == Config.coinBrush)
+                        else if (item.Brush == Config.CoinBrush)
                         {
                             model.coin++;
                             model.SetPickupIndex(dg.Children.IndexOf(item));
                             collision = false;
                         }
-                        else if (item.Brush == Config.lifePickup)
+                        else if (item.Brush == Config.LifePickup)
                         {
                             model.Retries++;
                             model.SetPickupIndex(dg.Children.IndexOf(item));
@@ -189,7 +193,7 @@ namespace Platformer
                     }
                     else if (actor is Enemy)
                     {
-                        if (item.Bounds.Height != Config.playerHeight)
+                        if (item.Brush != model.player.Brush)
                         {
                             if (actor.Area.Left < item.Bounds.Right && actor.Area.Bottom > item.Bounds.Top)
                             {
@@ -268,35 +272,35 @@ namespace Platformer
         int playerAnimationTick = 1;
         private void PlayerAnimation()
         {
-            if (model.player.GoRight)
-            {
-                if (playerAnimationTick % 8 == 0)
-                {
-                    Config.playerBrush = new ImageBrush(new BitmapImage(new Uri(@"../../../img/player1.png", UriKind.RelativeOrAbsolute)));
-                }
-                else if(playerAnimationTick % 8 == 4)
-                {
-                    Config.playerBrush = new ImageBrush(new BitmapImage(new Uri(@"../../../img/player2.png", UriKind.RelativeOrAbsolute)));
-                }
-                playerAnimationTick++;
-            }
-            else if (model.player.GoLeft)
-            {
-                if (playerAnimationTick % 8 == 0)
-                {
-                    Config.playerBrush = new ImageBrush(new BitmapImage(new Uri(@"../../../img/rev_player1.png", UriKind.RelativeOrAbsolute)));
-                }
-                else if(playerAnimationTick % 8 == 4)
-                {
-                    Config.playerBrush = new ImageBrush(new BitmapImage(new Uri(@"../../../img/rev_player2.png", UriKind.RelativeOrAbsolute)));
-                }
-                playerAnimationTick++;
-            }
-            else
-            {
-                playerAnimationTick = 1;
-                Config.playerBrush = new ImageBrush(new BitmapImage(new Uri(@"../../../img/corp2.png", UriKind.RelativeOrAbsolute)));
-            }
+            //if (model.player.GoRight)
+            //{
+            //    if (playerAnimationTick % 8 == 0)
+            //    {
+            //        Config.PlayerBrush = new ImageBrush(new BitmapImage(new Uri(@"pack://application:,,,/img/player1.png", UriKind.RelativeOrAbsolute)));
+            //    }
+            //    else if(playerAnimationTick % 8 == 4)
+            //    {
+            //        Config.PlayerBrush = new ImageBrush(new BitmapImage(new Uri(@"pack://application:,,,/img/player2.png", UriKind.RelativeOrAbsolute)));
+            //    }
+            //    playerAnimationTick++;
+            //}
+            //else if (model.player.GoLeft)
+            //{
+            //    if (playerAnimationTick % 8 == 0)
+            //    {
+            //        Config.PlayerBrush = new ImageBrush(new BitmapImage(new Uri(@"pack://application:,,,/img/rev_player1.png", UriKind.RelativeOrAbsolute)));
+            //    }
+            //    else if(playerAnimationTick % 8 == 4)
+            //    {
+            //        Config.PlayerBrush = new ImageBrush(new BitmapImage(new Uri(@"pack://application:,,,/img/rev_player2.png", UriKind.RelativeOrAbsolute)));
+            //    }
+            //    playerAnimationTick++;
+            //}
+            //else
+            //{
+            //    playerAnimationTick = 1;
+            //    Config.PlayerBrush = new ImageBrush(new BitmapImage(new Uri(@"pack://application:,,,/img/p1_stand.png", UriKind.RelativeOrAbsolute)));
+            //}
         }
 
         int enemyAnimationTick = 1;
@@ -368,15 +372,19 @@ namespace Platformer
                     switch (model.map[i, j])
                     {
                         case 'P':
-                            model.player = new Player(j * Config.unitWidth, i * Config.unitHeight);
+                            model.player = new Player(j * Config.UnitWidth, i * Config.UnitHeight);
                             break;
 
                         case 'e':
-                            model.enemies.Add(new SmallEnemy(j * Config.unitWidth, i * Config.unitHeight));
+                            model.enemies.Add(new SmallEnemy(j * Config.UnitWidth, i * Config.UnitHeight));
                             break;
 
                         case 'E':
-                            model.enemies.Add(new BigEnemy(j * Config.unitWidth, i * Config.unitHeight + (Config.unitHeight - Config.bigEnemyHeight)));
+                            model.enemies.Add(new BigEnemy(j * Config.UnitWidth, i * Config.UnitHeight + (Config.UnitHeight - Config.BigEnemyHeight)));
+                            break;
+
+                        case 'f':
+                            model.enemies.Add(new FlyingEnemy(j * Config.UnitWidth, i * Config.UnitHeight));
                             break;
                     }
                 }

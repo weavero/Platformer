@@ -38,16 +38,13 @@ namespace Platformer
                 enemyIndexes = new List<int>();
                 foreach (GeometryDrawing item in PlayAreaDrawing.Children)
                 {
-                    if (item.Brush is ImageBrush)
+                    if (Config.PlayerBrushes.Contains((ImageBrush)item.Brush))
                     {
-                        if (Config.playerBrushes.Contains((ImageBrush)item.Brush))
-                        {
-                            playerIndex = PlayAreaDrawing.Children.IndexOf(item);
-                        }
-                        else if (item.Brush == Config.smallEnemyBrush || item.Brush == Config.bigEnemyBrush)
-                        {
-                            enemyIndexes.Add(PlayAreaDrawing.Children.IndexOf(item));
-                        }
+                        playerIndex = PlayAreaDrawing.Children.IndexOf(item);
+                    }
+                    else if (item.Brush == Config.SmallEnemyBrush || item.Brush == Config.BigEnemyBrush)
+                    {
+                        enemyIndexes.Add(PlayAreaDrawing.Children.IndexOf(item));
                     }
                 }
                 UpdateActors();
@@ -77,36 +74,36 @@ namespace Platformer
                     switch (model.Map[i, j])
                     {
                         case 'g':
-                            PlayAreaDrawing.Children.Add(new GeometryDrawing(Config.groundBrush, null, new RectangleGeometry(new Rect(j * Config.unitWidth, i * Config.unitHeight, Config.unitWidth, Config.unitHeight))));
+                            PlayAreaDrawing.Children.Add(new GeometryDrawing(Config.groundBrush, null, new RectangleGeometry(new Rect(j * Config.UnitWidth, i * Config.UnitHeight, Config.UnitWidth, Config.UnitHeight))));
                             break;
 
                         case 'w':
-                            PlayAreaDrawing.Children.Add(new GeometryDrawing(Config.wallBrush, null, new RectangleGeometry(new Rect(j * Config.unitWidth, i * Config.unitHeight, Config.unitWidth, Config.unitHeight))));
+                            PlayAreaDrawing.Children.Add(new GeometryDrawing(Config.wallBrush, null, new RectangleGeometry(new Rect(j * Config.UnitWidth, i * Config.UnitHeight, Config.UnitWidth, Config.UnitHeight))));
                             break;
 
                         case 'c':
-                            PlayAreaDrawing.Children.Add(new GeometryDrawing(Config.coinBrush, null, new RectangleGeometry(new Rect(j * Config.unitWidth + (Config.unitWidth - Config.coinSize) / 2, i * Config.unitHeight, Config.coinSize, Config.coinSize))));
+                            PlayAreaDrawing.Children.Add(new GeometryDrawing(Config.CoinBrush, null, new RectangleGeometry(new Rect(j * Config.UnitWidth, i * Config.UnitHeight, Config.UnitWidth, Config.UnitHeight))));
                             break;
 
                         case 'F':
-                            PlayAreaDrawing.Children.Add(new GeometryDrawing(Config.finishBrush, null, new RectangleGeometry(new Rect(j * Config.unitWidth + (Config.unitWidth - 30) / 2, i * Config.unitHeight - 50, 50, 100))));
+                            PlayAreaDrawing.Children.Add(new GeometryDrawing(Config.finishBrush, null, new RectangleGeometry(new Rect(j * Config.UnitWidth + (Config.UnitWidth - 30) / 2, i * Config.UnitHeight - 50, 50, 100))));
                             break;
 
                         case 'l':
-                            PlayAreaDrawing.Children.Add(new GeometryDrawing(Config.lifePickup, null, new RectangleGeometry(new Rect(j * Config.unitWidth, i * Config.unitHeight, 32, 32))));
+                            PlayAreaDrawing.Children.Add(new GeometryDrawing(Config.LifePickup, null, new RectangleGeometry(new Rect(j * Config.UnitWidth, i * Config.UnitHeight, 32, 32))));
                             break;
 
                         case 'P':
-                            PlayAreaDrawing.Children.Add(new GeometryDrawing(Config.playerBrush, null, new RectangleGeometry(model.player.Area)));
+                            PlayAreaDrawing.Children.Add(new GeometryDrawing(Config.PlayerBrush, null, new RectangleGeometry(model.player.Area)));
                             break;
 
                         case 'e':
-                            PlayAreaDrawing.Children.Add(new GeometryDrawing(Config.smallEnemyBrush, null, new RectangleGeometry(model.Enemies[index].Area)));
+                            PlayAreaDrawing.Children.Add(new GeometryDrawing(Config.SmallEnemyBrush, null, new RectangleGeometry(model.Enemies[index].Area)));
                             index++;
                             break;
 
                         case 'E':
-                            PlayAreaDrawing.Children.Add(new GeometryDrawing(Config.bigEnemyBrush, null, new RectangleGeometry(model.Enemies[index].Area)));
+                            PlayAreaDrawing.Children.Add(new GeometryDrawing(Config.BigEnemyBrush, null, new RectangleGeometry(model.Enemies[index].Area)));
                             index++;
                             break;
                     }
@@ -123,31 +120,31 @@ namespace Platformer
                 levelUpdated = true;
             }
 
-            int i = 0;
-            while (i < PlayAreaDrawing.Children.Count && PlayAreaDrawing.Children[i].Bounds.Y < 2000)
-            {
-                i++;
-            }
+            //int i = 0;
+            //while (i < PlayAreaDrawing.Children.Count && PlayAreaDrawing.Children[i].Bounds.Y < 2000)
+            //{
+            //    i++;
+            //}
 
-            if (i < PlayAreaDrawing.Children.Count)
-            {
-                PlayAreaDrawing.Children.RemoveAt(i);
-            }
+            //if (i < PlayAreaDrawing.Children.Count)
+            //{
+            //    PlayAreaDrawing.Children.RemoveAt(i);
+            //}
         }
 
         private void UpdateActors()
         {
-            PlayAreaDrawing.Children[playerIndex] = new GeometryDrawing(Config.playerBrush, null, new RectangleGeometry(model.player.Area));
+            PlayAreaDrawing.Children[playerIndex] = new GeometryDrawing(Config.PlayerBrush, null, new RectangleGeometry(model.player.Area));
             int i = 0;
             foreach (int enemyIndex in enemyIndexes)
             {
                 if (model.Enemies[i] is SmallEnemy)
                 {
-                    PlayAreaDrawing.Children[enemyIndex] = new GeometryDrawing(Config.smallEnemyBrush, null, new RectangleGeometry(model.Enemies[i].Area));
+                    PlayAreaDrawing.Children[enemyIndex] = new GeometryDrawing(Config.SmallEnemyBrush, null, new RectangleGeometry(model.Enemies[i].Area));
                 }
                 else
                 {
-                    PlayAreaDrawing.Children[enemyIndex] = new GeometryDrawing(Config.bigEnemyBrush, null, new RectangleGeometry(model.Enemies[i].Area));
+                    PlayAreaDrawing.Children[enemyIndex] = new GeometryDrawing(Config.BigEnemyBrush, null, new RectangleGeometry(model.Enemies[i].Area));
                 }
                 i++;
             }
@@ -178,7 +175,7 @@ namespace Platformer
             FormattedText pointText = new FormattedText(model.Points.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
             points = new GeometryDrawing(null, new Pen(Brushes.White, 1), pointText.BuildGeometry(new Point(150, 0)));
 
-            GeometryDrawing coinPic = new GeometryDrawing(Config.coinBrush, null, new RectangleGeometry(new Rect(0, 0, 0, 0)));
+            GeometryDrawing coinPic = new GeometryDrawing(Config.CoinBrush, null, new RectangleGeometry(new Rect(0, 0, 0, 0)));
 
             FormattedText cointext = new FormattedText(model.Coin.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
             coinCounter = new GeometryDrawing(null, new Pen(Brushes.White, 1), cointext.BuildGeometry(new Point(0, 0)));
@@ -199,7 +196,7 @@ namespace Platformer
         private void UpdateHUD()
         {
             //HUD background
-            HUDBackground.Geometry = new RectangleGeometry(new Rect(model.player.Area.Left - model.mainWindow.Width, model.mainWindow.Height - model.player.Area.Top, model.mainWindow.Width * 2, 100));
+            HUDBackground.Geometry = new RectangleGeometry(new Rect(model.player.Area.Left - model.mainWindow.Width, model.player.Area.Bottom + (model.mainWindow.Height * 0.2), model.mainWindow.Width * 2, 100));
             HUDDrawing.Children[0] = HUDBackground;
 
             //FormattedText playerX = new FormattedText(model.player.Area.X.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
@@ -220,7 +217,7 @@ namespace Platformer
             points.Geometry = pointText.BuildGeometry(new Point(model.player.Area.Left + 50, model.player.Area.Top + 540));
             HUDDrawing.Children[3] = points;
 
-            HUDDrawing.Children[4] = new GeometryDrawing(Config.coinBrush, null, new RectangleGeometry(new Rect(model.player.Area.Left + 180, model.player.Area.Top + 545, 10, 10)));
+            HUDDrawing.Children[4] = new GeometryDrawing(Config.CoinBrush, null, new RectangleGeometry(new Rect(model.player.Area.Left + 180, model.player.Area.Top + 545, 10, 10)));
             
             FormattedText coinText = new FormattedText(model.Coin.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
             coinCounter.Geometry = coinText.BuildGeometry(new Point(model.player.Area.Left + 200, model.mainWindow.Height - 100));

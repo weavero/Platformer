@@ -7,12 +7,29 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="img\bg.png" />
+    <None Remove="img\blockerMad.png" />
+    <None Remove="img\box.png" />
     <None Remove="img\coin.png" />
+    <None Remove="img\coinGold.png" />
     <None Remove="img\corp2.png" />
     <None Remove="img\enemy1.jpg" />
     <None Remove="img\enemy2.jpg" />
+    <None Remove="img\finish.png" />
+    <None Remove="img\flyFly1.png" />
+    <None Remove="img\flyFly2.png" />
+    <None Remove="img\grass.png" />
     <None Remove="img\ground.png" />
     <None Remove="img\hitman.jpg" />
+    <None Remove="img\license.txt" />
+    <None Remove="img\life_plusone.png" />
+    <None Remove="img\p1_stand.png" />
+    <None Remove="img\player1.png" />
+    <None Remove="img\player2.png" />
+    <None Remove="img\rev_player1.png" />
+    <None Remove="img\rev_player2.png" />
+    <None Remove="img\slimeWalk1.png" />
+    <None Remove="img\slimeWalk2.png" />
     <None Remove="img\szily.jpg" />
     <None Remove="Levels\1.level" />
     <None Remove="Levels\2.level" />
@@ -20,6 +37,7 @@
     <None Remove="PlatformerDatabase.ldf" />
     <None Remove="PlatformerDatabase.mdf" />
     <None Remove="PlatformerDatabase_log.ldf" />
+    <None Remove="Sounds\Jump.wav" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,13 +55,78 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="img\coin.png" />
-    <Resource Include="img\corp2.png" />
-    <Resource Include="img\enemy1.jpg" />
-    <Resource Include="img\enemy2.jpg" />
-    <Resource Include="img\ground.png" />
-    <Resource Include="img\hitman.jpg" />
-    <Resource Include="img\szily.jpg" />
+    <Content Include="img\bg.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\blockerMad.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\box.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\coin.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\coinGold.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\corp2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\enemy1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\enemy2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\finish.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\flyFly1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\flyFly2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\grass.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\ground.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\hitman.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\license.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\life_plusone.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\p1_stand.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\player1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\player2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\rev_player1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\rev_player2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\slimeWalk1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\slimeWalk2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\szily.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Levels\1.level">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -59,10 +142,15 @@
     <Content Include="PlatformerDatabase_log.ldf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Sounds\Jump.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Sounds\" />
+    <Compile Update="Config.cs">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Compile>
   </ItemGroup>
 
 </Project>

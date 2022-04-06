@@ -29,7 +29,7 @@ namespace Platformer
         public void Control_Loaded(object sender, RoutedEventArgs e)
         {
             window = (MainWindow)Window.GetWindow(this);
-
+            Background = Config.backgroundBrush;
             if (window != null)
             {
                 timer = new DispatcherTimer();
@@ -53,7 +53,7 @@ namespace Platformer
             }
 
             Canvas.SetLeft(this, -model.player.Area.Left + model.mainWindow.Width / 2);
-            Canvas.SetTop(this, -model.player.Area.Top + model.mainWindow.Height / 2);
+            Canvas.SetTop(this, model.mainWindow.Height / 2);
 
             InvalidateVisual();
         }
@@ -62,11 +62,11 @@ namespace Platformer
         {
             if (IsVisible)
             {
-                if (model.player.IsJumping || model.player.IsFalling)
-                {
+                //if (model.player.IsJumping || model.player.IsFalling)
+                //{
                     if (e.Key == Key.A || e.Key == Key.Left) { model.player.GoLeft = true; }
                     else if (e.Key == Key.D || e.Key == Key.Right) { model.player.GoRight = true; }
-                }
+                //}
                 else if (e.Key == Key.Space || e.Key == Key.Up)
                 {
                     if (!model.player.IsJumping && !model.player.IsFalling)

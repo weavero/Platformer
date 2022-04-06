@@ -1,7 +1,9 @@
 c - Érme
 E - Nagy ellenség
 e - Kis ellenség
+f - Repülő ellenség
 F - Cél
 g - Talaj
 P - Játékos
+s - Tüskés mező
 w - Fal

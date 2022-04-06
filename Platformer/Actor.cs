@@ -18,12 +18,12 @@ namespace Platformer
 
         public bool GoLeft { get; set; }
         public bool GoRight { get; set; }
-        public bool IsJumping { get; set; }
-        public bool IsFalling { get; set; }
+        public bool IsJumping;
+        public bool IsFalling;
 
         public double Velocity;
-      
-        public Brush Brush { get; set; }
+
+        public ImageBrush Brush;
 
         protected Actor(double x, double y, int ActorWidth, int ActorHeight)
         {

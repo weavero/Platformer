@@ -30,11 +30,11 @@ namespace Platformer
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            Uri iconUri = new Uri("../../../img/hitman.jpg", UriKind.RelativeOrAbsolute);
+            Uri iconUri = new Uri("pack://application:,,,/img/hitman.jpg", UriKind.RelativeOrAbsolute);
             Icon = BitmapFrame.Create(iconUri);
-            Background = Config.BackgroundImage;
-            Width = SystemParameters.FullPrimaryScreenWidth;
-            Height = SystemParameters.FullPrimaryScreenHeight;
+            Background = Config.backgroundBrush;
+            //Width = SystemParameters.FullPrimaryScreenWidth;
+            //Height = SystemParameters.FullPrimaryScreenHeight;
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             PlatformerContext db = new PlatformerContext();
             LeaderboardEntry player = new LeaderboardEntry
@@ -67,8 +67,6 @@ namespace Platformer
             db.LeaderboardEntries.Add(a1);
             db.LeaderboardEntries.Add(a2);
             db.SaveChanges();
-
-            
         }
 
         public void ShowPause()
