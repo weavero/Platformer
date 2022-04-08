@@ -38,11 +38,11 @@ namespace Platformer
                 enemyIndexes = new List<int>();
                 foreach (GeometryDrawing item in PlayAreaDrawing.Children)
                 {
-                    if (Config.PlayerBrushes.Contains((ImageBrush)item.Brush))
+                    if (Config.PlayerBrushes.Contains(item.Brush) || item.Brush == null)
                     {
                         playerIndex = PlayAreaDrawing.Children.IndexOf(item);
                     }
-                    else if (item.Brush == Config.SmallEnemyBrush || item.Brush == Config.BigEnemyBrush)
+                    else if (Config.EnemyBrushes.Contains(item.Brush))
                     {
                         enemyIndexes.Add(PlayAreaDrawing.Children.IndexOf(item));
                     }
@@ -81,16 +81,20 @@ namespace Platformer
                             PlayAreaDrawing.Children.Add(new GeometryDrawing(Config.wallBrush, null, new RectangleGeometry(new Rect(j * Config.UnitWidth, i * Config.UnitHeight, Config.UnitWidth, Config.UnitHeight))));
                             break;
 
+                        case 's':
+                            PlayAreaDrawing.Children.Add(new GeometryDrawing(Config.spikeBrush, null, new RectangleGeometry(new Rect(j * Config.UnitWidth, i * Config.UnitHeight, Config.UnitWidth, Config.UnitHeight))));
+                            break;
+
+                        case 'F':
+                            PlayAreaDrawing.Children.Add(new GeometryDrawing(Config.finishBrush, null, new RectangleGeometry(new Rect(j * Config.UnitWidth + Config.UnitWidth / 2, i * Config.UnitHeight - Config.UnitHeight, Config.UnitWidth, Config.UnitHeight * 2))));
+                            break;
+
                         case 'c':
                             PlayAreaDrawing.Children.Add(new GeometryDrawing(Config.CoinBrush, null, new RectangleGeometry(new Rect(j * Config.UnitWidth, i * Config.UnitHeight, Config.UnitWidth, Config.UnitHeight))));
                             break;
 
-                        case 'F':
-                            PlayAreaDrawing.Children.Add(new GeometryDrawing(Config.finishBrush, null, new RectangleGeometry(new Rect(j * Config.UnitWidth + (Config.UnitWidth - 30) / 2, i * Config.UnitHeight - 50, 50, 100))));
-                            break;
-
                         case 'l':
-                            PlayAreaDrawing.Children.Add(new GeometryDrawing(Config.LifePickup, null, new RectangleGeometry(new Rect(j * Config.UnitWidth, i * Config.UnitHeight, 32, 32))));
+                            PlayAreaDrawing.Children.Add(new GeometryDrawing(Config.LifePickup, null, new RectangleGeometry(new Rect(j * Config.UnitWidth, i * Config.UnitHeight, Config.UnitWidth, Config.UnitHeight))));
                             break;
 
                         case 'P':
@@ -104,6 +108,11 @@ namespace Platformer
 
                         case 'E':
                             PlayAreaDrawing.Children.Add(new GeometryDrawing(Config.BigEnemyBrush, null, new RectangleGeometry(model.Enemies[index].Area)));
+                            index++;
+                            break;
+
+                        case 'f':
+                            PlayAreaDrawing.Children.Add(new GeometryDrawing(Config.FlyingEnemy1, null, new RectangleGeometry(model.Enemies[index].Area)));
                             index++;
                             break;
                     }
@@ -120,21 +129,22 @@ namespace Platformer
                 levelUpdated = true;
             }
 
-            //int i = 0;
-            //while (i < PlayAreaDrawing.Children.Count && PlayAreaDrawing.Children[i].Bounds.Y < 2000)
-            //{
-            //    i++;
-            //}
+            int i = 0;
+            while (i < PlayAreaDrawing.Children.Count && PlayAreaDrawing.Children[i].Bounds.Y < 2000)
+            {
+                i++;
+            }
 
-            //if (i < PlayAreaDrawing.Children.Count)
-            //{
-            //    PlayAreaDrawing.Children.RemoveAt(i);
-            //}
+            if (i < PlayAreaDrawing.Children.Count)
+            {
+                PlayAreaDrawing.Children.RemoveAt(i);
+            }
         }
 
         private void UpdateActors()
         {
             PlayAreaDrawing.Children[playerIndex] = new GeometryDrawing(Config.PlayerBrush, null, new RectangleGeometry(model.player.Area));
+            
             int i = 0;
             foreach (int enemyIndex in enemyIndexes)
             {
@@ -142,9 +152,13 @@ namespace Platformer
                 {
                     PlayAreaDrawing.Children[enemyIndex] = new GeometryDrawing(Config.SmallEnemyBrush, null, new RectangleGeometry(model.Enemies[i].Area));
                 }
-                else
+                else if (model.enemies[i] is BigEnemy)
                 {
                     PlayAreaDrawing.Children[enemyIndex] = new GeometryDrawing(Config.BigEnemyBrush, null, new RectangleGeometry(model.Enemies[i].Area));
+                }
+                else if (model.enemies[i] is FlyingEnemy)
+                {
+                    PlayAreaDrawing.Children[enemyIndex] = new GeometryDrawing(Config.FlyingEnemy1, null, new RectangleGeometry(model.Enemies[i].Area));
                 }
                 i++;
             }
@@ -159,12 +173,6 @@ namespace Platformer
         {
             HUDDrawing = new DrawingGroup();
             HUDBackground = new GeometryDrawing(Brushes.Black, null, new RectangleGeometry(new Rect(0, 0, 0, 50)));
-
-            //FormattedText formattedText = new FormattedText(model.player.Area.X.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
-            //GeometryDrawing text = new GeometryDrawing(null, new Pen(Brushes.Black, 1), formattedText.BuildGeometry(new Point(400, 550)));
-
-            //FormattedText formattedText2 = new FormattedText(model.player.Area.Y.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
-            //GeometryDrawing text2 = new GeometryDrawing(null, new Pen(Brushes.Black, 1), formattedText2.BuildGeometry(new Point(450, 550)));
 
             FormattedText formattedText3 = new FormattedText(model.player.Lives.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
             lives = new GeometryDrawing(null, new Pen(Brushes.White, 1), formattedText3.BuildGeometry(new Point(50, 0)));
@@ -182,45 +190,35 @@ namespace Platformer
 
             HUDDrawing.Children.Add(HUDBackground);
 
-            //HUDDrawing.Children.Add(text);
-            //HUDDrawing.Children.Add(text2);
-
             HUDDrawing.Children.Add(lives);
-
             HUDDrawing.Children.Add(timeElapsed);
             HUDDrawing.Children.Add(points);
             HUDDrawing.Children.Add(coinPic);
             HUDDrawing.Children.Add(coinCounter);
         }
 
+        double HUDHeight = 100;
         private void UpdateHUD()
         {
-            //HUD background
-            HUDBackground.Geometry = new RectangleGeometry(new Rect(model.player.Area.Left - model.mainWindow.Width, model.player.Area.Bottom + (model.mainWindow.Height * 0.2), model.mainWindow.Width * 2, 100));
+            HUDBackground.Geometry = new RectangleGeometry(new Rect(model.player.Area.Left - model.mainWindow.Width, model.mainWindow.Height - HUDHeight, model.mainWindow.Width * 2, HUDHeight));
             HUDDrawing.Children[0] = HUDBackground;
 
-            //FormattedText playerX = new FormattedText(model.player.Area.X.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
-            //HUDDrawing.Children[2] = new GeometryDrawing(null, new Pen(Brushes.Black, 1), playerX.BuildGeometry(new Point(400, 550)));
-
-            //FormattedText playerY = new FormattedText(model.player.Area.Y.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
-            //HUDDrawing.Children[3] = new GeometryDrawing(null, new Pen(Brushes.Black, 1), playerY.BuildGeometry(new Point(450, 550)));
-
-            FormattedText playerLives = new FormattedText("Életek " + model.Retries.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
-            lives.Geometry = playerLives.BuildGeometry(new Point(model.player.Area.Left - 100, model.player.Area.Top + 540));
+            FormattedText playerLives = new FormattedText("Életek " + model.Retries.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("KenVector Future"), 16, Brushes.Black);
+            lives.Geometry = playerLives.BuildGeometry(new Point(model.player.Area.Left - 100, model.mainWindow.Height - HUDHeight / 2));
             HUDDrawing.Children[1] = lives;
 
-            FormattedText elapsedTime = new FormattedText("Idő " + Convert.ToInt32(model.Timer.Elapsed.TotalSeconds).ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
-            timeElapsed.Geometry = elapsedTime.BuildGeometry(new Point(model.player.Area.Left, model.player.Area.Top + 540));
+            FormattedText elapsedTime = new FormattedText("Idő " + Convert.ToInt32(model.Timer.Elapsed.TotalSeconds).ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("KenVector Future"), 16, Brushes.Black);
+            timeElapsed.Geometry = elapsedTime.BuildGeometry(new Point(model.player.Area.Left, model.mainWindow.Height - HUDHeight / 2));
             HUDDrawing.Children[2] = timeElapsed;
 
-            FormattedText pointText = new FormattedText("Pontok: " + model.Points.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
-            points.Geometry = pointText.BuildGeometry(new Point(model.player.Area.Left + 50, model.player.Area.Top + 540));
+            FormattedText pointText = new FormattedText("Pontok: " + model.Points.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("KenVector Future"), 16, Brushes.Black);
+            points.Geometry = pointText.BuildGeometry(new Point(model.player.Area.Left + 50, model.mainWindow.Height - HUDHeight / 2));
             HUDDrawing.Children[3] = points;
 
-            HUDDrawing.Children[4] = new GeometryDrawing(Config.CoinBrush, null, new RectangleGeometry(new Rect(model.player.Area.Left + 180, model.player.Area.Top + 545, 10, 10)));
+            HUDDrawing.Children[4] = new GeometryDrawing(Config.CoinBrush, null, new RectangleGeometry(new Rect(model.player.Area.Left + 170, model.mainWindow.Height - HUDHeight / 2, Config.UnitWidth, Config.UnitHeight)));
             
-            FormattedText coinText = new FormattedText(model.Coin.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
-            coinCounter.Geometry = coinText.BuildGeometry(new Point(model.player.Area.Left + 200, model.mainWindow.Height - 100));
+            FormattedText coinText = new FormattedText(model.Coin.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("KenVector Future"), 16, Brushes.Black);
+            coinCounter.Geometry = coinText.BuildGeometry(new Point(model.player.Area.Left + 200, model.mainWindow.Height - HUDHeight / 2));
             HUDDrawing.Children[5] = coinCounter;
         }
     }
