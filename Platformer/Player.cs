@@ -8,7 +8,7 @@ namespace Platformer
 {
     class Player : Actor
     {
-        public bool WasDamaged { get; set; }
+        
 
         public Player(double x, double y) : base(x, y, Config.PlayerWidth, Config.PlayerHeight)
         {
@@ -19,6 +19,15 @@ namespace Platformer
 
         double maxVelocity = 5;
         public void Move()
+        {
+            MoveLeft();
+            MoveRight();
+            Jump();
+            Falling();
+            SetX(Velocity);
+        }
+
+        private void MoveLeft()
         {
             if (GoLeft && Velocity > -maxVelocity)
             {
@@ -36,7 +45,10 @@ namespace Platformer
                     Velocity += 0.10;
                 }
             }
+        }
 
+        private void MoveRight()
+        {
             if (GoRight && Velocity < maxVelocity)
             {
                 Velocity += 0.10;
@@ -53,21 +65,12 @@ namespace Platformer
                     Velocity -= 0.10;
                 }
             }
-
-            SetX(Velocity);
-
-            Jump();
-            Falling();
         }
 
-        public void Bounce()
-        {
-            StartJumping = false;
-        }
 
         bool StartJumping = false;
         double jumpHeight;
-        double maxJump = 7;
+        double maxJump = 5;
         public void Jump()
         {
             if (IsJumping)
@@ -106,6 +109,14 @@ namespace Platformer
             {
                 StartFalling = 0;
             }
+        }
+
+        public void Bounce()
+        {
+            StartJumping = false;
+            IsFalling = false;
+            IsJumping = true;
+            Jump();
         }
     }
 }

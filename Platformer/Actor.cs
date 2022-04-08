@@ -16,6 +16,8 @@ namespace Platformer
         protected int lives;
         public int Lives { get { return lives; } }
 
+        public int Invincibility = 0;
+
         public bool GoLeft { get; set; }
         public bool GoRight { get; set; }
         public bool IsJumping;
@@ -54,6 +56,23 @@ namespace Platformer
         public void PlusHealth()
         {
             lives++;
+        }
+
+        public void Damaged()
+        {
+            if (Invincibility == 0)
+            {
+                MinusHealth();
+                Invincibility = 32;
+            }
+        }
+
+        public void InvincibilityTick()
+        {
+            if (Invincibility > 0)
+            {
+                Invincibility--;
+            }
         }
     }
 }
