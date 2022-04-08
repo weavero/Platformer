@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -11,7 +12,8 @@ namespace Platformer
     public static class Config
     {
         public static readonly Pen penBrush = new Pen(Brushes.Black, 1);
-        public static readonly FontFamily Font = new FontFamily(new Uri("pack://application:,,,/"), "/Textures/Font/#Pericles Light");
+        public static readonly FontFamily Font = new FontFamily(new Uri("pack://application:,,,/"), "./Textures/Font/#KenVector Future");
+        public static Typeface typeface = new Typeface(Font, FontStyles.Normal, FontWeights.Regular, FontStretches.Normal);
 
         public static readonly ImageBrush groundBrush = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/Textures/Game/grass.png")));
         public static readonly ImageBrush wallBrush = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/Textures/Game/box.png")));

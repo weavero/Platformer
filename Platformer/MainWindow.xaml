@@ -5,17 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Platformer"
         xmlns:views="clr-namespace:Platformer.Views"
+        xmlns:controls="clr-namespace:Platformer.Controls"
         mc:Ignorable="d"
         Title="Platformer"
         WindowStartupLocation="Manual"
         Left="0" Top="0"
-        Width="1340"
-        Height="768"
-        WindowStyle="None">
+        WindowStyle="None"
+        WindowState="Maximized">
     <Grid x:Name="grid">
         <Grid x:Name="GameGrid" Visibility="Hidden">
             <Canvas x:Name="canvas">
-                <local:GameControl x:Name="Game"/>
+                <controls:GameControl x:Name="Game"/>
             </Canvas>
         </Grid>
         <Grid x:Name="PauseGrid" Visibility="Hidden">

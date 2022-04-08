@@ -13,6 +13,7 @@ using System.Windows.Shapes;
 using System.Linq;
 using Platformer;
 using Platformer.Models;
+using Platformer.Data;
 
 namespace Platformer.Views
 {

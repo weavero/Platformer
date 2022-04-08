@@ -7,12 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Textures\Font\kenvector_future.ttf">
+    <Resource Include="Textures\Font\kenvector_future.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Textures\Font\kenvector_future_thin.ttf">
+    </Resource>
+    <Resource Include="Textures\Font\kenvector_future_thin.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>
@@ -94,10 +94,10 @@
     <Content Include="Levels\3.level">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="PlatformerDatabase.mdf">
+    <Content Include="Data\PlatformerDatabase.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="PlatformerDatabase_log.ldf">
+    <Content Include="Data\PlatformerDatabase_log.ldf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Sounds\Jump.wav">
