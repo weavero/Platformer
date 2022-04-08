@@ -6,14 +6,23 @@
              xmlns:local="clr-namespace:Platformer.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <FontFamily x:Key="FontTest">/Textures/Font/#KenVector Future</FontFamily>
+    </UserControl.Resources>
     <Grid>
         <Grid.Background>
             <SolidColorBrush Color="Black" Opacity="1"/>
         </Grid.Background>
         <StackPanel>
-            <TextBlock Foreground="Red" HorizontalAlignment="Center" Margin="50" FontSize="30">Elfogytak az életeid</TextBlock>
-            <Button Width="120" Height="20" Margin="20" Click="RestartGame">Újrakezdés</Button>
-            <Button Width="120" Height="20" Click="ToMainMenu">Kilépés a főmenübe</Button>
+            <TextBlock Foreground="#FFD33333" HorizontalAlignment="Center" Margin="50" FontSize="30" FontStyle="Normal" FontFamily="{StaticResource FontTest}">Elfogytak az életeid</TextBlock>
+            <Button Width="120" Height="20" Margin="20" Click="RestartGame" BorderBrush="{x:Null}" FontFamily="{StaticResource FontTest}">
+                <Button.Background>
+                    <ImageBrush ImageSource="/Textures/UI/grey_button00.png"/>
+                </Button.Background> Újrakezdés</Button>
+            <Button Width="170" Height="20" Click="ToMainMenu" BorderBrush="{x:Null}" FontFamily="{StaticResource FontTest}">
+                <Button.Background>
+                    <ImageBrush ImageSource="/Textures/UI/grey_button00.png"/>
+                </Button.Background> Kilépés a fömenübe</Button>
         </StackPanel>
     </Grid>
 </UserControl>

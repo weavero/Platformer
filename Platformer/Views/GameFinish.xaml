@@ -7,18 +7,28 @@
              xmlns:model="clr-namespace:Platformer.Models"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="MidnightBlue">
+    <UserControl.Resources>
+        <FontFamily x:Key="FontTest">/Textures/Font/#KenVector Future</FontFamily>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="/Textures/Game/grassCenter.png"/>
+        </Grid.Background>
         <TextBox Margin="640,99,40,331" x:Name="NameInput" Width="120" Height="20"></TextBox>
         <TextBlock Margin="555,141,10,288" Foreground="White" x:Name="Alert" TextWrapping="WrapWithOverflow" Width="230" Height="30" Visibility="Hidden">Írj be egy legalább 3 karakter hosszú nevet!</TextBlock>
         <DataGrid x:Name="dataGrid" Margin="250,25,250,25" Width="300" Height="400" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False"
                   CanUserResizeRows="False" CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" 
-                  AutoGenerateColumns="False">
+                  AutoGenerateColumns="False" FontFamily="{StaticResource FontTest}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Név" Binding="{Binding Name}"/>
                 <DataGridTextColumn Header="Pontok" Binding="{Binding Points}"/>
-                <DataGridTextColumn Header="Idő" Binding="{Binding Time}"/>
+                <DataGridTextColumn Header="Idö" Binding="{Binding Time}"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Button Width="60" Height="20" Margin="700,390,40,40" Click="ShowMainMenu">Tovább</Button>
+        <Button Height="20" Width="80" Margin="672,390,40,40" Click="ShowMainMenu" BorderBrush="{x:Null}" FontFamily="{StaticResource FontTest}">
+            <Button.Background>
+                <ImageBrush ImageSource="/Textures/UI/grey_button00.png"/>
+            </Button.Background> Tovább
+        </Button>
     </Grid>
 </UserControl>

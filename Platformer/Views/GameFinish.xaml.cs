@@ -44,7 +44,7 @@ namespace Platformer.Views
             MainWindow window = (MainWindow)Window.GetWindow(this);
             if (NameInput.Text.Trim().Length < 3 || !NameInput.Text.Any(x => Char.IsLetterOrDigit(x)))
             {
-                Alert.Visibility = Visibility.Visible;
+                MessageBox.Show("Minimum 3 karakter hosszú név, speciális karakterek nélkül", "Hibás bemenet", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {

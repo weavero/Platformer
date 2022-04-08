@@ -30,8 +30,7 @@ namespace Platformer
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            Uri iconUri = new Uri("pack://application:,,,/img/hitman.jpg", UriKind.RelativeOrAbsolute);
-            Icon = BitmapFrame.Create(iconUri);
+            Icon = BitmapFrame.Create(Config.iconUri);
             Background = Config.backgroundBrush;
             //Width = SystemParameters.FullPrimaryScreenWidth;
             //Height = SystemParameters.FullPrimaryScreenHeight;
@@ -77,8 +76,9 @@ namespace Platformer
         public void NewGame()
         {
             MainMenuGrid.Visibility = Visibility.Hidden;
-            GameGrid.Visibility = Visibility.Visible;
+            GameCompleteGrid.Visibility = Visibility.Hidden;
             GameOverGrid.Visibility = Visibility.Hidden;
+            GameGrid.Visibility = Visibility.Visible;
             Game.NewGame();
             Game.TimerStart();
         }

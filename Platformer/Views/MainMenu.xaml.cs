@@ -30,6 +30,7 @@ namespace Platformer.Views
         private void MainMenu_Loaded(object sender, RoutedEventArgs e)
         {
             window = (MainWindow)Window.GetWindow(this);
+            title.FontFamily = Config.Font;
             
         }
 
