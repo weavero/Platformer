@@ -16,6 +16,11 @@ namespace Platformer
         {
             Velocity = -Velocity;
         }
+
+        public void StopMoving()
+        {
+            Velocity = 0;
+        }
     }
 
     class SmallEnemy : Enemy
