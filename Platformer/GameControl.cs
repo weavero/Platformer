@@ -29,7 +29,6 @@ namespace Platformer
         public void Control_Loaded(object sender, RoutedEventArgs e)
         {
             window = (MainWindow)Window.GetWindow(this);
-            Background = Config.backgroundBrush;
             if (window != null)
             {
                 timer = new DispatcherTimer();
@@ -48,12 +47,11 @@ namespace Platformer
 
             if (logic.IsGameOver())
             {
-                window.ShowGameOver();
+                model.mainWindow.ShowGameOver();
                 timer.Stop();
             }
 
             Canvas.SetLeft(this, -model.player.Area.Left + model.mainWindow.Width / 2);
-            Canvas.SetTop(this, model.mainWindow.Height / 2);
 
             InvalidateVisual();
         }
@@ -90,11 +88,11 @@ namespace Platformer
             {
                 timer.Stop();
                 model.Timer.Stop();
-                window.ShowPause();
+                model.mainWindow.ShowPause();
             }
             else
             {
-                window.ResumeGame();
+                model.mainWindow.ResumeGame();
                 timer.Start();
                 model.Timer.Start();
             }
@@ -117,22 +115,33 @@ namespace Platformer
             }
         }
 
-        bool eventSet = false;
         public void NewGame()
         {
             model = new Model();
             logic = new Logic(model);
             renderer = new Renderer(model);
             model.mainWindow = window;
-
-            if (!eventSet)
-            {
-                logic.OnGameComplete += (obj, args) => window.ShowGameComplete(args);
-                logic.OnLevelChange += (obj, args) => renderer = new Renderer(model);
-                eventSet = true;
-            }
-
+            SetEvents();
             timer.Start();
+        }
+
+        private void LevelChange()
+        {
+            logic = new Logic(model);
+            renderer = new Renderer(model);
+            SetEvents();
+        }
+
+        private void GameComplete(GameCompleteArgs args)
+        {
+            timer.Stop();
+            model.mainWindow.ShowGameComplete(args);
+        }
+
+        private void SetEvents()
+        {
+            logic.OnGameComplete += (obj, args) => GameComplete(args);
+            logic.OnLevelChange += (obj, args) => LevelChange();
         }
 
         protected override void OnRender(DrawingContext drawingContext)
