@@ -15,26 +15,23 @@ namespace Platformer
     {
         Model model;
 
-        public EventHandler<GameCompleteArgs> OnGameComplete;
-        public EventHandler OnLevelChange;
+        public event EventHandler<GameCompleteArgs> OnGameComplete;
+        public event EventHandler OnLevelChange;
 
         public Logic(Model model)
         {
             this.model = model;
             RegisterLevels();
             LoadLevel();
-            model.Retries = 1000;
+            model.Retries = 3;
             model.Timer.Start();
         }
 
         public void GameTick()
         {
             model.player.Move();
-            //Move();
-            //Jump();
-            //Falling();
+            model.player.InvincibilityTick();
             MoveAI();
-            Animation();
         }
 
         public void MoveAI()
@@ -62,7 +59,7 @@ namespace Platformer
                 {
                     if (actor is Player)
                     {
-                        if (item.Brush == Config.BigEnemyBrush || item.Brush == Config.SmallEnemyBrush)
+                        if (Config.EnemyBrushes.Contains(item.Brush))
                         {
                             if (oldPlayerPos.Bottom < item.Bounds.Top)
                             {
@@ -70,31 +67,36 @@ namespace Platformer
                                 {
                                     if (enemy.Area.X - enemy.Velocity == item.Bounds.X && enemy.Area.Y == item.Bounds.Y)
                                     {
-                                        enemy.SetXY(-1000, -1000);
-                                        //dgRemovableIndex = dg.Children.IndexOf(item);
-                                        //enemyRemovableIndex = model.Enemies.IndexOf(enemy);
+                                        enemy.MinusHealth();
+                                        enemy.StopMoving();
+                                        if (enemy.Lives == 0)
+                                        {
+                                            enemy.SetXY(-2000, -2000);
+                                            //dgRemovableIndex = dg.Children.IndexOf(item);
+                                            //enemyRemovableIndex = model.Enemies.IndexOf(enemy);
+                                            
+                                            if (enemy is SmallEnemy)
+                                            {
+                                                model.Points += 20;
+                                            }
+                                            else if (enemy is BigEnemy)
+                                            {
+                                                model.Points += 50;
+                                            }
+                                            else if (enemy is FlyingEnemy)
+                                            {
+                                                model.Points += 20;
+                                            }
+                                        }
                                         model.player.Bounce();
-                                        if (enemy is SmallEnemy)
-                                        {
-                                            model.Points += 20;
-                                        }
-                                        else if(enemy is BigEnemy)
-                                        {
-                                            model.Points += 50;
-                                        }
-                                        else if (enemy is FlyingEnemy)
-                                        {
-                                            model.Points += 20;
-                                        }
                                     }
                                 }
                             }
                             else
                             {
-                                if (actor.Lives > 0 && !(actor as Player).WasDamaged)
+                                if (actor.Lives > 0)
                                 {
-                                    actor.MinusHealth();
-                                    (actor as Player).WasDamaged = true;
+                                    actor.Damaged();
                                 }
                                 else
                                 {
@@ -120,7 +122,7 @@ namespace Platformer
                             model.SetPickupIndex(dg.Children.IndexOf(item));
                             collision = false;
                         }
-                        else if(!collision)
+                        else
                         {
                             //// go left
                             //if (actor.Area.Left > item.Bounds.Right && actor.Area.Bottom > item.Bounds.Top)
@@ -139,10 +141,12 @@ namespace Platformer
                             {
                                 if (model.player.IsJumping || model.player.IsFalling)
                                 {
-                                    if (oldPlayerPos.Bottom < item.Bounds.Top)
+                                    
+                                    if (actor.Area.Left < item.Bounds.Right && oldPlayerPos.Bottom < item.Bounds.Top)
                                     {
-                                        
+
                                     }
+                                    
                                 }
                                 else if (actor.Area.Left < item.Bounds.Right && actor.Area.Bottom > item.Bounds.Top)
                                 {
@@ -170,7 +174,7 @@ namespace Platformer
                             }
                             if (model.player.IsJumping)
                             {
-                                if (oldPlayerPos.Bottom < item.Bounds.Top && oldPlayerPos.Top < item.Bounds.Top && actor.Area.Bottom > item.Bounds.Top)
+                                if (oldPlayerPos.Bottom < item.Bounds.Top && oldPlayerPos.Top < item.Bounds.Top )//&& actor.Area.Bottom > item.Bounds.Top)
                                 {
                                     actor.SetXY(actor.Area.Left, item.Bounds.Top - actor.Area.Height);
                                     model.player.IsJumping = false;
@@ -244,7 +248,7 @@ namespace Platformer
             else
             {
                 GameCompleteArgs args = new GameCompleteArgs();
-                args.Points = model.Points;
+                args.Points = CalculatePoints();
                 args.Time = model.Timer.Elapsed;
                 OnGameComplete?.Invoke(this, args);
                 model.Timer.Stop();
@@ -263,50 +267,35 @@ namespace Platformer
             LoadLevel();
         }
 
-        private void Animation()
+        private int CalculatePoints()
         {
-            PlayerAnimation();
-            EnemyAnimation();
-        }
+            //-   < 2:00 – 500 pont
+            //- 2:00 – 2:29 – 400 pont
+            //- 3:00 – 4:00 – 250 pont
+            //-   > 4:00 – 100 pont
 
-        int playerAnimationTick = 1;
-        private void PlayerAnimation()
-        {
-            //if (model.player.GoRight)
-            //{
-            //    if (playerAnimationTick % 8 == 0)
-            //    {
-            //        Config.PlayerBrush = new ImageBrush(new BitmapImage(new Uri(@"pack://application:,,,/img/player1.png", UriKind.RelativeOrAbsolute)));
-            //    }
-            //    else if(playerAnimationTick % 8 == 4)
-            //    {
-            //        Config.PlayerBrush = new ImageBrush(new BitmapImage(new Uri(@"pack://application:,,,/img/player2.png", UriKind.RelativeOrAbsolute)));
-            //    }
-            //    playerAnimationTick++;
-            //}
-            //else if (model.player.GoLeft)
-            //{
-            //    if (playerAnimationTick % 8 == 0)
-            //    {
-            //        Config.PlayerBrush = new ImageBrush(new BitmapImage(new Uri(@"pack://application:,,,/img/rev_player1.png", UriKind.RelativeOrAbsolute)));
-            //    }
-            //    else if(playerAnimationTick % 8 == 4)
-            //    {
-            //        Config.PlayerBrush = new ImageBrush(new BitmapImage(new Uri(@"pack://application:,,,/img/rev_player2.png", UriKind.RelativeOrAbsolute)));
-            //    }
-            //    playerAnimationTick++;
-            //}
-            //else
-            //{
-            //    playerAnimationTick = 1;
-            //    Config.PlayerBrush = new ImageBrush(new BitmapImage(new Uri(@"pack://application:,,,/img/p1_stand.png", UriKind.RelativeOrAbsolute)));
-            //}
-        }
+            int points = model.Points;
+            if (model.Timer.Elapsed.Seconds < 120)
+            {
+                points += 500;
+            }
+            else if (model.Timer.Elapsed.Seconds >= 120 && model.Timer.Elapsed.Seconds < 149)
+            {
+                points += 400;
+            }
+            else if (model.Timer.Elapsed.Seconds >= 150 && model.Timer.Elapsed.Seconds < 239)
+            {
+                points += 250;
+            }
+            else if (model.Timer.Elapsed.Seconds >= 240)
+            {
+                points += 100;
+            }
 
-        int enemyAnimationTick = 1;
-        private void EnemyAnimation()
-        {
+            points += model.coin * 10;
+            points += model.Retries * 100;
 
+            return points;
         }
 
         public void RegisterLevels()
