@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.IO;
 using System.Diagnostics;
 
 namespace Platformer.Models
@@ -12,17 +10,16 @@ namespace Platformer.Models
 
         public Player player;
 
-        public List<Enemy> enemies;
-        public List<Enemy> Enemies { get { return new List<Enemy>(enemies); } }
+        public List<Enemy> Enemies;
 
         public char[,] map;
         public char[,] Map{ get { return map; } }
 
         public Dictionary<int, string> Levels;
 
-        public int currentLevel = 0;
+        public int currentLevel;
 
-        public int coin = 0;
+        public int coin;
         public int Coin { get { return coin; } }
 
         public int pickupableIndex;
@@ -36,7 +33,6 @@ namespace Platformer.Models
 
         public Model()
         {
-            coin = 0;
             Timer = new Stopwatch();
         }
 

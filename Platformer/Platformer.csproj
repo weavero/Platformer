@@ -7,10 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Resource Include="Textures\Font\kenvector_future.ttf">
+    <Resource Include="GameResources\Font\kenvector_future.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Textures\Font\kenvector_future_thin.ttf">
+    <Resource Include="GameResources\Font\kenvector_future_thin.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
@@ -46,28 +46,30 @@
     <None Remove="Levels\1.level" />
     <None Remove="Levels\2.level" />
     <None Remove="Levels\3.level" />
+    <None Remove="Levels\4.level" />
+    <None Remove="Levels\5.level" />
     <None Remove="PlatformerDatabase.ldf" />
     <None Remove="PlatformerDatabase.mdf" />
     <None Remove="PlatformerDatabase_log.ldf" />
-    <None Remove="Sounds\Jump.wav" />
-    <None Remove="Textures\Game\bg.png" />
-    <None Remove="Textures\Game\blockerMad.png" />
-    <None Remove="Textures\Game\box.png" />
-    <None Remove="Textures\Game\coinGold.png" />
-    <None Remove="Textures\Game\flagRed2.png" />
-    <None Remove="Textures\Game\flyFly1.png" />
-    <None Remove="Textures\Game\flyFly2.png" />
-    <None Remove="Textures\Game\grass.png" />
-    <None Remove="Textures\Game\grassCenter.png" />
-    <None Remove="Textures\Game\hud_heartFull.png" />
-    <None Remove="Textures\Game\hud_p1.png" />
-    <None Remove="Textures\Game\license.txt" />
-    <None Remove="Textures\Game\p1_stand.png" />
-    <None Remove="Textures\Game\slimeGreen.png" />
-    <None Remove="Textures\Game\slimeWalk1.png" />
-    <None Remove="Textures\Game\slimeWalk2.png" />
-    <None Remove="Textures\Game\spikes.png" />
-    <None Remove="Textures\UI\grey_button00.png" />
+    <None Remove="GameResources\Sounds\Jump.wav" />
+    <None Remove="GameResources\Textures\bg.png" />
+    <None Remove="GameResources\Textures\blockerMad.png" />
+    <None Remove="GameResources\Textures\box.png" />
+    <None Remove="GameResources\Textures\coinGold.png" />
+    <None Remove="GameResources\Textures\flagRed2.png" />
+    <None Remove="GameResources\Textures\flyFly1.png" />
+    <None Remove="GameResources\Textures\flyFly2.png" />
+    <None Remove="GameResources\Textures\grass.png" />
+    <None Remove="GameResources\Textures\grassCenter.png" />
+    <None Remove="GameResources\Textures\hud_heartFull.png" />
+    <None Remove="GameResources\Textures\hud_p1.png" />
+    <None Remove="GameResources\Textures\license.txt" />
+    <None Remove="GameResources\Textures\p1_stand.png" />
+    <None Remove="GameResources\Textures\slimeGreen.png" />
+    <None Remove="GameResources\Textures\slimeWalk1.png" />
+    <None Remove="GameResources\Textures\slimeWalk2.png" />
+    <None Remove="GameResources\Textures\spikes.png" />
+    <None Remove="GameResources\UI\grey_button00.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -95,66 +97,72 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\PlatformerDatabase.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\PlatformerDatabase_log.ldf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameResources\Sounds\Jump.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Sounds\Jump.wav">
+    <Content Include="GameResources\Textures\bg.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Textures\Game\bg.png">
+    <Content Include="GameResources\Textures\blockerMad.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Textures\Game\blockerMad.png">
+    <Content Include="GameResources\Textures\box.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Textures\Game\box.png">
+    <Content Include="GameResources\Textures\coinGold.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Textures\Game\coinGold.png">
+    <Content Include="GameResources\Textures\flagRed2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Textures\Game\flagRed2.png">
+    <Content Include="GameResources\Textures\flyFly1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Textures\Game\flyFly1.png">
+    <Content Include="GameResources\Textures\flyFly2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Textures\Game\flyFly2.png">
+    <Content Include="GameResources\Textures\grass.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Textures\Game\grass.png">
+    <Content Include="GameResources\Textures\grassCenter.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Textures\Game\grassCenter.png">
+    <Content Include="GameResources\Textures\hud_heartFull.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Textures\Game\hud_heartFull.png">
+    <Content Include="GameResources\Textures\hud_p1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Textures\Game\hud_p1.png">
+    <Content Include="GameResources\Textures\license.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Textures\Game\license.txt">
+    <Content Include="GameResources\Textures\p1_stand.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Textures\Game\p1_stand.png">
+    <Content Include="GameResources\Textures\slimeGreen.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Textures\Game\slimeGreen.png">
+    <Content Include="GameResources\Textures\slimeWalk1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Textures\Game\slimeWalk1.png">
+    <Content Include="GameResources\Textures\slimeWalk2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Textures\Game\slimeWalk2.png">
+    <Content Include="GameResources\Textures\spikes.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Textures\Game\spikes.png">
+    <Content Include="GameResources\UI\grey_button00.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Textures\UI\grey_button00.png">
+    <Content Include="Levels\4.level">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Levels\5.level">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

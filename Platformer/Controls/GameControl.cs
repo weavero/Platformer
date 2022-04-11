@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Threading;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Threading;
-using System.IO;
-using System.Windows.Media.Imaging;
-using Platformer.Views;
 using System.Windows.Controls;
 using Platformer.Models;
 
@@ -128,7 +122,6 @@ namespace Platformer.Controls
 
         private void LevelChange()
         {
-            logic = new Logic(model);
             renderer = new Renderer(model);
             SetEvents();
         }

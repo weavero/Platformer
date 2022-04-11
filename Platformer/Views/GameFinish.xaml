@@ -8,14 +8,13 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <FontFamily x:Key="FontTest">/Textures/Font/#KenVector Future</FontFamily>
+        <FontFamily x:Key="FontTest">/GameResources/Font/#KenVector Future</FontFamily>
     </UserControl.Resources>
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="/Textures/Game/grassCenter.png"/>
+            <ImageBrush ImageSource="/GameResources/Textures/grassCenter.png"/>
         </Grid.Background>
         <TextBox Margin="640,99,40,331" x:Name="NameInput" Width="120" Height="20"></TextBox>
-        <TextBlock Margin="555,141,10,288" Foreground="White" x:Name="Alert" TextWrapping="WrapWithOverflow" Width="230" Height="30" Visibility="Hidden">Írj be egy legalább 3 karakter hosszú nevet!</TextBlock>
         <DataGrid x:Name="dataGrid" Margin="250,25,250,25" Width="300" Height="400" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False"
                   CanUserResizeRows="False" CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" 
                   AutoGenerateColumns="False" FontFamily="{StaticResource FontTest}">
@@ -27,8 +26,11 @@
         </DataGrid>
         <Button Height="20" Width="80" Margin="672,390,40,40" Click="ShowMainMenu" BorderBrush="{x:Null}" FontFamily="{StaticResource FontTest}">
             <Button.Background>
-                <ImageBrush ImageSource="/Textures/UI/grey_button00.png"/>
+                <ImageBrush ImageSource="/GameResources/UI/grey_button00.png"/>
             </Button.Background> Tovább
         </Button>
+        <TextBlock Margin="580,10,44,371" TextWrapping="Wrap" Width="176" Height="70">
+            Gratulálok! A játék végére értél. Kérlek írd be a neved a mezőbe, amivel fel szeretnél kerülni a ranglistára.
+        </TextBlock>
     </Grid>
 </UserControl>

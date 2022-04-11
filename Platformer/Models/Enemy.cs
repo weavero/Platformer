@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-
+﻿
 namespace Platformer.Models
 {
     class Enemy : Actor
@@ -22,21 +18,9 @@ namespace Platformer.Models
             Velocity = 0;
         }
 
-        public void StartMoving()
+        public void Move()
         {
-            if (this is SmallEnemy)
-            {
-                Velocity = 3;
-            }
-            else if (this is BigEnemy)
-            {
-                Velocity = 1;
-            }
-            else if (this is FlyingEnemy)
-            {
-                Velocity = 2;
-            }
-
+            SetX(Velocity);
         }
     }
 

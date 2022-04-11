@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
+﻿using System.Windows;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Platformer.Views;
 using Platformer.Models;
 using Platformer.Data;
@@ -33,40 +21,7 @@ namespace Platformer
         {
             Icon = BitmapFrame.Create(Config.iconUri);
             Background = Config.backgroundBrush;
-            //Width = SystemParameters.FullPrimaryScreenWidth;
-            //Height = SystemParameters.FullPrimaryScreenHeight;
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            PlatformerContext db = new PlatformerContext();
-            LeaderboardEntry player = new LeaderboardEntry
-            {
-                Name = "wwwWwWwwWwW",
-                Points = 1000,
-                Time = "12:52"
-            };
-            LeaderboardEntry a2 = new LeaderboardEntry
-            {
-                Name = "eeee",
-                Points = 100,
-                Time = "10:25"
-            };
-            LeaderboardEntry a1 = new LeaderboardEntry
-            {
-                Name = "gg4ew",
-                Points = 1,
-                Time = "55:25"
-            };
-
-            LeaderboardEntry a = new LeaderboardEntry
-            {
-                Name = "asda",
-                Points = 340,
-                Time = "03:25"
-            };
-            db.LeaderboardEntries.Add(player);
-            db.LeaderboardEntries.Add(a);
-            db.LeaderboardEntries.Add(a1);
-            db.LeaderboardEntries.Add(a2);
-            db.SaveChanges();
         }
 
         public void ShowPause()

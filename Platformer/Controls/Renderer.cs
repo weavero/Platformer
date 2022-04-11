@@ -1,13 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows.Media;
 using System.Windows;
-using System.Windows.Threading;
-using System.IO;
-using System.Windows.Media.Imaging;
-using Platformer.Views;
-using System.Windows.Controls;
 using Platformer.Models;
 
 namespace Platformer.Controls
@@ -153,11 +147,11 @@ namespace Platformer.Controls
                 {
                     PlayAreaDrawing.Children[enemyIndex] = new GeometryDrawing(Config.SmallEnemyBrush, null, new RectangleGeometry(model.Enemies[i].Area));
                 }
-                else if (model.enemies[i] is BigEnemy)
+                else if (model.Enemies[i] is BigEnemy)
                 {
                     PlayAreaDrawing.Children[enemyIndex] = new GeometryDrawing(Config.BigEnemyBrush, null, new RectangleGeometry(model.Enemies[i].Area));
                 }
-                else if (model.enemies[i] is FlyingEnemy)
+                else if (model.Enemies[i] is FlyingEnemy)
                 {
                     PlayAreaDrawing.Children[enemyIndex] = new GeometryDrawing(Config.FlyingEnemy1, null, new RectangleGeometry(model.Enemies[i].Area));
                 }
@@ -177,26 +171,29 @@ namespace Platformer.Controls
 
             GeometryDrawing lifePic = new GeometryDrawing(Config.LifePickup, null, new RectangleGeometry(new Rect(0, 0, 0, 0)));
 
-            FormattedText formattedText3 = new FormattedText(model.player.HitsToKill.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
+            FormattedText formattedText3 = new FormattedText(model.player.HitsToKill.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.White);
             lives = new GeometryDrawing(null, new Pen(Brushes.White, 1), formattedText3.BuildGeometry(new Point(50, 0)));
 
-            FormattedText formattedText4 = new FormattedText(model.Timer.Elapsed.TotalSeconds.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
+            FormattedText formattedText4 = new FormattedText(model.Timer.Elapsed.TotalSeconds.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.White);
             timeElapsed = new GeometryDrawing(null, new Pen(Brushes.White, 1), formattedText4.BuildGeometry(new Point(150, 0)));
 
-            FormattedText pointText = new FormattedText(model.Points.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
+            FormattedText pointText = new FormattedText(model.Points.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.White);
             points = new GeometryDrawing(null, new Pen(Brushes.White, 1), pointText.BuildGeometry(new Point(150, 0)));
 
             GeometryDrawing coinPic = new GeometryDrawing(Config.CoinBrush, null, new RectangleGeometry(new Rect(0, 0, 0, 0)));
 
-            FormattedText cointext = new FormattedText(model.Coin.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black);
+            FormattedText cointext = new FormattedText(model.Coin.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.White);
             coinCounter = new GeometryDrawing(null, new Pen(Brushes.White, 1), cointext.BuildGeometry(new Point(0, 0)));
 
+            
             HUDDrawing.Children.Add(HUDBackground);
             HUDDrawing.Children.Add(lifePic);
             HUDDrawing.Children.Add(lives);
             HUDDrawing.Children.Add(timeElapsed);
             HUDDrawing.Children.Add(points);
             HUDDrawing.Children.Add(coinPic);
+            HUDDrawing.Children.Add(coinCounter);
+            HUDDrawing.Children.Add(coinCounter);
             HUDDrawing.Children.Add(coinCounter);
         }
 
@@ -208,23 +205,30 @@ namespace Platformer.Controls
 
             HUDDrawing.Children[1] = new GeometryDrawing(Config.LifePickup, null, new RectangleGeometry(new Rect(model.player.Area.Left - 300, model.mainWindow.Height - HUDHeight / 2 - Config.UnitHeight / 4, Config.UnitWidth, Config.UnitHeight)));
 
-            FormattedText playerLives = new FormattedText(model.Retries.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Config.typeface, 16, Brushes.Black);
-            lives.Geometry = playerLives.BuildGeometry(new Point(HUDDrawing.Children[1].Bounds.Left + 50, model.mainWindow.Height - HUDHeight / 2));
+            FormattedText playerLives = new FormattedText(model.Retries.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Config.typeface, 24, Brushes.Black);
+            lives.Geometry = playerLives.BuildGeometry(new Point(HUDDrawing.Children[1].Bounds.Right + 10, HUDDrawing.Children[1].Bounds.Top));
             HUDDrawing.Children[2] = lives;
 
-            FormattedText elapsedTime = new FormattedText("Idö " + Convert.ToInt32(model.Timer.Elapsed.TotalSeconds).ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Config.typeface, 16, Brushes.Black);
-            timeElapsed.Geometry = elapsedTime.BuildGeometry(new Point(model.player.Area.Left - 100, model.mainWindow.Height - HUDHeight / 2));
+            FormattedText elapsedTime = new FormattedText("Idö " + Convert.ToInt32(model.Timer.Elapsed.TotalSeconds).ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Config.typeface, 24, Brushes.White);
+            timeElapsed.Geometry = elapsedTime.BuildGeometry(new Point(model.player.Area.Left - 100, model.mainWindow.Height - HUDHeight / 2 - Config.UnitHeight / 4));
             HUDDrawing.Children[3] = timeElapsed;
 
-            FormattedText pointText = new FormattedText("Pontok: " + model.Points.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Config.typeface, 16, Brushes.Black);
-            points.Geometry = pointText.BuildGeometry(new Point(model.player.Area.Left + 50, model.mainWindow.Height - HUDHeight / 2));
+            FormattedText pointText = new FormattedText("Pontok: " + model.Points.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Config.typeface, 24, Brushes.White);
+            points.Geometry = pointText.BuildGeometry(new Point(model.player.Area.Left + 50, model.mainWindow.Height - HUDHeight / 2 - Config.UnitHeight / 4));
             HUDDrawing.Children[4] = points;
 
-            HUDDrawing.Children[5] = new GeometryDrawing(Config.CoinBrush, null, new RectangleGeometry(new Rect(model.player.Area.Left + 170, model.mainWindow.Height - HUDHeight / 2 - Config.UnitHeight / 4, Config.UnitWidth, Config.UnitHeight)));
+            HUDDrawing.Children[5] = new GeometryDrawing(Config.CoinBrush, null, new RectangleGeometry(new Rect(model.player.Area.Left + 250, model.mainWindow.Height - HUDHeight / 2 - Config.UnitHeight / 4, Config.UnitWidth, Config.UnitHeight)));
             
-            FormattedText coinText = new FormattedText(model.Coin.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Config.typeface, 16, Brushes.Black);
-            coinCounter.Geometry = coinText.BuildGeometry(new Point(model.player.Area.Left + 200, model.mainWindow.Height - HUDHeight / 2));
+            FormattedText coinText = new FormattedText(model.Coin.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Config.typeface, 24, Brushes.Black);
+            coinCounter.Geometry = coinText.BuildGeometry(new Point(HUDDrawing.Children[5].Bounds.Right + 10, HUDDrawing.Children[5].Bounds.Top));
             HUDDrawing.Children[6] = coinCounter;
+
+
+            FormattedText X = new FormattedText(model.player.Area.Left.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Config.typeface, 24, Brushes.Black);
+            HUDDrawing.Children[7] = new GeometryDrawing(null, Config.penBrush, X.BuildGeometry(new Point(model.player.Area.Left, 100)));
+
+            FormattedText Y = new FormattedText(model.player.Area.Top.ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Config.typeface, 24, Brushes.Black);
+            HUDDrawing.Children[8] = new GeometryDrawing(null, Config.penBrush, Y.BuildGeometry(new Point(model.player.Area.Left + 100, 100)));
         }
     }
 }
