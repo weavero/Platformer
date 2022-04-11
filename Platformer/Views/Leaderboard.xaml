@@ -7,11 +7,11 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <FontFamily x:Key="FontTest">/Textures/Font/#KenVector Future</FontFamily>
+        <FontFamily x:Key="FontTest">/GameResources/Font/#KenVector Future</FontFamily>
     </UserControl.Resources>
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="/Textures/Game/bg.png"/>
+            <ImageBrush ImageSource="/GameResources/Textures/bg.png"/>
         </Grid.Background>
         <DataGrid Width="300" Height="400" x:Name="dataGrid" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False"
                   CanUserResizeRows="False" CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False"
@@ -24,7 +24,7 @@
         </DataGrid>
         <Button Height="20" Width="80" Margin="40,405,680,25" Click="ShowMainMenu" BorderBrush="{x:Null}" FontFamily="{StaticResource FontTest}" FontStyle="Normal" IsDefault="True">
             <Button.Background>
-                <ImageBrush ImageSource="/Textures/UI/grey_button00.png"/>
+                <ImageBrush ImageSource="/GameResources/UI/grey_button00.png"/>
             </Button.Background> Fömenü
         </Button>
     </Grid>

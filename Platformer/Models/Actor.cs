@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
 
 namespace Platformer.Models
@@ -58,21 +55,9 @@ namespace Platformer.Models
             hitsToKill++;
         }
 
-        public void Damaged()
+        public  void Damaged()
         {
-            if (Invincibility == 0)
-            {
-                MinusHealth();
-                Invincibility = 32;
-            }
-        }
-
-        public void InvincibilityTick()
-        {
-            if (Invincibility > 0)
-            {
-                Invincibility--;
-            }
+            MinusHealth();
         }
     }
 }

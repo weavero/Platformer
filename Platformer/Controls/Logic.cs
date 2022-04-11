@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows;
-using System.Windows.Threading;
-using System.Threading.Tasks;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.IO;
 using Platformer.Models;
 
@@ -24,35 +19,39 @@ namespace Platformer.Controls
             this.model = model;
             RegisterLevels();
             LoadLevel();
+            SetModelValues();
+        }
+
+        private void SetModelValues()
+        {
             model.Retries = 3;
+            model.coin = 0;
+            model.currentLevel = 0;
             model.Timer.Start();
         }
 
         public void GameTick()
         {
-            model.player.Move();
-            model.player.InvincibilityTick();
-            MoveAI();
+            PlayerAction();
+            AI_Action();
         }
 
-        public void MoveAI()
+        private void PlayerAction()
+        {
+            model.player.Move();
+        }
+
+        private void AI_Action()
         {
             foreach (Enemy enemy in model.Enemies)
             {
-                enemy.SetX(enemy.Velocity);
+                enemy.Move();
             }
         }
 
         Rect oldPlayerPos;
-        List<Enemy> oldEnemies;
-        DrawingGroup drawing;
-        int dgRemovableIndex;
-        int enemyRemovableIndex;
         public void CollisionCheck(Actor actor, DrawingGroup dg)
         {
-            //drawing = dg;
-            //dgRemovableIndex = -1;
-            //enemyRemovableIndex = -1;
             bool collision = false;
             foreach (GeometryDrawing item in dg.Children)
             {
@@ -73,9 +72,6 @@ namespace Platformer.Controls
                                         if (enemy.HitsToKill == 0)
                                         {
                                             enemy.SetXY(-2000, -2000);
-                                            //dgRemovableIndex = dg.Children.IndexOf(item);
-                                            //enemyRemovableIndex = model.Enemies.IndexOf(enemy);
-                                            
                                             if (enemy is SmallEnemy)
                                             {
                                                 model.Points += 20;
@@ -95,11 +91,8 @@ namespace Platformer.Controls
                             }
                             else
                             {
-                                if (actor.HitsToKill > 0)
-                                {
-                                    actor.Damaged();
-                                }
-                                else
+                                actor.MinusHealth();
+                                if (actor.HitsToKill < 0)
                                 {
                                     LevelRestart();
                                 }
@@ -125,41 +118,42 @@ namespace Platformer.Controls
                         }
                         else if (item.Brush == Config.spikeBrush)
                         {
-                            if (actor.HitsToKill > 0)
-                            {
-                                (actor as Player).Bounce();
-                                actor.Damaged();
-                            }
-                            else
+                            actor.Damaged();
+                            if (actor.HitsToKill < 0)
                             {
                                 LevelRestart();
                             }
                         }
                         else
                         {
-                            //// go left
-                            //if (actor.Area.Left > item.Bounds.Right && actor.Area.Bottom > item.Bounds.Top)
-                            //{
-                            //    GoLeft = false;
-                            //}
-
-                            ////go right
-                            //if (actor.Area.Right > item.Bounds.Left && actor.Area.Bottom > item.Bounds.Top)
-                            //{
-                            //    GoRight = false;
-                            //}
-
                             // go left
                             if (actor.Velocity < 0)
                             {
                                 if (actor.IsJumping || actor.IsFalling)
                                 {
-                                    
-                                    if (actor.Area.Left < item.Bounds.Right && oldPlayerPos.Bottom < item.Bounds.Top)
+                                    // beveri a fejét
+                                    if (actor.Area.Top < item.Bounds.Bottom && actor.IsJumping && ((oldPlayerPos.Left < item.Bounds.Right && oldPlayerPos.Left >= item.Bounds.Left) || (oldPlayerPos.Right > item.Bounds.Left && oldPlayerPos.Right <= item.Bounds.Right)))
                                     {
-
+                                        actor.IsJumping = false;
+                                        actor.IsFalling = true;
+                                        actor.SetXY(actor.Area.Left, item.Bounds.Bottom);
                                     }
-                                    
+                                    // leesik
+                                    else if (oldPlayerPos.Bottom < item.Bounds.Top)
+                                    {
+                                        actor.IsJumping = false;
+                                        actor.IsFalling = false;
+                                        actor.SetXY(actor.Area.Left, item.Bounds.Top - actor.Area.Height);
+                                    }
+                                    // balra blokk
+                                    else if (actor.Area.Left < item.Bounds.Right && !collision)
+                                    {
+                                        actor.Velocity = 0;
+                                        actor.GoLeft = false;
+                                        //actor.IsJumping = false;
+                                        //actor.IsFalling = true;
+                                        actor.SetXY(item.Bounds.Right, actor.Area.Top);
+                                    }
                                 }
                                 else if (actor.Area.Left < item.Bounds.Right && actor.Area.Bottom > item.Bounds.Top)
                                 {
@@ -173,9 +167,28 @@ namespace Platformer.Controls
                             {
                                 if (actor.IsJumping || actor.IsFalling)
                                 {
-                                    if (oldPlayerPos.Bottom < item.Bounds.Top)
+                                    // beveri a fejét
+                                    if (actor.Area.Top < item.Bounds.Bottom && actor.IsJumping && ((oldPlayerPos.Left < item.Bounds.Right && oldPlayerPos.Left >= item.Bounds.Left) || (oldPlayerPos.Right > item.Bounds.Left && oldPlayerPos.Right <= item.Bounds.Right)))
                                     {
-
+                                        actor.IsJumping = false;
+                                        actor.IsFalling = true;
+                                        actor.SetXY(actor.Area.Left, item.Bounds.Bottom);
+                                    }
+                                    // leesik
+                                    else if (oldPlayerPos.Bottom < item.Bounds.Top)
+                                    {
+                                        actor.IsJumping = false;
+                                        actor.IsFalling = false;
+                                        actor.SetXY(actor.Area.Left, item.Bounds.Top - actor.Area.Height);
+                                    }
+                                    // jobbra blokk
+                                    else if (actor.Area.Right > item.Bounds.Left && !collision)
+                                    {
+                                        actor.Velocity = 0;
+                                        actor.GoRight = false;
+                                        //actor.IsJumping = false;
+                                        //actor.IsFalling = true;
+                                        actor.SetXY(item.Bounds.Left - actor.Area.Width, actor.Area.Top);
                                     }
                                 }
                                 else if (actor.Area.Right > item.Bounds.Left && actor.Area.Bottom > item.Bounds.Top)
@@ -187,12 +200,14 @@ namespace Platformer.Controls
                             }
                             if (actor.IsJumping)
                             {
-                                if (oldPlayerPos.Bottom < item.Bounds.Top && oldPlayerPos.Top < item.Bounds.Top )//&& actor.Area.Bottom > item.Bounds.Top)
+                                // ráesik egy blokkra
+                                if (oldPlayerPos.Bottom < item.Bounds.Top && oldPlayerPos.Top < item.Bounds.Top)//&& actor.Area.Bottom > item.Bounds.Top)
                                 {
                                     actor.SetXY(actor.Area.Left, item.Bounds.Top - actor.Area.Height);
                                     actor.IsJumping = false;
                                 }
-                                else if (actor.Area.Top > item.Bounds.Top)
+                                // alulról ütközik egy blokkal
+                                else if (actor.Area.Top > item.Bounds.Top && ((oldPlayerPos.Left < item.Bounds.Right && oldPlayerPos.Left >= item.Bounds.Left) || (oldPlayerPos.Right > item.Bounds.Left && oldPlayerPos.Right <= item.Bounds.Right)))
                                 {
                                     actor.SetXY(actor.Area.Left, item.Bounds.Bottom);
                                     actor.IsFalling = true;
@@ -200,7 +215,7 @@ namespace Platformer.Controls
                                 }
                             }
                             // && actor.Area.Right > item.Bounds.Left && actor.Area.Left < item.Bounds.Right
-                            else if (actor.IsFalling && oldPlayerPos.Bottom < item.Bounds.Top)
+                            else if (actor.IsFalling && oldPlayerPos.Bottom < item.Bounds.Top && ((oldPlayerPos.Left < item.Bounds.Right && oldPlayerPos.Left >= item.Bounds.Left) || (oldPlayerPos.Right > item.Bounds.Left && oldPlayerPos.Right <= item.Bounds.Right)))
                             {
                                 actor.IsFalling = false;
                                 actor.SetXY(actor.Area.Left, item.Bounds.Top - actor.Area.Height);
@@ -212,12 +227,12 @@ namespace Platformer.Controls
                     {
                         if (item.Brush != model.player.Brush)
                         {
-                            if (actor.Area.Left < item.Bounds.Right && actor.Area.Bottom > item.Bounds.Top)
+                            if (actor.Area.Left <= item.Bounds.Right && actor.Area.Bottom > item.Bounds.Top)
                             {
                                 (actor as Enemy).TurnAround();
                                 actor.SetX((actor as Enemy).Velocity);
                             }
-                            else if (actor.Area.Right > item.Bounds.Left && actor.Area.Bottom > item.Bounds.Top)
+                            else if (actor.Area.Right >= item.Bounds.Left && actor.Area.Bottom > item.Bounds.Top)
                             {
                                 (actor as Enemy).TurnAround();
                                 actor.SetX((actor as Enemy).Velocity);
@@ -235,13 +250,6 @@ namespace Platformer.Controls
                     oldPlayerPos = new Rect(0, 0, 0, 0);
                 }
                 else if (!collision && !actor.IsJumping)
-                {
-                    actor.IsFalling = true;
-                }
-            }
-            else if (actor is Enemy)
-            {
-                if (!collision)
                 {
                     actor.IsFalling = true;
                 }
@@ -314,7 +322,7 @@ namespace Platformer.Controls
             return points;
         }
 
-        public void RegisterLevels()
+        private void RegisterLevels()
         {
             model.Levels = new Dictionary<int, string>();
             string[] files = Directory.GetFiles("Levels/", "*.level");
@@ -364,7 +372,7 @@ namespace Platformer.Controls
             }
 
             model.pickupableIndex = -1;
-            model.enemies = new List<Enemy>();
+            model.Enemies = new List<Enemy>();
             LoadActors();
         }
 
@@ -381,15 +389,15 @@ namespace Platformer.Controls
                             break;
 
                         case 'e':
-                            model.enemies.Add(new SmallEnemy(j * Config.UnitWidth, i * Config.UnitHeight));
+                            model.Enemies.Add(new SmallEnemy(j * Config.UnitWidth, i * Config.UnitHeight));
                             break;
 
                         case 'E':
-                            model.enemies.Add(new BigEnemy(j * Config.UnitWidth, i * Config.UnitHeight + (Config.UnitHeight - Config.BigEnemyHeight)));
+                            model.Enemies.Add(new BigEnemy(j * Config.UnitWidth, i * Config.UnitHeight + (Config.UnitHeight - Config.BigEnemyHeight)));
                             break;
 
                         case 'f':
-                            model.enemies.Add(new FlyingEnemy(j * Config.UnitWidth, i * Config.UnitHeight));
+                            model.Enemies.Add(new FlyingEnemy(j * Config.UnitWidth, i * Config.UnitHeight));
                             break;
                     }
                 }

@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using System.Windows.Media;
-
+﻿
 namespace Platformer.Models
 {
     class Player : Actor
     {
         public Player(double x, double y) : base(x, y, Config.PlayerWidth, Config.PlayerHeight)
         {
-            hitsToKill = 2;
+            hitsToKill = 1;
             Velocity = 0;
             Brush = Config.PlayerBrush;
         }
+
 
         double maxVelocity = 5;
         public void Move()
