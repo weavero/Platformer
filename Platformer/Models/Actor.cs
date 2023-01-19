@@ -59,7 +59,7 @@ namespace Platformer.Models
             hitsToKill++;
         }
 
-        public void Damaged()
+        public  void Damaged()
         {
             MinusHealth();
         }
