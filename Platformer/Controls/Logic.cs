@@ -4,12 +4,14 @@ using System.Windows;
 using System.Windows.Media;
 using System.IO;
 using Platformer.Models;
+using System.Windows.Input;
 
 namespace Platformer.Controls
 {
     class Logic
     {
         Model model;
+        GameAudioPlayer SoundPlayer;
 
         public event EventHandler<GameCompleteArgs> OnGameComplete;
         public event EventHandler OnLevelChange;
@@ -17,9 +19,11 @@ namespace Platformer.Controls
         public Logic(Model model)
         {
             this.model = model;
+            SoundPlayer = new GameAudioPlayer();
             RegisterLevels();
             LoadLevel();
             SetModelValues();
+            PlayStopGameMusic();
         }
 
         private void SetModelValues()
@@ -47,6 +51,11 @@ namespace Platformer.Controls
             {
                 enemy.Move();
             }
+        }
+
+        public void PlayStopGameMusic()
+        {
+            SoundPlayer.PlayStopGameMusic();
         }
 
         Rect oldPlayerPos;

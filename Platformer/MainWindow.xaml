@@ -33,6 +33,9 @@
         <Grid x:Name="MainMenuGrid" Visibility="Visible">
             <views:MainMenu/>
         </Grid>
+        <Grid x:Name="SettingsGrid" Visibility="Visible">
+            <views:Settings/>
+        </Grid>
     </Grid>
     
 </Window>

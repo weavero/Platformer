@@ -32,7 +32,10 @@ namespace Platformer
         public static readonly List<Brush> PlayerBrushes = new List<Brush> { PlayerBrush };
         public static readonly List<Brush> EnemyBrushes = new List<Brush> { SmallEnemyBrush, BigEnemyBrush, FlyingEnemy1 };
 
-        public static readonly Uri JumpSound = new Uri("pack://application:,,,/GameResources/Sounds/Jump.wav", UriKind.RelativeOrAbsolute);
+        // absolute path works only
+        public static readonly Uri JumpSound = new Uri(@"GameResources/Sounds/Jump.wav", UriKind.RelativeOrAbsolute);
+        public static readonly Uri GameMusic = new Uri(@"GameResources/Sounds/happy.mp3", UriKind.RelativeOrAbsolute);
+        public static double GameSoundVolume = 0.1;
 
         public static readonly int UnitWidth = 32;
         public static readonly int UnitHeight = 32;

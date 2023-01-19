@@ -24,9 +24,13 @@ namespace Platformer.Models
 
         public ImageBrush Brush;
 
+        protected MediaPlayer actorSoundPlayer;
+
         protected Actor(double x, double y, int ActorWidth, int ActorHeight)
         {
             area = new Rect(x, y, ActorWidth, ActorHeight);
+            actorSoundPlayer = new MediaPlayer();
+            actorSoundPlayer.Volume = Config.GameSoundVolume;
         }
 
         public void SetX(double x)
@@ -55,7 +59,7 @@ namespace Platformer.Models
             hitsToKill++;
         }
 
-        public  void Damaged()
+        public void Damaged()
         {
             MinusHealth();
         }

@@ -4,6 +4,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
+    <Platforms>AnyCPU;x64;x86</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,6 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="GameResources\Sounds\happy.mp3" />
+    <None Remove="GameResources\Sounds\Intro Theme.mp3" />
     <None Remove="img\bg.png" />
     <None Remove="img\blockerMad.png" />
     <None Remove="img\box.png" />
@@ -87,6 +90,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="GameResources\Sounds\happy.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameResources\Sounds\Intro Theme.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Levels\1.level">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

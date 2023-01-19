@@ -36,5 +36,10 @@ namespace Platformer.Views
         {
             window.Exit();
         }
+
+        private void Settings(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

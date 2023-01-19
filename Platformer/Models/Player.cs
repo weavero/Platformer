@@ -49,7 +49,8 @@ namespace Platformer.Models
             }
             else if (!GoRight && Velocity > 0)
             {
-                // Megelőzi, hogy pontatlan legyen a változó
+                // Computer sucks at math
+                // Nem tér vissza pontosan nullára -> folyamatos mozgás
                 if (Velocity < 0.1)
                 {
                     Velocity = 0;
@@ -71,6 +72,8 @@ namespace Platformer.Models
             {
                 if (!StartJumping)
                 {
+                    actorSoundPlayer.Open(Config.JumpSound);
+                    actorSoundPlayer.Play();
                     jumpHeight = -maxJump;
                     StartJumping = true;
                 }

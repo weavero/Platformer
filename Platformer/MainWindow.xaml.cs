@@ -102,6 +102,12 @@ namespace Platformer
             LeaderboardGrid.Visibility = Visibility.Visible;
         }
 
+        public void ShowSettings()
+        {
+            SettingsGrid.Visibility = Visibility.Visible;
+
+        }
+
         public void ShowGameComplete(GameCompleteArgs e)
         {
             GameGrid.Visibility = Visibility.Hidden;

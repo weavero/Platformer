@@ -32,6 +32,7 @@
                 </Button.Background>
                 Kilépés
             </Button>
+            <Button Width="32" Height="32" Margin="20" Click="Settings" HorizontalAlignment="Right" />
         </StackPanel>
     </Grid>
 </UserControl>

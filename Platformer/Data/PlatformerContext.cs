@@ -23,7 +23,7 @@ namespace Platformer.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Data Source = (LocalDB)\\MSSQLLocalDB; AttachDbFilename = |DataDirectory|\\Data\\PlatformerDatabase.mdf; Integrated Security = True");
+                optionsBuilder.UseSqlServer("Data Source = (LocalDB)\\MSSQLLocalDB; AttachDbFilename = |DataDirectory|\\Data\\PlatformerDatabase.mdf; Integrated Security = True;"); //User Instance = True;Integrated Security = True;
             }
         }
 
