@@ -5,14 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Platformer"
         xmlns:views="clr-namespace:Platformer.Views"
+        xmlns:controls="clr-namespace:Platformer.Controls"
         mc:Ignorable="d"
         Title="Platformer"
-        WindowState="Maximized"
-        WindowStyle="None">
+        WindowStartupLocation="Manual"
+        Left="0" Top="0"
+        WindowStyle="None"
+        WindowState="Maximized">
     <Grid x:Name="grid">
         <Grid x:Name="GameGrid" Visibility="Hidden">
-            <Canvas>
-                <local:GameControl x:Name="Game"/>
+            <Canvas x:Name="canvas">
+                <controls:GameControl x:Name="Game"/>
             </Canvas>
         </Grid>
         <Grid x:Name="PauseGrid" Visibility="Hidden">
@@ -29,6 +32,9 @@
         </Grid>
         <Grid x:Name="MainMenuGrid" Visibility="Visible">
             <views:MainMenu/>
+        </Grid>
+        <Grid x:Name="SettingsGrid" Visibility="Visible">
+            <views:Settings/>
         </Grid>
     </Grid>
     

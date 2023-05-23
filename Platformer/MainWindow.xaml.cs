@@ -1,19 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
+﻿using System.Windows;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Platformer.Views;
 using Platformer.Models;
+using Platformer.Data;
 
 namespace Platformer
 {
@@ -30,40 +19,40 @@ namespace Platformer
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            Uri iconUri = new Uri("../../../img/hitman.jpg", UriKind.RelativeOrAbsolute);
-            Icon = BitmapFrame.Create(iconUri);
-            Background = Config.BackgroundImage;
-            PlatformerContext db = new PlatformerContext();
-            LeaderboardEntry player = new LeaderboardEntry
-            {
-                Name = "wwwWwWwwWwW",
-                Points = 1000,
-                Time = "12:52"
-            };
-            LeaderboardEntry a2 = new LeaderboardEntry
-            {
-                Name = "eeee",
-                Points = 100,
-                Time = "10:25"
-            };
-            LeaderboardEntry a1 = new LeaderboardEntry
-            {
-                Name = "gg4ew",
-                Points = 1,
-                Time = "55:25"
-            };
+            Icon = BitmapFrame.Create(Config.iconUri);
+            Background = Config.backgroundBrush;
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            //PlatformerContext db = new PlatformerContext();
+            //LeaderboardEntry player = new LeaderboardEntry
+            //{
+            //    Name = "Elek",
+            //    Points = 700,
+            //    Time = "11:03"
+            //};
+            //LeaderboardEntry a2 = new LeaderboardEntry
+            //{
+            //    Name = "egyvalaki",
+            //    Points = 1305,
+            //    Time = "02:25"
+            //};
+            //LeaderboardEntry a1 = new LeaderboardEntry
+            //{
+            //    Name = "Luca",
+            //    Points = 400,
+            //    Time = "02:55"
+            //};
 
-            LeaderboardEntry a = new LeaderboardEntry
-            {
-                Name = "asda",
-                Points = 340,
-                Time = "03:25"
-            };
-            db.LeaderboardEntries.Add(player);
-            db.LeaderboardEntries.Add(a);
-            db.LeaderboardEntries.Add(a1);
-            db.LeaderboardEntries.Add(a2);
-            db.SaveChanges();
+            //LeaderboardEntry a = new LeaderboardEntry
+            //{
+            //    Name = "Ádám",
+            //    Points = 570,
+            //    Time = "03:25"
+            //};
+            //db.LeaderboardEntries.Add(player);
+            //db.LeaderboardEntries.Add(a);
+            //db.LeaderboardEntries.Add(a1);
+            //db.LeaderboardEntries.Add(a2);
+            //db.SaveChanges();
         }
 
         public void ShowPause()
@@ -74,8 +63,9 @@ namespace Platformer
         public void NewGame()
         {
             MainMenuGrid.Visibility = Visibility.Hidden;
-            GameGrid.Visibility = Visibility.Visible;
+            GameCompleteGrid.Visibility = Visibility.Hidden;
             GameOverGrid.Visibility = Visibility.Hidden;
+            GameGrid.Visibility = Visibility.Visible;
             Game.NewGame();
             Game.TimerStart();
         }
@@ -110,6 +100,12 @@ namespace Platformer
         {
             MainMenuGrid.Visibility = Visibility.Hidden;
             LeaderboardGrid.Visibility = Visibility.Visible;
+        }
+
+        public void ShowSettings()
+        {
+            SettingsGrid.Visibility = Visibility.Visible;
+
         }
 
         public void ShowGameComplete(GameCompleteArgs e)

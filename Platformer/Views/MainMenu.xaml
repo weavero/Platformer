@@ -4,15 +4,35 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Platformer.Views"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="MidnightBlue">
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <FontFamily x:Key="FontTest">/GameResources/Font/#KenVector Future</FontFamily>
+    </UserControl.Resources>
+    <Grid>
         <StackPanel>
-            <TextBlock HorizontalAlignment="Center" Margin="50" Foreground="White" FontSize="42">Platformer</TextBlock>
-            <Button Width="120" Height="20" Margin="10" Click="NewGame">Új játék</Button>
-            <Button Width="120" Height="20" Margin="10"></Button>
-            <Button Width="120" Height="20" Margin="10" Click="Leaderboard">Ranglista</Button>
-            <Button Width="120" Height="20" Margin="10" Click="Exit">Kilépés</Button>
+            <StackPanel.Background>
+                <ImageBrush ImageSource="/GameResources/Textures/bg.png"/>
+            </StackPanel.Background>
+            <TextBlock HorizontalAlignment="Center" Margin="50" Foreground="Red" FontSize="42" FontFamily="{StaticResource FontTest}" Text="Platformer"/>
+            <Button Width="120" Height="20" Margin="10" Click="NewGame" FontFamily="{StaticResource FontTest}" BorderBrush="{x:Null}">
+                <Button.Background>
+                    <ImageBrush ImageSource="/GameResources/UI/grey_button00.png"/>
+                </Button.Background>
+                Új játék
+            </Button>
+            <Button Width="120" Height="20" Margin="10" Click="Leaderboard" FontFamily="{StaticResource FontTest}" BorderBrush="{x:Null}">
+                <Button.Background>
+                    <ImageBrush ImageSource="/GameResources/UI/grey_button00.png"/>
+                </Button.Background>
+                Ranglista
+            </Button>
+            <Button Width="120" Height="20" Margin="10" Click="Exit" FontFamily="{StaticResource FontTest}" BorderBrush="{x:Null}">
+                <Button.Background>
+                    <ImageBrush ImageSource="/GameResources/UI/grey_button00.png"/>
+                </Button.Background>
+                Kilépés
+            </Button>
+            <Button Width="32" Height="32" Margin="20" Click="Settings" HorizontalAlignment="Right" />
         </StackPanel>
     </Grid>
 </UserControl>

@@ -1,17 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Platformer.Models;
 using System.Linq;
+using Platformer.Data;
 
 namespace Platformer.Views
 {
@@ -42,15 +33,15 @@ namespace Platformer.Views
         private void ShowMainMenu(object sender, RoutedEventArgs e)
         {
             MainWindow window = (MainWindow)Window.GetWindow(this);
-            if (NameInput.Text.Trim().Length < 3 || !NameInput.Text.Any(x => Char.IsLetterOrDigit(x)))
+            if (NameInput.Text.Trim().Length < 3 || NameInput.Text.Any(x => !Char.IsLetterOrDigit(x) && !Char.IsWhiteSpace(x)))
             {
-                Alert.Visibility = Visibility.Visible;
+                MessageBox.Show("A megadott név nem tartalmazhat speciális karaktert és minimum 3 karakter hosszúnak kell lennie!", "Hibás bemenet", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
                 InsertIntoDatabase(Points, Time);
                 window.ExitToMenu();
-                Alert.Visibility = Visibility.Hidden;
+                NameInput.Text = "";
             }
         }
 

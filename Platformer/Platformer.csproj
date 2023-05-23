@@ -4,22 +4,75 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
+    <Platforms>AnyCPU;x64;x86</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
+    <Resource Include="GameResources\Font\kenvector_future.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="GameResources\Font\kenvector_future_thin.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="GameResources\Sounds\happy.mp3" />
+    <None Remove="GameResources\Sounds\Intro Theme.mp3" />
+    <None Remove="img\bg.png" />
+    <None Remove="img\blockerMad.png" />
+    <None Remove="img\box.png" />
     <None Remove="img\coin.png" />
+    <None Remove="img\coinGold.png" />
     <None Remove="img\corp2.png" />
     <None Remove="img\enemy1.jpg" />
     <None Remove="img\enemy2.jpg" />
+    <None Remove="img\finish.png" />
+    <None Remove="img\flagRed2.png" />
+    <None Remove="img\flyFly1.png" />
+    <None Remove="img\flyFly2.png" />
+    <None Remove="img\grass.png" />
     <None Remove="img\ground.png" />
     <None Remove="img\hitman.jpg" />
+    <None Remove="img\hud_heartFull.png" />
+    <None Remove="img\license.txt" />
+    <None Remove="img\life_plusone.png" />
+    <None Remove="img\p1_stand.png" />
+    <None Remove="img\player1.png" />
+    <None Remove="img\player2.png" />
+    <None Remove="img\rev_player1.png" />
+    <None Remove="img\rev_player2.png" />
+    <None Remove="img\slimeWalk1.png" />
+    <None Remove="img\slimeWalk2.png" />
+    <None Remove="img\spikes.png" />
     <None Remove="img\szily.jpg" />
     <None Remove="Levels\1.level" />
     <None Remove="Levels\2.level" />
     <None Remove="Levels\3.level" />
+    <None Remove="Levels\4.level" />
+    <None Remove="Levels\5.level" />
     <None Remove="PlatformerDatabase.ldf" />
     <None Remove="PlatformerDatabase.mdf" />
     <None Remove="PlatformerDatabase_log.ldf" />
+    <None Remove="GameResources\Sounds\Jump.wav" />
+    <None Remove="GameResources\Textures\bg.png" />
+    <None Remove="GameResources\Textures\blockerMad.png" />
+    <None Remove="GameResources\Textures\box.png" />
+    <None Remove="GameResources\Textures\coinGold.png" />
+    <None Remove="GameResources\Textures\flagRed2.png" />
+    <None Remove="GameResources\Textures\flyFly1.png" />
+    <None Remove="GameResources\Textures\flyFly2.png" />
+    <None Remove="GameResources\Textures\grass.png" />
+    <None Remove="GameResources\Textures\grassCenter.png" />
+    <None Remove="GameResources\Textures\hud_heartFull.png" />
+    <None Remove="GameResources\Textures\hud_p1.png" />
+    <None Remove="GameResources\Textures\license.txt" />
+    <None Remove="GameResources\Textures\p1_stand.png" />
+    <None Remove="GameResources\Textures\slimeGreen.png" />
+    <None Remove="GameResources\Textures\slimeWalk1.png" />
+    <None Remove="GameResources\Textures\slimeWalk2.png" />
+    <None Remove="GameResources\Textures\spikes.png" />
+    <None Remove="GameResources\UI\grey_button00.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,13 +90,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="img\coin.png" />
-    <Resource Include="img\corp2.png" />
-    <Resource Include="img\enemy1.jpg" />
-    <Resource Include="img\enemy2.jpg" />
-    <Resource Include="img\ground.png" />
-    <Resource Include="img\hitman.jpg" />
-    <Resource Include="img\szily.jpg" />
+    <Content Include="GameResources\Sounds\happy.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameResources\Sounds\Intro Theme.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Levels\1.level">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -53,12 +105,81 @@
     <Content Include="Levels\3.level">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="PlatformerDatabase.mdf">
+    <Content Include="Data\PlatformerDatabase.mdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\PlatformerDatabase_log.ldf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameResources\Sounds\Jump.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="PlatformerDatabase_log.ldf">
+    <Content Include="GameResources\Textures\bg.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="GameResources\Textures\blockerMad.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameResources\Textures\box.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameResources\Textures\coinGold.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameResources\Textures\flagRed2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameResources\Textures\flyFly1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameResources\Textures\flyFly2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameResources\Textures\grass.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameResources\Textures\grassCenter.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameResources\Textures\hud_heartFull.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameResources\Textures\hud_p1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameResources\Textures\license.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameResources\Textures\p1_stand.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameResources\Textures\slimeGreen.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameResources\Textures\slimeWalk1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameResources\Textures\slimeWalk2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameResources\Textures\spikes.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="GameResources\UI\grey_button00.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Levels\4.level">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Levels\5.level">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Config.cs">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Compile>
   </ItemGroup>
 
 </Project>
