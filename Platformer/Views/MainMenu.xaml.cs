@@ -1,4 +1,4 @@
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 namespace Platformer.Views
@@ -39,7 +39,7 @@ namespace Platformer.Views
 
         private void Exit(object sender, RoutedEventArgs e)
         {
-
+            window.Exit();
         }
     }
 }

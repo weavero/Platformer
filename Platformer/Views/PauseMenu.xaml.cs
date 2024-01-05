@@ -1,4 +1,4 @@
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 namespace Platformer.Views
@@ -27,7 +27,8 @@ namespace Platformer.Views
 
         private void ExitToMenu(object sender, RoutedEventArgs e)
         {
-            window.ExitToMenu();
+            window.BackToMenu();
+        }
 
         private void ShowOptions(object sender, RoutedEventArgs e)
         {

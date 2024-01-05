@@ -1,4 +1,4 @@
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media.Imaging;
 using Platformer.Views;
 using Platformer.Models;
@@ -89,33 +89,21 @@ namespace Platformer
 
         public void NewGame()
         {
-            MainMenuGrid.Visibility = Visibility.Hidden;
-            GameCompleteGrid.Visibility = Visibility.Hidden;
-            GameOverGrid.Visibility = Visibility.Hidden;
-            GameGrid.Visibility = Visibility.Visible;
+            ShowOnlyView(GameGrid.PersistId);
             Game.NewGame();
-            Game.TimerStart();
+            //Game.TimerStart();
         }
 
-        internal void ExitToMenu()
+        internal void BackToMenu()
         {
-            GameGrid.Visibility = Visibility.Hidden;
-            PauseGrid.Visibility = Visibility.Hidden;
-            GameOverGrid.Visibility = Visibility.Hidden;
-            GameCompleteGrid.Visibility = Visibility.Hidden;
-            MainMenuGrid.Visibility = Visibility.Visible;
+            ShowOnlyView(MainMenuGrid.PersistId);
         }
 
         public void ResumeGame()
         {
             PauseGrid.Visibility = Visibility.Hidden;
             Game.TimerStart();
-        }
-
-        public void ShowMenu()
-        {
-            LeaderboardGrid.Visibility = Visibility.Hidden;
-            MainMenuGrid.Visibility = Visibility.Visible;
+            Game.IsInGame = true;
         }
 
         public void ShowGameOver()
@@ -150,6 +138,24 @@ namespace Platformer
             GameFinish end = (GameFinish)GameCompleteGrid.Children[0];
             end.Points = e.Points;
             end.Time = e.Time;
+        }
+
+        void ShowOnlyView(int PersistID)
+        {
+            foreach (UIElement item in grid.Children)
+            {
+                if (item.PersistId != PersistID)
+                {
+                    if (item.Visibility == Visibility.Visible)
+                    {
+                        item.Visibility = Visibility.Hidden;
+                    }
+                }
+                else
+                {
+                    item.Visibility = Visibility.Visible;
+                }
+            }
         }
 
         public void Exit()

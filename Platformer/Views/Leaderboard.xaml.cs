@@ -1,4 +1,4 @@
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Linq;
 using Platformer.Data;
@@ -51,7 +51,7 @@ namespace Platformer.Views
 
         private void ShowMainMenu(object sender, RoutedEventArgs e)
         {
-            window.ShowMenu();
+            window.BackToMenu();
         }
     }
 }
