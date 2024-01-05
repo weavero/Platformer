@@ -55,7 +55,7 @@ namespace Platformer.Controls
 
         public void PlayStopGameMusic()
         {
-            SoundPlayer.PlayStopGameMusic();
+            //SoundPlayer.PlayStopGameMusic();
         }
 
         Rect oldPlayerPos;
