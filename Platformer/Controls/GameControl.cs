@@ -17,6 +17,7 @@ namespace Platformer.Controls
         MainWindow window;
 
         public bool IsInSettings { get; set; }
+        public bool IsInGame { get; set; }
         public GameControl()
         {
             Loaded += Control_Loaded;
@@ -54,7 +55,7 @@ namespace Platformer.Controls
 
         private void Win_KeyDown(object sender, KeyEventArgs e)
         {
-            if (IsVisible)
+            if (IsInGame)
             {
                 //if (model.player.IsJumping || model.player.IsFalling)
                 //{
@@ -68,7 +69,11 @@ namespace Platformer.Controls
                         model.player.IsJumping = true;
                     }
                 }
-                else if (e.Key == Key.Escape) { TimerStartStop(); }
+                else if (e.Key == Key.Escape)
+                {
+                    TimerStartStop();
+                    IsInGame = false;
+                }
             }
         }
 
@@ -119,12 +124,13 @@ namespace Platformer.Controls
             model.mainWindow = window;
             SetEvents();
             timer.Start();
+            IsInGame = true;
         }
 
         private void LevelChange()
         {
             renderer = new Renderer(model);
-            SetEvents();
+            //SetEvents();
         }
 
         private void GameComplete(GameCompleteArgs args)
