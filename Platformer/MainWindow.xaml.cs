@@ -131,8 +131,16 @@ namespace Platformer
 
         public void ShowSettings()
         {
+            if (GameGrid.Visibility == Visibility.Visible)
+            {
+                Game.IsInSettings = true;
+            }
             SettingsGrid.Visibility = Visibility.Visible;
+        }
 
+        public void HideSettings()
+        {
+            SettingsGrid.Visibility = Visibility.Hidden;
         }
 
         public void ShowGameComplete(GameCompleteArgs e)

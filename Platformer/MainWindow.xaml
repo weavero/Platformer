@@ -32,8 +32,9 @@
         </Grid>
         <Grid x:Name="MainMenuGrid" Visibility="Visible">
             <views:MainMenu/>
+            
         </Grid>
-        <Grid x:Name="SettingsGrid" Visibility="Visible">
+        <Grid x:Name="SettingsGrid" Visibility="Hidden">
             <views:Settings/>
         </Grid>
     </Grid>

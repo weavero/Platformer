@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Platformer.Views
@@ -32,12 +32,12 @@ namespace Platformer.Views
             window.ShowLeaderboard();
         }
 
-        private void Exit(object sender, RoutedEventArgs e)
+        private void Settings(object sender, RoutedEventArgs e)
         {
-            window.Exit();
+            window.ShowSettings();
         }
 
-        private void Settings(object sender, RoutedEventArgs e)
+        private void Exit(object sender, RoutedEventArgs e)
         {
 
         }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows;
 using System.Windows.Threading;
 using System.Windows.Input;
@@ -16,6 +16,7 @@ namespace Platformer.Controls
         DispatcherTimer timer;
         MainWindow window;
 
+        public bool IsInSettings { get; set; }
         public GameControl()
         {
             Loaded += Control_Loaded;

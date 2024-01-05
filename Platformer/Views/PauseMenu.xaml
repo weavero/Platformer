@@ -19,7 +19,11 @@
                 <Button.Background>
                     <ImageBrush ImageSource="/GameResources/UI/grey_button00.png"/>
                 </Button.Background> Folytatás</Button>
-            <Button Width="166" Height="20" Click="ExitToMenu" FontFamily="{StaticResource FontTest}">
+            <Button Width="120" Height="20" Margin="20" Click="ShowOptions" FontFamily="{StaticResource FontTest}">
+                <Button.Background>
+                    <ImageBrush ImageSource="/GameResources/UI/grey_button00.png"/>
+                </Button.Background> Beállítások</Button>
+            <Button Width="170" Margin="20" Click="ExitToMenu"  FontFamily="{StaticResource FontTest}">
                 <Button.Background>
                     <ImageBrush ImageSource="/GameResources/UI/grey_button00.png"/>
                 </Button.Background> Kilépés a fömenübe</Button>
