@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 namespace Platformer.Data
 {
+    [Serializable]
     public partial class LeaderboardEntry
     {
         public int Id { get; set; }

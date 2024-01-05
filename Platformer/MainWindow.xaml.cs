@@ -1,8 +1,12 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Windows.Media.Imaging;
 using Platformer.Views;
 using Platformer.Models;
 using Platformer.Data;
+using System.Windows.Controls;
+using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Platformer
 {
@@ -22,6 +26,30 @@ namespace Platformer
             Icon = BitmapFrame.Create(Config.iconUri);
             Background = Config.backgroundBrush;
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+
+            string path = @"Data/Leaderboard.dat";
+            if (!File.Exists(path))
+            {
+                FileStream fs = File.Create(path);
+                fs.Close();
+                fs.Dispose();
+                FileStream stream = File.OpenWrite(path);
+                BinaryFormatter bf = new BinaryFormatter();
+                LeaderboardEntry[] leaderboardEntries = new LeaderboardEntry[20];
+                for (int i = 0; i < leaderboardEntries.Length; i++)
+                {
+                    LeaderboardEntry a = new LeaderboardEntry
+                    {
+                        Name = "0",
+                        Points = 0,
+                        Time = "55:55"
+                    };
+                    leaderboardEntries[i] = a;
+                }
+                bf.Serialize(stream, leaderboardEntries);
+                stream.Dispose();
+            }
+            
             //PlatformerContext db = new PlatformerContext();
             //LeaderboardEntry player = new LeaderboardEntry
             //{
@@ -41,7 +69,6 @@ namespace Platformer
             //    Points = 400,
             //    Time = "02:55"
             //};
-
             //LeaderboardEntry a = new LeaderboardEntry
             //{
             //    Name = "Ádám",
