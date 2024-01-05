@@ -1,4 +1,4 @@
-
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31911.196
@@ -46,6 +46,16 @@ Global
 		{1F82584B-DD4E-47ED-8499-EB0F5D544BFA}.Release|x64.Build.0 = Release|x64
 		{1F82584B-DD4E-47ED-8499-EB0F5D544BFA}.Release|x86.ActiveCfg = Release|x86
 		{1F82584B-DD4E-47ED-8499-EB0F5D544BFA}.Release|x86.Build.0 = Release|x86
+		{552C9B17-9F67-460A-B2AA-782939C582E2}.Debug|Any CPU.ActiveCfg = Debug
+		{552C9B17-9F67-460A-B2AA-782939C582E2}.Debug|ARM.ActiveCfg = Debug
+		{552C9B17-9F67-460A-B2AA-782939C582E2}.Debug|ARM64.ActiveCfg = Debug
+		{552C9B17-9F67-460A-B2AA-782939C582E2}.Debug|x64.ActiveCfg = Debug
+		{552C9B17-9F67-460A-B2AA-782939C582E2}.Debug|x86.ActiveCfg = Debug
+		{552C9B17-9F67-460A-B2AA-782939C582E2}.Release|Any CPU.ActiveCfg = Release
+		{552C9B17-9F67-460A-B2AA-782939C582E2}.Release|ARM.ActiveCfg = Release
+		{552C9B17-9F67-460A-B2AA-782939C582E2}.Release|ARM64.ActiveCfg = Release
+		{552C9B17-9F67-460A-B2AA-782939C582E2}.Release|x64.ActiveCfg = Release
+		{552C9B17-9F67-460A-B2AA-782939C582E2}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -178,7 +178,7 @@
 
   <ItemGroup>
     <Compile Update="Config.cs">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
   </ItemGroup>
 
