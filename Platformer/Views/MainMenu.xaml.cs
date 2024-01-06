@@ -32,14 +32,14 @@ namespace Platformer.Views
             window.ShowLeaderboard();
         }
 
+        private void Settings(object sender, RoutedEventArgs e)
+        {
+            window.ShowSettings();
+        }
+
         private void Exit(object sender, RoutedEventArgs e)
         {
             window.Exit();
-        }
-
-        private void Settings(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

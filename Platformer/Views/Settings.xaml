@@ -10,7 +10,10 @@
         <FontFamily x:Key="FontTest">/GameResources/Font/#KenVector Future</FontFamily>
     </UserControl.Resources>
     <Grid>
-        <Slider HorizontalAlignment="Center" Margin="0,85,0,0" VerticalAlignment="Top" Width="120"/>
-
+        <Image Source="/GameResources/Textures/bg.png" Stretch="Fill"></Image>
+        <Slider x:Name="VolumeSlider" HorizontalAlignment="Center" Margin="0,85,0,0" VerticalAlignment="Top" Width="120" ValueChanged="VolumeSlider_ValueChanged"/>
+        <Button Content="Vissza" HorizontalAlignment="Left" Margin="32,400,0,0" VerticalAlignment="Top" Width="60" FontFamily="{StaticResource FontTest}" Click="HideSettings"/>
+        <Label Content="Hangerö" HorizontalAlignment="Left" Margin="247,82,0,0" VerticalAlignment="Top" Width="77" FontFamily="{StaticResource FontTest}"/>
+        <Label x:Name="VolumeLabel" Content="" Margin="472,81,318,343" HorizontalContentAlignment="Left"/>
     </Grid>
 </UserControl>

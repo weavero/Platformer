@@ -27,7 +27,7 @@ namespace Platformer.Views
 
         private void ToMainMenu(object sender, RoutedEventArgs e)
         {
-            window.ExitToMenu();
+            window.BackToMenu();
         }
     }
 }

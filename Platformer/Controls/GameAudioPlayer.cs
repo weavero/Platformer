@@ -7,38 +7,27 @@ namespace Platformer.Controls
 {
     class GameAudioPlayer : MediaPlayer
     {
-        double Volume = Config.GameSoundVolume;
-
-        
+        double gameVolume = Config.GameSoundVolume;
 
         public GameAudioPlayer()
         {
-            Volume = Config.GameSoundVolume;
+            gameVolume = Config.GameSoundVolume;
         }
 
-        //MediaPlayer Jump;
-        //MediaPlayer GameMusic;
+        public void PlayStopGameMusic()
+        {
+            Open(Config.GameMusic);
+            Play();
+        }
 
-        //public GameAudioPlayer()
-        //{
-        //    GameMusic = new MediaPlayer();
-        //    GameMusic.Volume = Config.GameSoundVolume;
-        //}
+        public void LoadMusic(Uri MusicSourceUri)
+        {
+            Open(MusicSourceUri);
+        }
 
-        //public void PlayStopGameMusic()
-        //{
-        //    GameMusic.Open(Config.GameMusic);
-        //    GameMusic.Play();
-        //}
+        public void PlaySound()
+        {
 
-        //public void LoadMusic(Uri MusicSourceUri)
-        //{
-        //    GameMusic.Open(MusicSourceUri);
-        //}
-
-        //public void PlaySound()
-        //{
-            
-        //}
+        }
     }
 }

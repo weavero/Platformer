@@ -39,8 +39,8 @@ namespace Platformer
 
         public static readonly int UnitWidth = 32;
         public static readonly int UnitHeight = 32;
-        public static readonly int PlayerWidth = 32;
-        public static readonly int PlayerHeight = 32;
+        public static readonly int PlayerWidth = 30;
+        public static readonly int PlayerHeight = 30;
         public static readonly int SmallEnemyWidth = 32;
         public static readonly int SmallEnemyHeight = 32;
         public static readonly int BigEnemyWidth = UnitWidth * 2;

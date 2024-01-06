@@ -26,13 +26,19 @@
                 </Button.Background>
                 Ranglista
             </Button>
+            <Button Width="120" Height="20" Margin="10" Click="Settings" FontFamily="{StaticResource FontTest}" BorderBrush="{x:Null}">
+                <Button.Background>
+                    <ImageBrush ImageSource="/GameResources/UI/grey_button00.png"/>
+                </Button.Background>
+                Beállítások
+            </Button>
             <Button Width="120" Height="20" Margin="10" Click="Exit" FontFamily="{StaticResource FontTest}" BorderBrush="{x:Null}">
                 <Button.Background>
                     <ImageBrush ImageSource="/GameResources/UI/grey_button00.png"/>
                 </Button.Background>
                 Kilépés
             </Button>
-            <Button Width="32" Height="32" Margin="20" Click="Settings" HorizontalAlignment="Right" />
+            
         </StackPanel>
     </Grid>
 </UserControl>

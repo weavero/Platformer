@@ -59,9 +59,14 @@ namespace Platformer.Models
             hitsToKill++;
         }
 
-        public  void Damaged()
+        public void Damaged()
         {
             MinusHealth();
+        }
+
+        public void ChangeVolume()
+        {
+            actorSoundPlayer.Volume = Config.GameSoundVolume;
         }
     }
 }

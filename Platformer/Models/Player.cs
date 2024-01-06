@@ -16,9 +16,9 @@ namespace Platformer.Models
         {
             MoveLeft();
             MoveRight();
+            SetX(Velocity);
             Jump();
             Falling();
-            SetX(Velocity);
         }
 
         private void MoveLeft()
@@ -49,7 +49,6 @@ namespace Platformer.Models
             }
             else if (!GoRight && Velocity > 0)
             {
-                // Computer sucks at math
                 // Nem tér vissza pontosan nullára -> folyamatos mozgás
                 if (Velocity < 0.1)
                 {
@@ -72,8 +71,8 @@ namespace Platformer.Models
             {
                 if (!StartJumping)
                 {
-                    actorSoundPlayer.Open(Config.JumpSound);
-                    actorSoundPlayer.Play();
+                    //actorSoundPlayer.Open(Config.JumpSound);
+                    //actorSoundPlayer.Play();
                     jumpHeight = -maxJump;
                     StartJumping = true;
                 }
